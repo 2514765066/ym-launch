@@ -13,11 +13,11 @@
 
       <AlertDialogFooter>
         <AlertDialogCancel class="flex-1" @click="handleCancel">
-          {{ data.cancelButtonText || "取消" }}
+          {{ data.cancelButtonText || '取消' }}
         </AlertDialogCancel>
 
         <AlertDialogAction class="flex-1" @click="handleConfirm">
-          {{ data.confirmButtonText || "确定" }}
+          {{ data.confirmButtonText || '确定' }}
         </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
@@ -34,8 +34,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { data } from "./message-box";
+} from '@/components/ui/alert-dialog';
+import { data } from './message-box';
 
 //处理确定
 const handleConfirm = () => {

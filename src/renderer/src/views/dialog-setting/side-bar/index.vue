@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import Item from "./item.vue";
-import router from "../router";
+import Item from './item.vue';
+import router from '../router';
 </script>
 
 <style scoped lang="scss"></style>

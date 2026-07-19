@@ -1,7 +1,7 @@
-import { CircleAlertIcon, CircleArrowUpIcon } from "lucide-vue-next";
-import { Component } from "vue";
-import Update from "./view/update.vue";
-import About from "./view/about.vue";
+import { CircleAlertIcon, CircleArrowUpIcon } from '@lucide/vue';
+import { Component } from 'vue';
+import Update from './view/update.vue';
+import About from './view/about.vue';
 
 export interface Route {
   id: string;
@@ -12,14 +12,14 @@ export interface Route {
 
 const router: Route[] = [
   {
-    id: "update",
-    name: "更新",
+    id: 'update',
+    name: '更新',
     icon: CircleArrowUpIcon,
     component: Update,
   },
   {
-    id: "about",
-    name: "关于",
+    id: 'about',
+    name: '关于',
     icon: CircleAlertIcon,
     component: About,
   },
@@ -30,7 +30,7 @@ export const selectedRouteID = ref(router[0].id);
 
 //选中的路由
 export const selectedRoute = computed(() => {
-  return router.find(r => r.id == selectedRouteID.value);
+  return router.find((r) => r.id == selectedRouteID.value);
 });
 
 export default router;

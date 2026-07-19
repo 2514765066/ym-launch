@@ -1,12 +1,15 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
-  "include": ["src/renderer/**/*", "src/preload/*.d.ts", "src/type/*.ts"],
+  "include": [
+    "src/renderer/**/*",
+    "src/preload/index.d.ts",
+    "src/shared/type.ts"
+  ],
   "compilerOptions": {
     "composite": true,
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/renderer/src/*"],
-      "@type": ["src/type/*"]
+      "@/*": ["./src/renderer/src/*"],
+      "@type": ["./src/shared/type.ts"]
     }
   }
 }

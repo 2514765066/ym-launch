@@ -1,11 +1,11 @@
-import { render } from "vue";
-import Dialog from "./index.vue";
+import { render } from 'vue';
+import Dialog from './index.vue';
 
 export const data = reactive({
-  title: "",
-  description: "",
-  confirmButtonText: "",
-  cancelButtonText: "",
+  title: '',
+  description: '',
+  confirmButtonText: '',
+  cancelButtonText: '',
 
   visible: false,
   onConfirm: () => {},
@@ -42,7 +42,7 @@ export const confirm = (option: ConfirmOption) => {
 
   isCreate = true;
 
-  const container = document.createElement("div");
+  const container = document.createElement('div');
 
   document.body.appendChild(container);
 

@@ -1,0 +1,7 @@
+allowBuilds:
+  '@parcel/watcher': true
+  electron: true
+  electron-winstaller: false
+  esbuild: true
+  extract-file-icon: false
+  vue-demi: true

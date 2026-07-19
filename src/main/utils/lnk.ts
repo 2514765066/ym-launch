@@ -1,17 +1,17 @@
-import { getLnkTargetPs1Path } from "@/services/path";
-import { execFile } from "child_process";
+import { getLnkTargetPs1Path } from '../services/path';
+import { execFile } from 'child_process';
 
 //获取lnk文件的目标路径
 export const getLnkTarget = (paths: string[]) => {
   const { promise, resolve } = Promise.withResolvers<string[]>();
 
   execFile(
-    "powershell.exe",
+    'powershell.exe',
     [
-      "-NoProfile",
-      "-ExecutionPolicy",
-      "Bypass",
-      "-File",
+      '-NoProfile',
+      '-ExecutionPolicy',
+      'Bypass',
+      '-File',
       getLnkTargetPs1Path,
       ...paths,
     ],

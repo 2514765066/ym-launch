@@ -59,13 +59,13 @@ import {
   ItemTitle,
   ItemActions,
   ItemGroup,
-} from "@/components/ui/item";
-import Container from "@/components/container/index.vue";
-import { Button } from "@/components/ui/button";
-import { appVersion } from "@/services/info";
-import { useConfigStore } from "@/stores/useConfigStore";
-import { repoMap } from "@/map";
-import MessageBox from "@/components/ui/message-box";
+} from '@/components/ui/item';
+import Container from '@/components/container/index.vue';
+import { Button } from '@/components/ui/button';
+import { appVersion } from '@/services/app-info';
+import { useConfigStore } from '@/stores/config';
+import { repoMap } from '@/map';
+import MessageBox from '@/components/ui/message-box';
 
 const { config } = storeToRefs(useConfigStore());
 const { resetConfig } = useConfigStore();
@@ -80,8 +80,8 @@ const handleIssue = () => {
 //重置
 const handleReset = async () => {
   const res = await MessageBox.confirm({
-    title: "是否要恢复默认设置",
-    description: "此操作将会将应用的所有设置恢复成默认设置。",
+    title: '是否要恢复默认设置',
+    description: '此操作将会将应用的所有设置恢复成默认设置。',
   });
 
   if (!res) return;

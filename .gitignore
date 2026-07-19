@@ -1,4 +1,9 @@
+.agents
+.codegraph
 .vscode
 build
 node_modules
 out
+
+
+auto-imports.d.ts

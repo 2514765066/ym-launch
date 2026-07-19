@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import { selectedRouteID } from "../router";
-import type { Route } from "../router";
+import { selectedRouteID } from '../router';
+import type { Route } from '../router';
 
 const props = defineProps<{
   data: Route;

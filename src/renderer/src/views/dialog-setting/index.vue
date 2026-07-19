@@ -23,28 +23,28 @@
 </template>
 
 <script setup lang="ts">
-import SideBar from "./side-bar/index.vue";
+import SideBar from './side-bar/index.vue';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import eventEmitter from "@/hooks/eventEmitter";
-import { VisuallyHidden } from "reka-ui";
-import { selectedRoute } from "./router";
+} from '@/components/ui/dialog';
+import eventEmitter from '@/hooks/eventEmitter';
+import { VisuallyHidden } from 'reka-ui';
+import { selectedRoute } from './router';
 
 const open = ref(false);
 
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement;
 
-  if (target.closest("[data-sonner-toast]")) {
+  if (target.closest('[data-sonner-toast]')) {
     event.preventDefault();
   }
 };
 
-eventEmitter.on("dialog-setting:show", () => {
+eventEmitter.on('dialog-setting:show', () => {
   open.value = true;
 });
 </script>

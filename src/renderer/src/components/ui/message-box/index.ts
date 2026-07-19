@@ -1,3 +1,3 @@
-import { confirm } from "./message-box";
+import { confirm } from './message-box';
 
 export default { confirm };
