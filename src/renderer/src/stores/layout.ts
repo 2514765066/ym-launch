@@ -52,6 +52,7 @@ export const useLayoutStore = defineStore('layout', () => {
   return {
     rowCount,
     colCount,
+    selectedPage,
     iconZoom,
     maxNodeCount,
     maxPageCount,

@@ -20,6 +20,7 @@ const props = withDefaults(
   defineProps<
     DialogContentProps & {
       class?: HTMLAttributes['class'];
+      overlayClass?: HTMLAttributes['class'];
       showCloseButton?: boolean;
     }
   >(),
@@ -36,7 +37,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 <template>
   <DialogPortal>
-    <DialogOverlay />
+    <DialogOverlay :class="overlayClass" />
     <DialogContent
       data-slot="dialog-content"
       v-bind="{ ...$attrs, ...forwarded }"

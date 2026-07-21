@@ -2,7 +2,9 @@
   user-select: none;
 }
 
-.glass-button {
+.glass {
+  border: 1px double rgba(51, 51, 51, 0.08);
+
   box-shadow:
     inset 2px 2px 1px -1px rgba(255, 255, 255, 0.3),
     inset -2px -2px 1px -1px rgba(255, 255, 255, 0.3),
@@ -13,14 +15,5 @@
 
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
-
-  border-radius: 9999px;
-}
-
-.flex-center {
-  @apply flex justify-center items-center;
-}
-
-.wh-screen {
-  @apply w-screen h-screen;
+  filter: brightness(0.9);
 }

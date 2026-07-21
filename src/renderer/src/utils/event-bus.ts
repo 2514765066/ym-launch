@@ -1,4 +1,6 @@
-type EventMap = {};
+type EventMap = {
+  openGroupDialog: [id: string];
+};
 
 type EventName = keyof EventMap;
 type EventHandler<T extends EventName> = (...args: EventMap[T]) => void;

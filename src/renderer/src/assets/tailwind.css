@@ -111,3 +111,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.flex-center {
+  @apply flex justify-center items-center;
+}
+
+.size-screen {
+  @apply w-screen h-screen;
+}
