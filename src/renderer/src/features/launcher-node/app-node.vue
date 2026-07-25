@@ -12,22 +12,22 @@
       :class="{
         'outline-[10%] outline-white/20': notSelf && isHover,
       }"
-    />
+    >
+      <button
+        class="aspect-square p-1 absolute top-0 left-0 -translate-1/4 rounded-full bg-white"
+        :style="{
+          width: `${(nodeSize / 10) * 3}px`,
+        }"
+        v-if="status == 'edit'"
+        @click.stop="removeAppNode(props.data.id)"
+      >
+        <X class="size-full text-black" />
+      </button>
+    </AppNodeIcon>
 
     <span class="truncate">
       {{ data.label }}
     </span>
-
-    <button
-      class="aspect-square p-1 absolute top-0 left-0 -translate-1/4 rounded-full bg-white"
-      :style="{
-        width: `${(nodeSize / 10) * 3}px`,
-      }"
-      v-if="status == 'edit'"
-      @click.stop="removeAppNode(props.data.id)"
-    >
-      <X class="size-full text-black" />
-    </button>
   </BaseNode>
 </template>
 

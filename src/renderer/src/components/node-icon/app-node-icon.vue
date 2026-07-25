@@ -1,17 +1,21 @@
 <template>
-  <img
-    class="aspect-square object-cover rounded-[24%]"
-    :class="{
-      'opacity-0': dragNodeId == id,
-    }"
-    :style="
-      !isGroup && {
-        width: `${nodeSize}px`,
-      }
-    "
-    :src="icon"
-    v-if="icon"
-  />
+  <div class="relative rounded-[24%]">
+    <img
+      class="aspect-square object-contain rounded-[inherit]"
+      :class="{
+        'opacity-0': dragNodeId == id,
+      }"
+      :style="
+        !isGroup && {
+          width: `${nodeSize}px`,
+        }
+      "
+      :src="icon"
+      v-if="icon"
+    />
+
+    <slot></slot>
+  </div>
 </template>
 
 <script setup lang="ts">
