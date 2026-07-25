@@ -7,7 +7,7 @@
     @click="handleClick"
   >
     <AppNodeIcon
-      class="drop-shadow-2xl"
+      class="drop-shadow-xl"
       :id="data.id"
       :class="{
         'outline-[10%] outline-white/20': notSelf && isHover,

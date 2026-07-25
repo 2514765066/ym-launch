@@ -1,5 +1,5 @@
 <template>
-  <section class="py-5 flex-center">
+  <section class="dark py-5 flex-center">
     <main
       class="w-fit p-2.5 flex gap-3 rounded-full transition-all"
       :class="{
