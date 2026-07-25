@@ -10,7 +10,7 @@
       >
         <LauncherHeader />
 
-        <Launcher />
+        <LauncherContent />
 
         <LauncherFooter />
       </section>
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import LauncherBackground from './launcher-background.vue';
 import LauncherContextMenu from '@/features/launcher-context-menu/index.vue';
-import Launcher from './launcher/index.vue';
+import LauncherContent from './launcher-content/index.vue';
 import { useLauncherUiStore } from '@/stores/launcher-ui.js';
 import LauncherFooter from './launcher-footer.vue';
 import { useEventListener } from '@vueuse/core';

@@ -52,32 +52,34 @@ const handleEnd = () => {
 
 //顺序改变
 const handelChange = (e: SortableEvent) => {
-  if (e.to.children.length < maxNodeCount.value) {
-    return;
-  }
-
-  //从组中拖拽过来
-  const kind = e.from.getAttribute('data-kind');
-
-  if (kind === 'group') {
-    from.value = 'after';
-    return;
-  }
-
   const fromPage = Number(e.from.getAttribute('data-page'));
 
   const diff = props.page - fromPage;
 
-  if (diff === 0) {
+  //从文件夹弹窗拖拽 -> 当前页是最后一个隐藏最后一个
+  const kind = e.from.getAttribute('data-kind');
+
+  if (kind === 'group' && e.to.children.length >= maxNodeCount.value) {
+    from.value = 'after';
     return;
   }
 
+  //少于当前内容
+  if (e.to.children.length < maxNodeCount.value) {
+    return;
+  }
+
+  //从前往后推拽 -> 隐藏当页第一个
   if (diff > 0) {
     from.value = 'before';
     return;
   }
 
-  from.value = 'after';
+  //从后往前拖拽 -> 隐藏当页最后一个
+  if (diff < 0) {
+    from.value = 'after';
+    return;
+  }
 };
 
 //从组中拖拽进来
