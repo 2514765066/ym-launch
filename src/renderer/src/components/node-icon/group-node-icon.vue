@@ -2,11 +2,12 @@
   <div
     class="group-node-icon glass aspect-square grid grid-cols-4 grid-rows-4 gap-[6%] rounded-[24%] transition-transform ease-in-out"
     :style="{
-      width: `${nodeSize}px`,
+      width: `${(nodeSize / 10) * 11}px`,
       padding: `${nodeSize / 10}px`,
     }"
   >
     <AppNodeIcon
+      class="rounded-[30%]"
       v-for="id in data.children.slice(0, 7)"
       :key="id"
       :id="id"
