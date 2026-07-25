@@ -4,8 +4,8 @@
       <slot></slot>
     </ContextMenuTrigger>
 
-    <ContextMenuContent class="min-w-49" v-if="nodeMenuKind">
-      <component :is="menuMap[nodeMenuKind]" v-if="nodeMenuKind" />
+    <ContextMenuContent class="min-w-49" v-if="menuKind">
+      <component :is="menuMap[menuKind]" :id="nodeId" />
     </ContextMenuContent>
   </ContextMenu>
 </template>
@@ -16,11 +16,12 @@ import {
   ContextMenuTrigger,
   ContextMenuContent,
 } from '@/components/ui/context-menu';
-import { MenuKind, useMenuStore } from '@/stores/menu';
 import { menuMap } from '.';
 
-const { nodeMenuKind } = storeToRefs(useMenuStore());
-const { setNodeMenuKind } = useMenuStore();
+export type MenuKind = 'app' | 'group' | 'desktop' | null;
+
+const menuKind = ref<MenuKind>(null);
+const nodeId = ref<string | null>(null);
 
 //处理右键菜单
 const handleContextMenu = (event: MouseEvent) => {
@@ -34,8 +35,10 @@ const handleContextMenu = (event: MouseEvent) => {
   }
 
   const kind = target.dataset.kind as MenuKind;
+  const id = target.dataset.id as string;
 
-  setNodeMenuKind(kind);
+  nodeId.value = id;
+  menuKind.value = kind;
 };
 </script>
 

@@ -2,26 +2,27 @@
   <section class="size-full flex shrink-0">
     <div
       class="w-[10%] h-full shrink-0"
-      @dragenter="handlePreEnter"
-      @dragleave="handlePreLeave"
+      @pointerenter="dragNodeId && handlePreEnter()"
+      @pointerleave="dragNodeId && handlePreLeave()"
     ></div>
 
     <slot />
 
     <div
       class="w-[10%] h-full shrink-0"
-      @dragenter="handleNextEnter"
-      @dragleave="handleNextLeave"
+      @pointerenter="dragNodeId && handleNextEnter()"
+      @pointerleave="dragNodeId && handleNextLeave()"
     ></div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { useHover } from '@/hooks/hover';
-import { useLayoutStore } from '@/stores/layout';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
 
-const { colCount, rowCount } = storeToRefs(useLayoutStore());
-const { prePage, nextPage } = useLayoutStore();
+const { dragNodeId } = storeToRefs(useLauncherUiStore());
+const { colCount, rowCount } = storeToRefs(useLauncherUiStore());
+const { prePage, nextPage } = useLauncherUiStore();
 
 //拖拽前一页
 const [handlePreEnter, handlePreLeave] = useHover(prePage);

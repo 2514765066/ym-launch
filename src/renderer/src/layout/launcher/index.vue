@@ -1,13 +1,11 @@
 <template>
   <section
     ref="containerRef"
-    class="launcher size-full flex transition-transform duration-500 ease-in-out"
+    class="launcher size-full min-h-0 flex transition-transform duration-500 ease-in-out"
   >
     <template v-for="(ids, index) in pageIds" :key="index">
       <LauncherPage :page="index" @end="handleEnd">
-        <template v-for="id in ids" :key="id">
-          <LauncherNode :id="id" />
-        </template>
+        <LauncherNode v-for="id in ids" :key="id" :id="id" />
       </LauncherPage>
     </template>
   </section>
@@ -17,18 +15,18 @@
 import LauncherPage from './launcher-page/index.vue';
 import LauncherNode from '@/features/launcher-node/index.vue';
 import { useLauncherStore } from '@/stores/launcher';
-import { useLayoutStore } from '@/stores/layout';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
 
 const { desktopIds } = storeToRefs(useLauncherStore());
 const { setDesktopIds } = useLauncherStore();
 const { selectedPage, maxPageCount, maxNodeCount } =
-  storeToRefs(useLayoutStore());
+  storeToRefs(useLauncherUiStore());
 
 const containerRef = useTemplateRef('containerRef');
 
 //每一页的id
 const pageIds = computed(() => {
-  const result: string[][] = [[]];
+  const result: string[][] = [];
 
   for (let i = 0; i < maxPageCount.value; i++) {
     const ids = desktopIds.value.slice(
@@ -36,14 +34,14 @@ const pageIds = computed(() => {
       (i + 1) * maxNodeCount.value,
     );
 
-    result.unshift(ids);
+    result.push(ids);
   }
 
   return result;
 });
 
 //处理结束
-const handleEnd = () => {
+const handleEnd = async () => {
   if (!containerRef.value) {
     return;
   }
@@ -51,8 +49,6 @@ const handleEnd = () => {
   const ids = Array.from(
     containerRef.value.querySelectorAll<HTMLElement>('[data-id]'),
   ).map((item) => item.dataset.id!);
-
-  console.log(ids);
 
   setDesktopIds(ids);
 };

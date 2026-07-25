@@ -1,5 +1,6 @@
 type EventMap = {
   openGroupDialog: [id: string];
+  openEditDialog: [id: string];
 };
 
 type EventName = keyof EventMap;

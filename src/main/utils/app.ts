@@ -1,13 +1,14 @@
 import { nanoid } from 'nanoid';
-import { getLnkTarget } from './lnk';
 import { basename, extname } from 'path';
+import { AppNode } from '@shared/type';
+import { shell } from 'electron';
 
-export const formatApps = async (paths: string[]) => {
-  const targetPaths = await getLnkTarget(paths);
+export const formatApps = async (paths: string[]): Promise<AppNode[]> => {
+  return paths.map((path) => {
+    const { target } = shell.readShortcutLink(path);
 
-  return targetPaths.map((path) => {
-    const name = basename(path, extname(path));
+    const label = basename(path, extname(path));
 
-    return { name, path, id: nanoid() };
+    return { label, path: target, id: nanoid(), kind: 'app' };
   });
 };

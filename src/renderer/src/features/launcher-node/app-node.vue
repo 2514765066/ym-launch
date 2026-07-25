@@ -1,55 +1,74 @@
 <template>
-  <section
-    class="app-node aspect-square relative flex-center shrink-0"
+  <BaseNode
+    :data="data"
     @pointerenter="notSelf && handleEnter()"
     @pointerleave="notSelf && handleLeave()"
     @pointerup="notSelf && handleDrop()"
+    @click="handleClick"
   >
-    <img
-      class="size-full object-cover rounded-[20%]"
+    <AppNodeIcon
+      class="drop-shadow-2xl"
+      :id="data.id"
       :class="{
         'outline-[10%] outline-white/20': notSelf && isHover,
       }"
-      src="@/assets/bg.jpg"
     />
 
-    <span class="absolute bottom-0 translate-y-[calc(100%+4px)] truncate">
+    <span class="truncate">
       {{ data.label }}
     </span>
-  </section>
+
+    <button
+      class="aspect-square p-1 absolute top-0 left-0 -translate-1/4 rounded-full bg-white"
+      :style="{
+        width: `${(nodeSize / 10) * 3}px`,
+      }"
+      v-if="status == 'edit'"
+      @click.stop="removeAppNode(props.data.id)"
+    >
+      <X class="size-full text-black" />
+    </button>
+  </BaseNode>
 </template>
 
 <script setup lang="ts">
+import { X } from '@lucide/vue';
 import { useIsHover } from '@/hooks/hover';
-import { useLauncherStore } from '@/stores/launcher';
-import { useLauncherSessionStore } from '@/stores/launcher-session';
-import { useLayoutStore } from '@/stores/layout';
-import { AppNode } from '@type';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { AppNode } from '@shared/type';
+import BaseNode from './base-node.vue';
+import { useLauncherNodeStore } from '@/stores/launcher-node.js';
+import AppNodeIcon from '@/components/node-icon/app-node-icon.vue';
 
 const props = defineProps<{
   data: AppNode;
 }>();
 
-const { nodeSize } = storeToRefs(useLayoutStore());
-const { selectedNodeId } = storeToRefs(useLauncherSessionStore());
-const { createGroup } = useLauncherStore();
+const { dragNodeId, status, nodeSize } = storeToRefs(useLauncherUiStore());
+const { createGroupNode, removeAppNode, openAppNode } = useLauncherNodeStore();
 
 const [isHover, handleEnter, handleLeave] = useIsHover();
 
 //当前元素是不是自己
 const notSelf = computed(() => {
-  return selectedNodeId.value && props.data.id != selectedNodeId.value;
+  return dragNodeId.value && props.data.id != dragNodeId.value;
 });
 
+// 处理放入分组
 const handleDrop = () => {
   handleLeave();
 
-  createGroup(props.data.id, selectedNodeId.value!);
+  createGroupNode(props.data.id, dragNodeId.value!);
+};
+
+//打开应用
+const handleClick = () => {
+  if (dragNodeId.value || status.value == 'edit') {
+    return;
+  }
+
+  openAppNode(props.data.id);
 };
 </script>
 
-<style scoped lang="scss">
-.app-node {
-  width: calc(v-bind('nodeSize') * 1px);
-}
-</style>
+<style scoped lang="scss"></style>

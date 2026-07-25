@@ -7,10 +7,15 @@ import autoImport from 'unplugin-auto-import/vite';
 
 export default defineConfig({
   main: {
+    define: {
+      __APP_VERSION__: JSON.stringify(version),
+      __APP_NAME__: JSON.stringify(name),
+    },
     resolve: {
       alias: {
         '@': resolve('src/main'),
-        '@type': resolve('src/type.ts'),
+        '@type': resolve('src/shared/type.ts'),
+        '@shared/*': resolve('src/shared'),
       },
     },
   },
@@ -23,7 +28,8 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': resolve('src/renderer/src'),
-        '@type': resolve('src/type.ts'),
+        '@shared/type': resolve('src/shared/type.ts'),
+        '@shared/app-info': resolve('src/shared/app-info.ts'),
       },
     },
     plugins: [

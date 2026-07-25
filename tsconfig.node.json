@@ -7,7 +7,8 @@
     "types": ["electron-vite/node"],
     "paths": {
       "@/*": ["./src/main/*"],
-      "@type/*": ["./src/shared/type.ts"]
+      "@shared/type": ["./src/shared/type.ts"],
+      "@shared/app-info": ["./src/shared/app-info.ts"]
     }
   }
 }

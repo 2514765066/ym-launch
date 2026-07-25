@@ -1,0 +1,65 @@
+@use 'sass:math';
+
+* {
+  user-select: none;
+}
+
+.glass {
+  box-shadow:
+    inset 2px 2px 1px -1px rgba(255, 255, 255, 0.3),
+    inset -2px -2px 1px -1px rgba(255, 255, 255, 0.3),
+    inset 6px 6px 1px -8px rgba(255, 255, 255, 0.1),
+    inset -6px -6px 1px -8px rgba(255, 255, 255, 0.1),
+    inset 0 0 4px rgba(0, 0, 0, 0.25),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  filter: brightness(0.9);
+}
+
+.launcher-edit {
+  *[data-id]:nth-child(even) {
+    animation-name: keyframes1;
+    animation-iteration-count: infinite;
+    transform-origin: 50% 10%;
+  }
+
+  *[data-id]:nth-child(odd) {
+    animation-name: keyframes2;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    transform-origin: 30% 5%;
+  }
+
+  @for $i from 1 through 100 {
+    *[data-id]:nth-child(#{$i}) {
+      animation-delay: #{calc(math.random(100) / 100) * -1}s;
+      animation-duration: #{0.22 + calc(math.random(10) / 100)}s;
+    }
+  }
+}
+
+@keyframes keyframes1 {
+  0% {
+    transform: rotate(-1deg);
+    animation-timing-function: ease-in;
+  }
+
+  50% {
+    transform: rotate(1.5deg);
+    animation-timing-function: ease-out;
+  }
+}
+
+@keyframes keyframes2 {
+  0% {
+    transform: rotate(1deg);
+    animation-timing-function: ease-in;
+  }
+
+  50% {
+    transform: rotate(-1.5deg);
+    animation-timing-function: ease-out;
+  }
+}

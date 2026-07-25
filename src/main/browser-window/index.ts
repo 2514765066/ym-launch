@@ -6,10 +6,6 @@ import { join } from 'path';
 export const load = (bw: BrowserWindow) => {
   bw.on('ready-to-show', () => {
     bw.show();
-
-    if (is.dev) {
-      bw.webContents.openDevTools({ mode: 'detach' });
-    }
   });
 
   //生产模式
@@ -21,4 +17,5 @@ export const load = (bw: BrowserWindow) => {
 
   //开发模式
   bw.loadURL(`${process.env['ELECTRON_RENDERER_URL']}`);
+  bw.webContents.openDevTools({ mode: 'detach' });
 };

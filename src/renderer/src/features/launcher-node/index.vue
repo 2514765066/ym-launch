@@ -1,15 +1,13 @@
 <template>
-  <component
-    :is="nodeMap[node.kind]"
-    :data-id="id"
-    :data-kind="node.kind"
-    :data="node"
-  />
+  <AppNode v-if="node.kind == 'app'" :data="node" />
+
+  <GroupNode v-else-if="node.kind == 'group'" :data="node" />
 </template>
 
 <script setup lang="ts">
+import GroupNode from './group-node.vue';
+import AppNode from './app-node.vue';
 import { useLauncherStore } from '@/stores/launcher';
-import { nodeMap } from '.';
 
 const props = defineProps<{
   id: string;

@@ -1,11 +1,11 @@
-import { onMounted, onUnmounted, type Ref } from 'vue';
+import { onMounted, onUnmounted, type Ref, watch } from 'vue';
 import Sortable, { type Options } from 'sortablejs';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
 
 const commonOptions: Options = {
   group: 'launcher',
-  animation: 150,
+  animation: 200,
   preventOnFilter: false,
-  swapThreshold: 0.4,
   invertSwap: true,
   forceFallback: true,
   fallbackOnBody: true,
@@ -14,6 +14,10 @@ const commonOptions: Options = {
 };
 
 export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
+  // 布局配置仓库
+  const LauncherUiStore = useLauncherUiStore();
+
+  // Sortable 实例
   let sortable: Sortable | null = null;
 
   //销毁实例
@@ -30,8 +34,27 @@ export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
 
     if (!el.value) return;
 
-    sortable = Sortable.create(el.value, { ...commonOptions, ...options });
+    sortable = Sortable.create(el.value, {
+      ...commonOptions,
+      ...options,
+      swapThreshold: LauncherUiStore.iconZoom,
+    });
   };
+
+  // 同步图标缩放对应的交换阈值
+  watch(
+    () => LauncherUiStore.iconZoom,
+    (iconZoom) => {
+      sortable?.option('swapThreshold', iconZoom);
+    },
+  );
+
+  watch(
+    () => LauncherUiStore.status,
+    (status) => {
+      sortable?.option('disabled', status == 'edit');
+    },
+  );
 
   onMounted(createSortable);
   onUnmounted(destroySortable);

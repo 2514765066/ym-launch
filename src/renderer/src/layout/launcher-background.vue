@@ -14,9 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { useWallpaperStore } from '@/stores/wallpaper';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
 
-const { wallpaper, blur } = storeToRefs(useWallpaperStore());
+const { wallpaper, blur } = storeToRefs(useLauncherUiStore());
 </script>
 
 <style scoped lang="scss"></style>

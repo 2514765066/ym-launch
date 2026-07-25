@@ -1,0 +1,35 @@
+<template>
+  <section class="py-5 flex-center">
+    <main
+      class="w-fit p-2.5 flex gap-3 rounded-full transition-all"
+      :class="{
+        glass: isHover,
+        'opacity-0': maxPageCount == 1,
+      }"
+      @mouseenter="handleEnter"
+      @mouseleave="handleLeave"
+    >
+      <div
+        class="size-2.5 rounded-full backdrop-blur bg-foreground/30 hover:scale-110 transition-transform"
+        :class="{
+          'bg-foreground!': selectedPage == index,
+        }"
+        v-for="(_, index) in maxPageCount"
+        :key="index"
+        @click="setSelectedPage(index)"
+      ></div>
+    </main>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { useIsHover } from '@/hooks/hover';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
+
+const { selectedPage, maxPageCount } = storeToRefs(useLauncherUiStore());
+const { setSelectedPage } = useLauncherUiStore();
+
+const [isHover, handleEnter, handleLeave] = useIsHover(0);
+</script>
+
+<style scoped lang="scss"></style>

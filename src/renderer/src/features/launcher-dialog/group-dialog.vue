@@ -1,13 +1,13 @@
 <template>
   <Dialog v-model:open="visible">
     <DialogContent
-      class="glass min-w-[calc(80%+32px)] p-4 outline-0 rounded-4xl"
+      class="dark glass min-w-[calc(80%+32px)] p-4 outline-0 rounded-[48px]"
       overlay-class="bg-transparent"
       :aria-describedby="undefined"
       :show-close-button="false"
     >
       <DialogTitle
-        class="w-full absolute top-0 translate-y-[calc(-100%-16px)] text-center text-2xl"
+        class="w-full absolute top-0 translate-y-[calc(-100%-32px)] text-center text-2xl font-normal"
       >
         {{ groupNode.label }}
       </DialogTitle>
@@ -19,8 +19,8 @@
           gridTemplateColumns: `repeat(${colCount},1fr)`,
         }"
         data-kind="group"
-        @pointerenter="selectedNodeId && handleEnter()"
-        @pointerleave="selectedNodeId && handleLeave()"
+        @pointerenter="dragNodeId && handleEnter()"
+        @pointerleave="dragNodeId && handleLeave()"
       >
         <template v-for="id in groupNode.children" :key="id">
           <div class="w-full flex-center aspect-square" :data-id="id">
@@ -39,29 +39,26 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useLauncherStore } from '@/stores/launcher';
 import { useHover } from '@/hooks/hover';
 import { eventBus } from '@/utils/event-bus.js';
-import { GroupNode } from '@type';
-import { useLayoutStore } from '@/stores/layout';
+import { GroupNode } from '@shared/type';
 import { useSortable } from '@/hooks/sortable';
-import { useLauncherSessionStore } from '@/stores/launcher-session';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { useLauncherNodeStore } from '@/stores/launcher-node';
 
-const { colCount } = storeToRefs(useLayoutStore());
-const {
-  getNode,
-  removeNode,
-  removeAppFromGroup,
-  setGroupChildren,
-  breakGroup,
-} = useLauncherStore();
-const { selectedNodeId, hiddenDesktop } = storeToRefs(
-  useLauncherSessionStore(),
-);
-const { setSelectedNodeId, setHiddenNodeId } = useLauncherSessionStore();
+const { colCount } = storeToRefs(useLauncherUiStore());
+const { getNode, removeAppFromGroup, setGroupChildren } = useLauncherStore();
+const { dragNodeId, hiddenDesktop } = storeToRefs(useLauncherUiStore());
+const { setDragNodeId } = useLauncherUiStore();
+const { breakGroupNode } = useLauncherNodeStore();
 
 const contentRef = useTemplateRef('contentRef');
 
+//组id
 const groupId = ref('');
+
+// 弹窗可见状态
 const visible = ref(false);
 
+// 当前弹窗对应的有效分组
 const groupNode = computed(() => {
   return getNode(groupId.value) as GroupNode;
 });
@@ -72,19 +69,16 @@ const [handleLeave, handleEnter] = useHover(() => {
 
 //拖拽开始
 const handleStart = (e: SortableEvent) => {
-  setSelectedNodeId(e.item.dataset.id);
+  setDragNodeId(e.item.dataset.id);
 
   if (groupNode.value.children.length !== 1) {
     return;
   }
-
-  setHiddenNodeId(groupId.value);
 };
 
 //拖拽结束
 const handleEnd = () => {
-  setSelectedNodeId();
-  setHiddenNodeId();
+  setDragNodeId();
 
   if (!contentRef.value) {
     return;
@@ -108,11 +102,10 @@ const handleRemove = (e: SortableEvent) => {
   }
 
   //如果只有一个节点拆分
-  breakGroup(groupId.value);
+  breakGroupNode(groupId.value);
 };
 
 const { createSortable } = useSortable(contentRef, {
-  swapThreshold: 1,
   onStart: handleStart,
   onEnd: handleEnd,
   onRemove: handleRemove,
@@ -129,10 +122,19 @@ watch(visible, async (value) => {
   createSortable();
 });
 
+// 分组被拆散后关闭弹窗
+watch(groupNode, (node) => {
+  if (node || !visible.value) {
+    return;
+  }
+
+  visible.value = false;
+});
+
 eventBus.on('openGroupDialog', (id) => {
   groupId.value = id;
-  visible.value = true;
   hiddenDesktop.value = true;
+  visible.value = true;
 });
 </script>
 

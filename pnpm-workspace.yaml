@@ -4,4 +4,6 @@ allowBuilds:
   electron-winstaller: false
   esbuild: true
   extract-file-icon: false
+  uiohook-napi: false
   vue-demi: true
+

@@ -4,8 +4,8 @@
       ref="contentRef"
       class="launcher-page flex-1 grid place-items-center"
       :class="{
-        '*:first:hidden': selectedNodeId && from === 'before',
-        '*:last:hidden': selectedNodeId && from === 'after',
+        '*:first:hidden!': dragNodeId && from === 'before',
+        '*:last:hidden!': dragNodeId && from === 'after',
       }"
       :data-page="page"
     >
@@ -15,12 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import { useLauncherStore } from '@/stores/launcher';
-import { useLayoutStore } from '@/stores/layout';
 import { useSortable } from '@/hooks/sortable';
 import Base from './base.vue';
 import { SortableEvent } from 'sortablejs';
-import { useLauncherSessionStore } from '@/stores/launcher-session.js';
+import { useLauncherUiStore } from '@/stores/launcher-ui.js';
 
 const props = defineProps<{
   page: number;
@@ -30,9 +28,9 @@ const emit = defineEmits<{
   end: [];
 }>();
 
-const { selectedNodeId } = storeToRefs(useLauncherSessionStore());
-const { setSelectedNodeId } = useLauncherSessionStore();
-const { colCount, rowCount, maxNodeCount } = storeToRefs(useLayoutStore());
+const { colCount, rowCount, dragNodeId, maxNodeCount } =
+  storeToRefs(useLauncherUiStore());
+const { setDragNodeId } = useLauncherUiStore();
 
 const contentRef = useTemplateRef('contentRef');
 
@@ -41,22 +39,20 @@ const from = ref<'before' | 'after' | null>(null);
 
 //开始拖拽
 const handleStart = (e: SortableEvent) => {
-  setSelectedNodeId(e.item.dataset.id);
+  setDragNodeId(e.item.dataset.id);
   from.value = null;
 };
 
 //拖拽结束
 const handleEnd = () => {
-  setSelectedNodeId();
+  setDragNodeId();
   from.value = null;
   emit('end');
 };
 
 //顺序改变
 const handelChange = (e: SortableEvent) => {
-  const childrenCount = contentRef.value?.children.length ?? 0;
-
-  if (childrenCount <= maxNodeCount.value) {
+  if (e.to.children.length < maxNodeCount.value) {
     return;
   }
 

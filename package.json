@@ -1,5 +1,5 @@
 {
-  "name": "ym-launch",
+  "name": "Ym Launcher",
   "version": "1.0.0",
   "main": "./out/main/index.js",
   "type": "module",
@@ -20,7 +20,8 @@
     "extract-file-icon": "^0.3.2",
     "icon-extractor-win": "^1.0.0",
     "sharp": "^0.35.3",
-    "wallpaper": "^7.3.1"
+    "wallpaper": "^7.3.1",
+    "uiohook-napi": "^1.5.5"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^2.0.0",
@@ -31,6 +32,7 @@
     "@types/node": "^26.1.1",
     "@types/sortablejs": "^1.15.9",
     "@vitejs/plugin-vue": "^6.0.2",
+    "@vueuse/components": "^14.3.0",
     "@vueuse/core": "^14.2.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -63,3 +65,4 @@
     "pnpm": "11.15.1"
   }
 }
+
