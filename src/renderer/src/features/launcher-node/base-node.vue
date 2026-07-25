@@ -1,11 +1,13 @@
 <template>
   <section class="dark size-full flex-center" :data-id="data.id">
     <div
-      class="relative flex-center flex-col gap-2"
+      class="flex-center flex-col gap-2"
       :data-id="data.id"
       :data-kind="data.kind"
       v-on-long-press="handleLongPress"
-      @click.stop="handleClick"
+      @mousedown="handleMousedown"
+      @mouseup="handleMouseup"
+      @click.stop
     >
       <slot></slot>
     </div>
@@ -27,11 +29,16 @@ const emits = defineEmits<{
 
 const { setStatus } = useLauncherUiStore();
 
-let islongpress = false;
+let time = 0;
 
-const handleClick = () => {
-  if (islongpress) {
-    islongpress = false;
+const handleMousedown = () => {
+  time = Date.now();
+};
+
+const handleMouseup = () => {
+  const diff = Date.now() - time;
+
+  if (diff > 200) {
     return;
   }
 
@@ -39,7 +46,6 @@ const handleClick = () => {
 };
 
 const handleLongPress = () => {
-  islongpress = true;
   setStatus('edit');
 };
 </script>
