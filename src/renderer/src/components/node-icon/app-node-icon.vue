@@ -10,6 +10,7 @@
       }
     "
     :src="icon"
+    v-if="icon"
   />
 </template>
 
