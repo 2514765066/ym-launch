@@ -1,6 +1,7 @@
 import { AppNode } from '@shared/type';
 import { useLauncherStore } from './launcher';
 import { nanoid } from 'nanoid';
+import pinyin from 'pinyin';
 
 export const useLauncherNodeStore = defineStore('launcher-node', () => {
   const { nodes, desktopIds } = storeToRefs(useLauncherStore());
@@ -48,7 +49,8 @@ export const useLauncherNodeStore = defineStore('launcher-node', () => {
 
     nodes.value[targetNode.id] = {
       id: targetNode.id,
-      label: '未命名',
+      label: '',
+      keyword: '',
       kind: 'group',
       children: [newTargetNode.id, dragNode.id],
     };
@@ -103,11 +105,8 @@ export const useLauncherNodeStore = defineStore('launcher-node', () => {
   const renameNode = (id: string, label: string) => {
     const node = getNode(id);
 
-    if (!node) {
-      return;
-    }
-
     node.label = label;
+    node.keyword = pinyin(label).join('');
   };
 
   // 移除应用节点并清理所属分组

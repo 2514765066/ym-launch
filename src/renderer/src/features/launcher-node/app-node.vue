@@ -7,18 +7,17 @@
     @click="handleClick"
   >
     <AppNodeIcon
-      class="drop-shadow-xl"
       :id="data.id"
       :class="{
         'outline-[10%] outline-white/20': notSelf && isHover,
       }"
     >
       <button
-        class="aspect-square p-1 absolute top-0 left-0 -translate-1/4 rounded-full bg-white"
+        class="aspect-square p-1 absolute top-0 left-0 -translate-1/4 rounded-full bg-white shadow-lg shadow-black/30"
         :style="{
           width: `${(nodeSize / 10) * 3}px`,
         }"
-        v-if="status == 'edit'"
+        v-if="status == 'remove'"
         @click.stop="removeAppNode(props.data.id)"
       >
         <X class="size-full text-black" />
@@ -63,7 +62,7 @@ const handleDrop = () => {
 
 //打开应用
 const handleClick = () => {
-  if (dragNodeId.value || status.value == 'edit') {
+  if (dragNodeId.value || status.value == 'remove') {
     return;
   }
 

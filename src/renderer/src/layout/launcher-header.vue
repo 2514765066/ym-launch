@@ -6,7 +6,8 @@
       <input
         class="size-full outline-none"
         placeholder="搜索应用"
-        v-model="keyword"
+        :value="keyword"
+        @input="handleChange"
       />
     </div>
 
@@ -32,10 +33,16 @@
 
         <DropdownMenuSeparator />
 
+        <DropdownMenuItem @click="handleReload">
+          <RotateCw />
+
+          刷新
+        </DropdownMenuItem>
+
         <DropdownMenuItem @click="hidden">
           <Power />
 
-          退出
+          关闭
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -52,11 +59,36 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
-import { Import, MoreHorizontal, Power, Search, Settings } from '@lucide/vue';
+import {
+  Import,
+  MoreHorizontal,
+  Power,
+  RotateCw,
+  Search,
+  Settings,
+} from '@lucide/vue';
 
 const { keyword } = storeToRefs(useLauncherUiStore());
 const { addAppNode } = useLauncherNodeStore();
-const { hidden } = useLauncherUiStore();
+const { hidden, setStatus } = useLauncherUiStore();
+
+const handleChange = (e: Event) => {
+  const el = e.target as HTMLInputElement;
+
+  keyword.value = el.value.trim();
+
+  //如果有内容就是搜索
+  if (keyword.value !== '') {
+    setStatus('search');
+    return;
+  }
+
+  setStatus('normal');
+};
+
+const handleReload = () => {
+  window.location.reload();
+};
 </script>
 
 <style scoped lang="scss"></style>

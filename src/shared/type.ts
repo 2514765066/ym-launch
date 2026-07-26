@@ -1,6 +1,7 @@
 export type AppNode = {
   id: string;
   label: string;
+  keyword: string;
   path: string;
   kind: 'app';
 };
@@ -8,6 +9,7 @@ export type AppNode = {
 export type GroupNode = {
   id: string;
   label: string;
+  keyword: string;
   children: string[];
   kind: 'group';
 };

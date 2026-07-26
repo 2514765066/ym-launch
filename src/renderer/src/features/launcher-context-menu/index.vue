@@ -1,6 +1,10 @@
 <template>
   <ContextMenu>
-    <ContextMenuTrigger as-child @contextmenu.capture="handleContextMenu">
+    <ContextMenuTrigger
+      as-child
+      :disabled="status == 'search'"
+      @contextmenu.capture="handleContextMenu"
+    >
       <slot></slot>
     </ContextMenuTrigger>
 
@@ -17,6 +21,9 @@ import {
   ContextMenuContent,
 } from '@/components/ui/context-menu';
 import { menuMap } from '.';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
+
+const { status } = storeToRefs(useLauncherUiStore());
 
 export type MenuKind = 'app' | 'group' | 'desktop' | null;
 

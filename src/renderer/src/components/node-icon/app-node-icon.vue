@@ -1,7 +1,7 @@
 <template>
   <div class="relative rounded-[24%]">
     <img
-      class="aspect-square object-contain rounded-[inherit]"
+      class="aspect-square object-contain rounded-[inherit] drop-shadow-lg drop-shadow-black/30"
       :class="{
         'opacity-0': dragNodeId == id,
       }"

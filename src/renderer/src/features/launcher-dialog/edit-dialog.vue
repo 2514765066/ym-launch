@@ -8,11 +8,7 @@
       @submit.prevent="handleSubmit"
     >
       <main class="pt-8 flex flex-col items-center gap-6">
-        <AppNodeIcon
-          class="drop-shadow-lg drop-shadow-foreground/20"
-          :id="node.id"
-          v-if="isAppNode(node)"
-        />
+        <AppNodeIcon :id="node.id" v-if="isAppNode(node)" />
 
         <GroupNodeIcon :data="node" v-else-if="isGroupNode(node)" />
 

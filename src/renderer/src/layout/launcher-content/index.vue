@@ -17,15 +17,44 @@ import LauncherNode from '@/features/launcher-node/index.vue';
 import { useLauncherStore } from '@/stores/launcher';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 
-const { desktopIds } = storeToRefs(useLauncherStore());
+const { desktopIds, nodes } = storeToRefs(useLauncherStore());
 const { setDesktopIds } = useLauncherStore();
-const { selectedPage, maxPageCount, maxNodeCount } =
+const { selectedPage, maxPageCount, maxNodeCount, keyword } =
   storeToRefs(useLauncherUiStore());
 
 const containerRef = useTemplateRef('containerRef');
 
 //每一页的id
 const pageIds = computed(() => {
+  if (keyword.value) {
+    const result: string[][] = [];
+
+    // 把 jy 转成 j.*y
+    const regex = new RegExp(
+      keyword.value
+        .split('')
+        .map((char) => `${char}.*`)
+        .join('')
+        .slice(0, -2),
+      'i',
+    );
+
+    const filterNodes = Object.values(nodes.value).filter((node) =>
+      regex.test(node.keyword),
+    );
+
+    for (let i = 0; i < filterNodes.length / maxNodeCount.value; i++) {
+      const nodes = filterNodes.slice(
+        i * maxNodeCount.value,
+        (i + 1) * maxNodeCount.value,
+      );
+
+      result.push(nodes.map((node) => node.id));
+    }
+
+    return result;
+  }
+
   const result: string[][] = [];
 
   for (let i = 0; i < maxPageCount.value; i++) {

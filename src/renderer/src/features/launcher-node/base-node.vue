@@ -5,8 +5,8 @@
       :data-id="data.id"
       :data-kind="data.kind"
       v-on-long-press="handleLongPress"
-      @mousedown="handleMousedown"
-      @mouseup="handleMouseup"
+      @mousedown.left="handleMousedown"
+      @mouseup.left="handleMouseup"
       @click.stop
     >
       <slot></slot>
@@ -27,6 +27,7 @@ const emits = defineEmits<{
   click: [];
 }>();
 
+const { status } = storeToRefs(useLauncherUiStore());
 const { setStatus } = useLauncherUiStore();
 
 let time = 0;
@@ -46,7 +47,11 @@ const handleMouseup = () => {
 };
 
 const handleLongPress = () => {
-  setStatus('edit');
+  if (status.value == 'search') {
+    return;
+  }
+
+  setStatus('remove');
 };
 </script>
 

@@ -49,10 +49,11 @@ export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
     },
   );
 
+  //禁用拖拽
   watch(
     () => LauncherUiStore.status,
     (status) => {
-      sortable?.option('disabled', status == 'edit');
+      sortable?.option('disabled', status != 'normal');
     },
   );
 

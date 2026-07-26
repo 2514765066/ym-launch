@@ -1,6 +1,6 @@
 import { useLauncherStore } from './launcher';
 
-type Status = 'normal' | 'edit';
+type Status = 'normal' | 'remove' | 'search';
 
 export const useLauncherUiStore = defineStore('launcher-ui', () => {
   const launcherStore = useLauncherStore();
@@ -83,27 +83,26 @@ export const useLauncherUiStore = defineStore('launcher-ui', () => {
     selectedPage.value++;
   };
 
-  //获取壁纸
-  const getWallpaper = async () => {
-    wallpaper.value = await ipcRenderer.invoke('getWallpaper');
-  };
-
   //隐藏应用
   const hidden = () => {
+    keyword.value = '';
+
     ipcRenderer.invoke('hidden');
   };
 
   //添加删除css
   watchEffect(() => {
-    if (status.value == 'edit') {
-      document.body.classList.add('launcher-edit');
+    if (status.value == 'remove') {
+      document.body.classList.add('launcher-remove');
       return;
     }
 
-    document.body.classList.remove('launcher-edit');
+    document.body.classList.remove('launcher-remove');
   });
 
-  getWallpaper();
+  ipcRenderer.on('updateWallpaper', (_, data: string) => {
+    wallpaper.value = data;
+  });
 
   return {
     status,

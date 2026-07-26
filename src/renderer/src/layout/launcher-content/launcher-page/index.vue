@@ -59,13 +59,8 @@ const handelChange = (e: SortableEvent) => {
   //从文件夹弹窗拖拽 -> 当前页是最后一个隐藏最后一个
   const kind = e.from.getAttribute('data-kind');
 
-  if (kind === 'group' && e.to.children.length >= maxNodeCount.value) {
+  if (kind === 'group-dialog' && e.to.children.length >= maxNodeCount.value) {
     from.value = 'after';
-    return;
-  }
-
-  //少于当前内容
-  if (e.to.children.length < maxNodeCount.value) {
     return;
   }
 

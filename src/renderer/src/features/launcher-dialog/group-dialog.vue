@@ -9,7 +9,7 @@
       <DialogTitle
         class="w-full absolute top-0 translate-y-[calc(-100%-32px)] text-center text-2xl font-normal"
       >
-        {{ groupNode.label }}
+        {{ groupNode.label || '未命名' }}
       </DialogTitle>
 
       <div
@@ -18,7 +18,7 @@
         :style="{
           gridTemplateColumns: `repeat(${colCount},1fr)`,
         }"
-        data-kind="group"
+        data-kind="group-dialog"
         @pointerenter="dragNodeId && handleEnter()"
         @pointerleave="dragNodeId && handleLeave()"
       >
