@@ -9,25 +9,27 @@
       <DialogTitle
         class="w-full absolute top-0 translate-y-[calc(-100%-32px)] text-center text-2xl font-normal"
       >
-        {{ groupNode.label || '未命名' }}
+        {{ groupNode.label }}
       </DialogTitle>
 
-      <div
-        ref="contentRef"
-        class="size-full grid place-items-center"
-        :style="{
-          gridTemplateColumns: `repeat(${config.colCount},1fr)`,
-        }"
-        data-kind="group-dialog"
-        @pointerenter="dragNodeId && handleEnter()"
-        @pointerleave="dragNodeId && handleLeave()"
-      >
-        <template v-for="id in groupNode.children" :key="id">
-          <div class="w-full flex-center aspect-square" :data-id="id">
-            <LauncherNode :id="id" />
-          </div>
-        </template>
-      </div>
+      <LauncherContextMenu>
+        <div
+          ref="contentRef"
+          class="size-full grid place-items-center"
+          :style="{
+            gridTemplateColumns: `repeat(${config.colCount},1fr)`,
+          }"
+          data-kind="group-dialog"
+          @pointerenter="dragNodeId && handleEnter()"
+          @pointerleave="dragNodeId && handleLeave()"
+        >
+          <template v-for="id in groupNode.children" :key="id">
+            <div class="w-full flex-center aspect-square" :data-id="id">
+              <LauncherNode :id="id" />
+            </div>
+          </template>
+        </div>
+      </LauncherContextMenu>
     </DialogContent>
   </Dialog>
 </template>
@@ -35,6 +37,7 @@
 <script setup lang="ts">
 import { SortableEvent } from 'sortablejs';
 import LauncherNode from '@/features/launcher-node/index.vue';
+import LauncherContextMenu from '@/features/launcher-context-menu/index.vue';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useLauncherStore } from '@/stores/launcher';
 import { useHover } from '@/hooks/hover';

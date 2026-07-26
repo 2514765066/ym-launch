@@ -14,7 +14,7 @@
     />
 
     <span class="truncate">
-      {{ data.label || '未命名' }}
+      {{ data.label }}
     </span>
   </BaseNode>
 </template>

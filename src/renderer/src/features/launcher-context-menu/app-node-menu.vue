@@ -76,7 +76,9 @@ const groupNodes = computed(() => {
 
 //所在的group id
 const currentGroupId = computed(() => {
-  return groupNodes.value.find((g) => g.children.includes(props.id));
+  const group = groupNodes.value.find((g) => g.children.includes(props.id));
+
+  return group?.id;
 });
 
 //重命名

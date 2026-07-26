@@ -49,7 +49,7 @@ export const useLauncherNodeStore = defineStore('node', () => {
 
     nodes.value[targetNode.id] = {
       id: targetNode.id,
-      label: '',
+      label: '未命名',
       keyword: '',
       kind: 'group',
       children: [newTargetNode.id, dragNode.id],
