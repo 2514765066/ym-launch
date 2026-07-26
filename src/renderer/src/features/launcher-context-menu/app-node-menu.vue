@@ -1,7 +1,7 @@
 <template>
   <ContextMenuGroup>
     <ContextMenuItem @click="openAppNode(id)">
-      <SquareArrowOutUpRight />
+      <AppNodeIcon class="size-4" view-class="drop-shadow-none!" :id="id" />
 
       <span>打开</span>
     </ContextMenuItem>
@@ -53,6 +53,7 @@
 </template>
 
 <script setup lang="ts">
+import AppNodeIcon from '@/components/node-icon/app-node-icon.vue';
 import {
   ContextMenuGroup,
   ContextMenuItem,
@@ -66,12 +67,7 @@ import {
 import { useLauncherStore } from '@/stores/launcher';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { eventBus } from '@/utils/event-bus';
-import {
-  CornerUpRight,
-  FolderOpen,
-  SquareArrowOutUpRight,
-  SquarePen,
-} from '@lucide/vue';
+import { CornerUpRight, FolderOpen, SquarePen } from '@lucide/vue';
 
 const props = defineProps<{
   id: string;

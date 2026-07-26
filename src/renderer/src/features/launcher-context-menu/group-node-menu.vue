@@ -1,7 +1,7 @@
 <template>
   <ContextMenuGroup>
     <ContextMenuItem @click="handleOpen">
-      <SquareArrowOutUpRight />
+      <FolderOpen />
 
       <span>打开</span>
     </ContextMenuItem>
@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/context-menu';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { eventBus } from '@/utils/event-bus';
-import { SquareArrowOutUpRight, SquarePen, Ungroup } from '@lucide/vue';
+import { FolderOpen, SquarePen, Ungroup } from '@lucide/vue';
 
 const props = defineProps<{
   id: string;
