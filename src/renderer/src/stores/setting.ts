@@ -23,8 +23,17 @@ const createConfig = () => {
     //自动更新
     autoUpdate: false,
 
+    //启动角是否禁用
     hotCornerDisabled: false,
+
+    //启动角位置
     hotCornerPosition: 'top-left' as HotCornerPosition,
+
+    //快速启动快捷键
+    startShortcut: '',
+
+    //隐藏启动器快捷键
+    hiddenShortcut: 'Escape',
   };
 };
 
@@ -43,13 +52,18 @@ export const useSettingStore = defineStore('setting', () => {
     config.value = createConfig();
   };
 
-  watch(
-    () => [config.value.hotCornerDisabled, config.value.hotCornerPosition],
-    ([disabled, position]) => {
-      ipcRenderer.invoke('setHotCorner', { disabled, position });
-    },
-    { immediate: true },
-  );
+  //设置启动角配置
+  watchEffect(() => {
+    ipcRenderer.invoke('setHotCorner', {
+      disabled: config.value.hotCornerDisabled,
+      position: config.value.hotCornerPosition,
+    });
+  });
+
+  //设置快捷键
+  watchEffect(() => {
+    ipcRenderer.invoke('setStartShortcut', config.value.startShortcut);
+  });
 
   return {
     config,

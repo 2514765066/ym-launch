@@ -26,9 +26,11 @@ import { useLauncherUiStore } from '@/stores/launcher-ui.js';
 import LauncherFooter from './launcher-footer.vue';
 import { useEventListener } from '@vueuse/core';
 import LauncherHeader from './launcher-header.vue';
+import { useSettingStore } from '@/stores/setting.js';
 
 const { hiddenDesktop } = storeToRefs(useLauncherUiStore());
 const { prePage, nextPage, setStatus, hidden } = useLauncherUiStore();
+const { config } = storeToRefs(useSettingStore());
 
 const handleClick = () => {
   setStatus('normal');
@@ -42,7 +44,7 @@ useEventListener('keydown', (e) => {
     case 'ArrowRight':
       nextPage();
       return;
-    case 'Escape':
+    case config.value.hiddenShortcut:
       hidden();
       return;
   }

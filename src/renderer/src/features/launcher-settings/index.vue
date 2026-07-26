@@ -2,7 +2,7 @@
   <Dialog v-model:open="open">
     <DialogContent
       :aria-describedby="undefined"
-      class="max-w-none! w-[800px] h-[600px] p-0! flex flex-col gap-0 bg-sidebar"
+      class="max-w-none! w-200 h-150 p-0! flex flex-col gap-0 bg-sidebar"
       @open-auto-focus.prevent
     >
       <TitleBar />

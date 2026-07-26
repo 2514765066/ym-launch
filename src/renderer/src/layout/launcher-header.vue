@@ -21,7 +21,7 @@
 
       <DropdownMenuContent class="w-49">
         <DropdownMenuItem @click="addAppNode">
-          <Import />
+          <ArrowDownToLine />
 
           导入应用
           <DropdownMenuShortcut>Ctrl+O</DropdownMenuShortcut>
@@ -32,15 +32,6 @@
 
           设置
           <DropdownMenuShortcut>Ctrl+,</DropdownMenuShortcut>
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem @click="hidden">
-          <Power />
-
-          关闭
-          <DropdownMenuShortcut>Esc</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -53,18 +44,17 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuShortcut,
 } from '@/components/ui/dropdown-menu';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { eventBus } from '@/utils/event-bus';
 import { useEventListener } from '@vueuse/core';
-import { Import, MoreHorizontal, Power, Search, Settings } from '@lucide/vue';
+import { ArrowDownToLine, MoreHorizontal, Search, Settings } from '@lucide/vue';
 
 const { keyword } = storeToRefs(useLauncherUiStore());
 const { addAppNode } = useLauncherNodeStore();
-const { hidden, setStatus } = useLauncherUiStore();
+const { setStatus } = useLauncherUiStore();
 
 const handleChange = (e: Event) => {
   const el = e.target as HTMLInputElement;

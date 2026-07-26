@@ -18,3 +18,9 @@ export const hotCornerMap: Record<HotCornerPosition, string> = {
   'top-right': '右上角',
   'bottom-right': '右下角',
 };
+
+export const shortcutMap: Record<string, string> = {
+  Control: 'Ctrl',
+  Super: 'Win',
+  Escape: 'Esc',
+};

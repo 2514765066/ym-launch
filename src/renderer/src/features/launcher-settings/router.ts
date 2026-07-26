@@ -1,13 +1,15 @@
 import {
+  Blocks,
   CircleAlertIcon,
   CircleArrowUpIcon,
-  LayoutGrid,
+  KeyboardIcon,
   PaletteIcon,
 } from '@lucide/vue';
 import { Component } from 'vue';
-import General from './view/general.vue';
+import HotCorner from './view/hot-corner.vue';
 import Appearance from './view/appearance.vue';
 import Update from './view/update.vue';
+import Shortcut from './view/shortcut.vue';
 import About from './view/about.vue';
 import { appVersion } from '@shared/app-info';
 
@@ -21,16 +23,22 @@ export interface Route {
 
 const router: Route[] = [
   {
-    id: 'general',
-    name: '常规',
-    icon: LayoutGrid,
-    component: General,
-  },
-  {
     id: 'appearance',
     name: '外观',
     icon: PaletteIcon,
     component: Appearance,
+  },
+  {
+    id: 'hot-corner',
+    name: '启动角',
+    icon: Blocks,
+    component: HotCorner,
+  },
+  {
+    id: 'shortcut',
+    name: '快捷键',
+    icon: KeyboardIcon,
+    component: Shortcut,
   },
   {
     id: 'update',

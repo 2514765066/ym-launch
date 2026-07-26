@@ -11,6 +11,7 @@ import {
 } from 'ym-publish';
 import { autoUpdater } from 'electron-updater';
 import { setHotCorner as _setHotCorner } from '../hooks/hot-corner';
+import { setStartShortcut as _setStartShortcut } from '../hooks/start-shortcut';
 import type { HotCornerPosition } from '@shared/type';
 
 //获取壁纸
@@ -93,9 +94,15 @@ export const installUpdate = () => {
   autoUpdater.quitAndInstall();
 };
 
+//设置启动角配置
 export const setHotCorner = (
   _,
   config: { disabled: boolean; position: HotCornerPosition },
 ) => {
   _setHotCorner(config);
+};
+
+//设置快速启动的快捷键
+export const setStartShortcut = (_, shortcut: string) => {
+  _setStartShortcut(shortcut);
 };
