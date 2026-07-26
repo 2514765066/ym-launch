@@ -1,20 +1,7 @@
 import { formatApps } from '../utils/app';
 import { BrowserWindow, dialog, IpcMainEvent } from 'electron';
-import { readFile } from 'fs/promises';
-import { getWallpaper as _getWallpaper } from 'wallpaper';
 import getFileIcon from 'extract-file-icon';
 import sharp from 'sharp';
-
-//获取壁纸
-export const getWallpaper = async () => {
-  const path = await _getWallpaper();
-
-  const buffer = await readFile(path);
-
-  const ext = path.split('.').pop(); // 获取扩展名
-
-  return `data:image/${ext};base64,${buffer.toString('base64')}`;
-};
 
 //添加应用
 export const addAppNode = async () => {

@@ -2,6 +2,10 @@ import { is } from '@electron-toolkit/utils';
 import { BrowserWindow } from 'electron';
 import { join } from 'path';
 
+type BwsKey = 'main';
+
+export const browserWindows = new Map<BwsKey, BrowserWindow>();
+
 //加载文件
 export const load = (bw: BrowserWindow) => {
   bw.on('ready-to-show', () => {
