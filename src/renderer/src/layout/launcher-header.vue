@@ -24,26 +24,23 @@
           <Import />
 
           导入应用
+          <DropdownMenuShortcut>Ctrl+O</DropdownMenuShortcut>
         </DropdownMenuItem>
 
         <DropdownMenuItem @click="handleSetting">
           <Settings />
 
           设置
+          <DropdownMenuShortcut>Ctrl+,</DropdownMenuShortcut>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
-
-        <DropdownMenuItem @click="handleReload">
-          <RotateCw />
-
-          刷新
-        </DropdownMenuItem>
 
         <DropdownMenuItem @click="hidden">
           <Power />
 
           关闭
+          <DropdownMenuShortcut>Esc</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -57,18 +54,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
 } from '@/components/ui/dropdown-menu';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { eventBus } from '@/utils/event-bus';
-import {
-  Import,
-  MoreHorizontal,
-  Power,
-  RotateCw,
-  Search,
-  Settings,
-} from '@lucide/vue';
+import { useEventListener } from '@vueuse/core';
+import { Import, MoreHorizontal, Power, Search, Settings } from '@lucide/vue';
 
 const { keyword } = storeToRefs(useLauncherUiStore());
 const { addAppNode } = useLauncherNodeStore();
@@ -92,9 +84,20 @@ const handleSetting = () => {
   eventBus.emit('settingDialog');
 };
 
-const handleReload = () => {
-  window.location.reload();
-};
+useEventListener('keydown', (e) => {
+  if (!e.ctrlKey) return;
+
+  switch (e.key.toLowerCase()) {
+    case 'o':
+      e.preventDefault();
+      addAppNode();
+      return;
+    case ',':
+      e.preventDefault();
+      handleSetting();
+      return;
+  }
+});
 </script>
 
 <style scoped lang="scss"></style>

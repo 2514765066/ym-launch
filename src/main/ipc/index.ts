@@ -25,8 +25,10 @@ export const getWallpaper = async () => {
 };
 
 //添加应用
-export const addAppNode = async () => {
-  const result = await dialog.showOpenDialog({
+export const addAppNode = async ({ sender }: IpcMainEvent) => {
+  const bw = BrowserWindow.fromWebContents(sender);
+
+  const result = await dialog.showOpenDialog(bw!, {
     title: '添加应用程序',
     properties: ['openFile', 'multiSelections'],
     filters: [{ name: '启动程序', extensions: ['exe', 'lnk'] }],
