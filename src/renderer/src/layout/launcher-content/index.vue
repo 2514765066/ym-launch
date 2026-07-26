@@ -32,6 +32,7 @@ const pageIds = computed(() => {
     // 把 jy 转成 j.*y
     const regex = new RegExp(
       keyword.value
+        .replaceAll("\'", '')
         .split('')
         .map((char) => `${char}.*`)
         .join('')
@@ -39,8 +40,8 @@ const pageIds = computed(() => {
       'i',
     );
 
-    const filterNodes = Object.values(nodes.value).filter((node) =>
-      regex.test(node.keyword),
+    const filterNodes = Object.values(nodes.value).filter(
+      (node) => regex.test(node.keyword) || regex.test(node.label),
     );
 
     for (let i = 0; i < filterNodes.length / maxNodeCount.value; i++) {

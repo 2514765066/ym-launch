@@ -8,6 +8,7 @@
         placeholder="搜索应用"
         :value="keyword"
         @input="handleChange"
+        :spellcheck="false"
       />
     </div>
 
