@@ -1,5 +1,11 @@
 <template>
   <ContextMenuGroup>
+    <ContextMenuItem @click="openAppNode(id)">
+      <SquareArrowOutUpRight />
+
+      <span>打开</span>
+    </ContextMenuItem>
+
     <ContextMenuItem @click="openAppNodeInFolder(id)">
       <FolderOpen />
 
@@ -60,14 +66,20 @@ import {
 import { useLauncherStore } from '@/stores/launcher';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { eventBus } from '@/utils/event-bus';
-import { CornerUpRight, FolderOpen, SquarePen } from '@lucide/vue';
+import {
+  CornerUpRight,
+  FolderOpen,
+  SquareArrowOutUpRight,
+  SquarePen,
+} from '@lucide/vue';
 
 const props = defineProps<{
   id: string;
 }>();
 
 const { nodes } = storeToRefs(useLauncherStore());
-const { openAppNodeInFolder, moveAppToGroup } = useLauncherNodeStore();
+const { openAppNode, openAppNodeInFolder, moveAppToGroup } =
+  useLauncherNodeStore();
 
 //所有的文件夹节点
 const groupNodes = computed(() => {

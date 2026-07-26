@@ -1,13 +1,19 @@
 <template>
   <ContextMenuGroup>
+    <ContextMenuItem @click="handleOpen">
+      <SquareArrowOutUpRight />
+
+      <span>打开</span>
+    </ContextMenuItem>
+
+    <ContextMenuSeparator />
+
     <ContextMenuItem @click="breakGroupNode(id)">
       <Ungroup />
 
       <span>拆散</span>
     </ContextMenuItem>
   </ContextMenuGroup>
-
-  <ContextMenuSeparator />
 
   <ContextMenuGroup>
     <ContextMenuItem @click="handleRename">
@@ -26,13 +32,17 @@ import {
 } from '@/components/ui/context-menu';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { eventBus } from '@/utils/event-bus';
-import { SquarePen, Ungroup } from '@lucide/vue';
+import { SquareArrowOutUpRight, SquarePen, Ungroup } from '@lucide/vue';
 
 const props = defineProps<{
   id: string;
 }>();
 
 const { breakGroupNode } = useLauncherNodeStore();
+
+const handleOpen = () => {
+  eventBus.emit('openGroupDialog', props.id);
+};
 
 const handleRename = () => {
   eventBus.emit('openEditDialog', props.id);
