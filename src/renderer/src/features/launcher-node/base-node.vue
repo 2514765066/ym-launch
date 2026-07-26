@@ -1,7 +1,7 @@
 <template>
-  <section class="dark size-full flex-center" :data-id="data.id">
+  <section class="dark size-full flex-center flex-col gap-2" :data-id="data.id">
     <div
-      class="flex-center flex-col gap-2"
+      class="flex-center flex-col"
       :data-id="data.id"
       :data-kind="data.kind"
       v-on-long-press="handleLongPress"
@@ -11,6 +11,10 @@
     >
       <slot></slot>
     </div>
+
+    <span class="w-full truncate text-center">
+      {{ data.label }}
+    </span>
   </section>
 </template>
 

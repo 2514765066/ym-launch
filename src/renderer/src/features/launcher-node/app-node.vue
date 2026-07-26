@@ -23,10 +23,6 @@
         <X class="size-full text-black" />
       </button>
     </AppNodeIcon>
-
-    <span class="truncate">
-      {{ data.label }}
-    </span>
   </BaseNode>
 </template>
 

@@ -12,10 +12,6 @@
       }"
       :data="data"
     />
-
-    <span class="truncate">
-      {{ data.label }}
-    </span>
   </BaseNode>
 </template>
 
