@@ -9,7 +9,10 @@
     </ContextMenuTrigger>
 
     <ContextMenuContent class="min-w-49" v-if="menuKind">
-      <component :is="menuMap[menuKind]" :id="nodeId" />
+      <component
+        :is="menuMap[menuKind]"
+        v-bind="menuKind === 'panel' ? {} : { id: nodeId }"
+      />
     </ContextMenuContent>
   </ContextMenu>
 </template>
@@ -25,7 +28,7 @@ import { useLauncherUiStore } from '@/stores/launcher-ui';
 
 const { status } = storeToRefs(useLauncherUiStore());
 
-export type MenuKind = 'app' | 'group' | 'desktop' | null;
+export type MenuKind = 'app' | 'group' | 'panel' | null;
 
 const menuKind = ref<MenuKind>(null);
 const nodeId = ref<string | null>(null);

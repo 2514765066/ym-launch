@@ -12,45 +12,21 @@
       />
     </div>
 
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <button class="glass size-11 flex-center rounded-full cursor-pointer">
-          <MoreHorizontal class="size-5" />
-        </button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent class="w-49">
-        <DropdownMenuItem @click="addAppNode">
-          <ArrowDownToLine />
-
-          导入应用
-          <DropdownMenuShortcut>Ctrl+O</DropdownMenuShortcut>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem @click="handleSetting">
-          <Settings />
-
-          设置
-          <DropdownMenuShortcut>Ctrl+,</DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <button
+      class="glass size-11 flex-center rounded-full cursor-pointer"
+      @click="handleSetting"
+    >
+      <Settings class="size-5" />
+    </button>
   </section>
 </template>
 
 <script setup lang="ts">
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuShortcut,
-} from '@/components/ui/dropdown-menu';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { eventBus } from '@/utils/event-bus';
 import { useEventListener } from '@vueuse/core';
-import { ArrowDownToLine, MoreHorizontal, Search, Settings } from '@lucide/vue';
+import { Search, Settings } from '@lucide/vue';
 
 const { keyword } = storeToRefs(useLauncherUiStore());
 const { addAppNode } = useLauncherNodeStore();

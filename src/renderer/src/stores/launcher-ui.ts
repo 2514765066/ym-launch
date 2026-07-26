@@ -71,7 +71,7 @@ export const useLauncherUiStore = defineStore('ui', () => {
 
   // 下一页
   const nextPage = () => {
-    if (selectedPage.value == maxPageCount.value - 1) {
+    if (selectedPage.value >= maxPageCount.value - 1) {
       return;
     }
 

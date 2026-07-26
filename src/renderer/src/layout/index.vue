@@ -6,6 +6,7 @@
         :class="{
           'opacity-0': hiddenDesktop,
         }"
+        data-kind="panel"
         @click="handleClick"
       >
         <LauncherHeader />
@@ -26,29 +27,16 @@ import { useLauncherUiStore } from '@/stores/launcher-ui.js';
 import LauncherFooter from './launcher-footer.vue';
 import { useEventListener } from '@vueuse/core';
 import LauncherHeader from './launcher-header.vue';
-import { useSettingStore } from '@/stores/setting.js';
+import { useShortcut } from '@/hooks/shortcut';
 
 const { hiddenDesktop } = storeToRefs(useLauncherUiStore());
-const { prePage, nextPage, setStatus, hidden } = useLauncherUiStore();
-const { config } = storeToRefs(useSettingStore());
+const { prePage, nextPage, setStatus } = useLauncherUiStore();
 
 const handleClick = () => {
   setStatus('normal');
 };
 
-useEventListener('keydown', (e) => {
-  switch (e.key) {
-    case 'ArrowLeft':
-      prePage();
-      return;
-    case 'ArrowRight':
-      nextPage();
-      return;
-    case config.value.hiddenShortcut:
-      hidden();
-      return;
-  }
-});
+useShortcut();
 
 useEventListener('wheel', (e) => {
   if (e.deltaY < 0) {

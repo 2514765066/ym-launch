@@ -29,6 +29,30 @@
             <Shortcut v-model="config.hiddenShortcut" />
           </ItemActions>
         </Item>
+
+        <Item size="sm">
+          <ItemContent>
+            <ItemTitle>上一页</ItemTitle>
+
+            <ItemDescription>配置切换到上一页的快捷键</ItemDescription>
+          </ItemContent>
+
+          <ItemActions>
+            <Shortcut v-model="config.prePageShortcut" />
+          </ItemActions>
+        </Item>
+
+        <Item size="sm">
+          <ItemContent>
+            <ItemTitle>下一页</ItemTitle>
+
+            <ItemDescription>配置切换到下一页的快捷键</ItemDescription>
+          </ItemContent>
+
+          <ItemActions>
+            <Shortcut v-model="config.nextPageShortcut" />
+          </ItemActions>
+        </Item>
       </ItemGroup>
     </div>
   </Container>

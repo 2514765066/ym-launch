@@ -34,6 +34,12 @@ const createConfig = () => {
 
     //隐藏启动器快捷键
     hiddenShortcut: 'Escape',
+
+    //上一页快捷键
+    prePageShortcut: 'ArrowLeft',
+
+    //下一页快捷键
+    nextPageShortcut: 'ArrowRight',
   };
 };
 

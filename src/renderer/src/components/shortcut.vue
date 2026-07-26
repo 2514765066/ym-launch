@@ -5,16 +5,23 @@
     }"
     :variant="isRecording ? 'outline' : 'ghost'"
     @click="handleClick"
-    @keyup.stop.prevent="handleShortcutKeydown"
+    @keydown.stop.prevent="handleShortcutKeydown"
     @blur="handleBlur"
   >
     <span v-if="isRecording">请按下快捷键</span>
 
-    <span v-else-if="!model">暂无快捷键</span>
+    <span class="text-muted-foreground" v-else-if="!model">暂无快捷键</span>
 
     <KbdGroup v-else>
       <template v-for="(key, index) in shortcutParts" :key="key">
-        <Kbd>{{ key }}</Kbd>
+        <Kbd>
+          <span v-if="typeof key === 'string'">
+            {{ key }}
+          </span>
+
+          <component :is="key" v-else />
+        </Kbd>
+
         <span v-if="index < shortcutParts.length - 1">+</span>
       </template>
     </KbdGroup>
@@ -24,7 +31,7 @@
 <script setup lang="ts">
 import { Kbd, KbdGroup } from '@/components/ui/kbd';
 import { Button } from '@/components/ui/button';
-import { shortcutMap } from '@/map';
+import { formatShortcut } from '@/utils/format';
 
 const model = defineModel<string>({
   required: true,
@@ -33,9 +40,9 @@ const model = defineModel<string>({
 const isRecording = ref(false);
 
 //拆分快捷键
-const shortcutParts = computed(() =>
-  model.value.split('+').map((key) => shortcutMap[key] ?? key),
-);
+const shortcutParts = computed(() => {
+  return formatShortcut(model.value, false);
+});
 
 //开始
 const handleClick = (event: MouseEvent) => {

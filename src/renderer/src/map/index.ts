@@ -1,3 +1,10 @@
+import {
+  ArrowBigDown,
+  ArrowBigLeft,
+  ArrowBigRight,
+  ArrowBigUp,
+  LucideIcon,
+} from '@lucide/vue';
 import { appName } from '@shared/app-info';
 import type { HotCornerPosition } from '@shared/type';
 
@@ -19,8 +26,12 @@ export const hotCornerMap: Record<HotCornerPosition, string> = {
   'bottom-right': '右下角',
 };
 
-export const shortcutMap: Record<string, string> = {
-  Control: 'Ctrl',
-  Super: 'Win',
-  Escape: 'Esc',
+export const shortcutMap: Record<string, string | LucideIcon> = {
+  control: 'Ctrl',
+  meta: 'Win',
+  escape: 'Esc',
+  arrowleft: ArrowBigLeft,
+  arrowright: ArrowBigRight,
+  arrowup: ArrowBigUp,
+  arrowdown: ArrowBigDown,
 };
