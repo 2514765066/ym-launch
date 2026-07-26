@@ -1,7 +1,7 @@
 import { BrowserWindow, screen } from 'electron';
 import { join } from 'path';
-import { browserWindows, load } from '.';
-import { getWallpaper } from '@/utils/wallpaper';
+import { browserWindows } from '.';
+import { is } from '@electron-toolkit/utils';
 
 export const createMainWindow = () => {
   const point = screen.getCursorScreenPoint();
@@ -28,18 +28,20 @@ export const createMainWindow = () => {
 
   browserWindows.set('main', bw);
 
-  //每次出现就更新壁纸
-  bw.on('show', async () => {
-    const wallpaper = await getWallpaper();
-
-    bw.webContents.send('updateWallpaper', wallpaper);
-  });
-
-  load(bw);
+  //生产模式
+  if (!is.dev) {
+    bw.loadFile(join(__dirname, '../renderer/index.html'));
+  }
+  //开发模式
+  else {
+    bw.loadURL(`${process.env['ELECTRON_RENDERER_URL']}`);
+    bw.webContents.openDevTools({ mode: 'detach' });
+  }
 
   return {
     bw,
     show: () => {
+      bw.webContents.send('show');
       bw.setOpacity(0);
       bw.show();
 

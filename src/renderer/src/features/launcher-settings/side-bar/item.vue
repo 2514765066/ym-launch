@@ -9,6 +9,10 @@
     <component :is="data.icon" />
 
     <span class="text-sm">{{ data.name }}</span>
+
+    <span class="ml-auto text-xs text-muted-foreground">
+      {{ data.description }}
+    </span>
   </section>
 </template>
 

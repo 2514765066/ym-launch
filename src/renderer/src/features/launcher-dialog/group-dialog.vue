@@ -16,7 +16,7 @@
         ref="contentRef"
         class="size-full grid place-items-center"
         :style="{
-          gridTemplateColumns: `repeat(${colCount},1fr)`,
+          gridTemplateColumns: `repeat(${config.colCount},1fr)`,
         }"
         data-kind="group-dialog"
         @pointerenter="dragNodeId && handleEnter()"
@@ -43,8 +43,9 @@ import { GroupNode } from '@shared/type';
 import { useSortable } from '@/hooks/sortable';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
+import { useSettingStore } from '@/stores/setting';
 
-const { colCount } = storeToRefs(useLauncherUiStore());
+const { config } = storeToRefs(useSettingStore());
 const { getNode, removeAppFromGroup, setGroupChildren } = useLauncherStore();
 const { dragNodeId, hiddenDesktop } = storeToRefs(useLauncherUiStore());
 const { setDragNodeId } = useLauncherUiStore();

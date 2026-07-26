@@ -3,7 +3,7 @@ import { useLauncherStore } from './launcher';
 import { nanoid } from 'nanoid';
 import pinyin from 'pinyin';
 
-export const useLauncherNodeStore = defineStore('launcher-node', () => {
+export const useLauncherNodeStore = defineStore('node', () => {
   const { nodes, desktopIds } = storeToRefs(useLauncherStore());
   const {
     getNode,

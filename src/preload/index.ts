@@ -19,4 +19,9 @@ contextBridge.exposeInMainWorld('api', {
   openPathInFolder(path: string) {
     shell.showItemInFolder(path);
   },
+
+  //打开网址
+  openUrl(url: string) {
+    shell.openExternal(url);
+  },
 });

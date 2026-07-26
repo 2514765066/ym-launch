@@ -1,6 +1,9 @@
 type EventMap = {
+  success: [msg: string];
+  error: [msg: string];
   openGroupDialog: [id: string];
   openEditDialog: [id: string];
+  settingDialog: [value?: boolean];
 };
 
 type EventName = keyof EventMap;

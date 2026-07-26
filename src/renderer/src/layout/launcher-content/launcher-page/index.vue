@@ -19,6 +19,7 @@ import { useSortable } from '@/hooks/sortable';
 import Base from './base.vue';
 import { SortableEvent } from 'sortablejs';
 import { useLauncherUiStore } from '@/stores/launcher-ui.js';
+import { useSettingStore } from '@/stores/setting';
 
 const props = defineProps<{
   page: number;
@@ -28,8 +29,8 @@ const emit = defineEmits<{
   end: [];
 }>();
 
-const { colCount, rowCount, dragNodeId, maxNodeCount } =
-  storeToRefs(useLauncherUiStore());
+const { dragNodeId, maxNodeCount } = storeToRefs(useLauncherUiStore());
+const { config } = storeToRefs(useSettingStore());
 const { setDragNodeId } = useLauncherUiStore();
 
 const contentRef = useTemplateRef('contentRef');
@@ -100,7 +101,7 @@ useSortable(contentRef, {
 
 <style scoped lang="scss">
 .launcher-page {
-  grid-template-rows: repeat(v-bind('rowCount'), minmax(0, 1fr));
-  grid-template-columns: repeat(v-bind('colCount'), minmax(0, 1fr));
+  grid-template-rows: repeat(v-bind('config.rowCount'), minmax(0, 1fr));
+  grid-template-columns: repeat(v-bind('config.colCount'), minmax(0, 1fr));
 }
 </style>

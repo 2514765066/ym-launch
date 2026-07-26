@@ -1,5 +1,5 @@
 {
-  "name": "Ym Launcher",
+  "name": "ym-launcher",
   "version": "1.0.0",
   "main": "./out/main/index.js",
   "type": "module",
@@ -20,8 +20,8 @@
     "extract-file-icon": "^0.3.2",
     "icon-extractor-win": "^1.0.0",
     "sharp": "^0.35.3",
-    "wallpaper": "^7.3.1",
-    "uiohook-napi": "^1.5.5"
+    "uiohook-napi": "^1.5.5",
+    "wallpaper": "^7.3.1"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^2.0.0",
@@ -39,6 +39,7 @@
     "dayjs": "^1.11.20",
     "electron": "^43.1.1",
     "electron-builder": "^26.15.3",
+    "electron-updater": "^6.8.9",
     "electron-vite": "^5.0.0",
     "nanoid": "^5.1.9",
     "node-abi": "^4.33.0",
@@ -57,6 +58,7 @@
     "vite": "^7.2.6",
     "vue": "^3.5.25",
     "vue-router": "^5.0.4",
+    "vue-sonner": "^2.0.9",
     "vue-tsc": "^3.1.6",
     "ym-publish": "^1.6.0"
   },
@@ -65,4 +67,3 @@
     "pnpm": "11.15.1"
   }
 }
-

@@ -15,3 +15,6 @@ export type GroupNode = {
 };
 
 export type Node = AppNode | GroupNode;
+
+export type HotCornerPosition =
+  'top-left' | 'bottom-left' | 'top-right' | 'bottom-right';

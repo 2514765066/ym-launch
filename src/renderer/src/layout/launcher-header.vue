@@ -26,7 +26,7 @@
           导入应用
         </DropdownMenuItem>
 
-        <DropdownMenuItem>
+        <DropdownMenuItem @click="handleSetting">
           <Settings />
 
           设置
@@ -60,6 +60,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { eventBus } from '@/utils/event-bus';
 import {
   Import,
   MoreHorizontal,
@@ -85,6 +86,10 @@ const handleChange = (e: Event) => {
   }
 
   setStatus('normal');
+};
+
+const handleSetting = () => {
+  eventBus.emit('settingDialog');
 };
 
 const handleReload = () => {

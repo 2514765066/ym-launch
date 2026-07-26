@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <div class="flex flex-col gap-8">
+    <div class="pt-4 flex flex-col gap-8">
       <ItemGroup>
         <p class="py-3 px-4">更新配置</p>
 
@@ -15,32 +15,6 @@
 
           <ItemActions>
             <Switch v-model="config.autoUpdate" />
-          </ItemActions>
-        </Item>
-
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>远程数据源</ItemTitle>
-
-            <ItemDescription> 配置远程更新数据源</ItemDescription>
-          </ItemContent>
-
-          <ItemActions>
-            <Select v-model="config.repo">
-              <SelectTrigger class="w-40">
-                <SelectValue placeholder="请选择数据源" />
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectItem
-                  v-for="item in Object.keys(repoMap)"
-                  :key="item"
-                  :value="item"
-                >
-                  {{ repoMap[item].label }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
           </ItemActions>
         </Item>
       </ItemGroup>
@@ -89,13 +63,6 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import {
   Item,
@@ -107,12 +74,12 @@ import {
   ItemGroup,
 } from '@/components/ui/item';
 import Container from '@/components/container/index.vue';
-import { useConfigStore } from '@/stores/config';
+import { useSettingStore } from '@/stores/setting';
 import { Button } from '@/components/ui/button';
-import { repoMap, updateMap } from '@/map';
+import { updateMap, updateContentUrl } from '@/map';
 import { useUpdateStore } from '@/stores/update';
 
-const { config } = storeToRefs(useConfigStore());
+const { config } = storeToRefs(useSettingStore());
 const { status, downloadProgress } = storeToRefs(useUpdateStore());
 const { checkUpdate } = useUpdateStore();
 
@@ -129,9 +96,7 @@ const updateLabel = computed(() => {
 
 //查看更新内容
 const handleUpdateContent = () => {
-  const url = repoMap[config.value.repo].updateContentUrl;
-
-  api.openUrl(url);
+  api.openUrl(updateContentUrl);
 };
 </script>
 

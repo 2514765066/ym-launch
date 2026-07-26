@@ -1,6 +1,7 @@
 import { onMounted, onUnmounted, type Ref, watch } from 'vue';
 import Sortable, { type Options } from 'sortablejs';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { useSettingStore } from '@/stores/setting';
 
 const commonOptions: Options = {
   group: 'launcher',
@@ -16,6 +17,7 @@ const commonOptions: Options = {
 export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
   // 布局配置仓库
   const LauncherUiStore = useLauncherUiStore();
+  const { config } = storeToRefs(useSettingStore());
 
   // Sortable 实例
   let sortable: Sortable | null = null;
@@ -37,17 +39,13 @@ export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
     sortable = Sortable.create(el.value, {
       ...commonOptions,
       ...options,
-      swapThreshold: LauncherUiStore.iconZoom,
     });
   };
 
   // 同步图标缩放对应的交换阈值
-  watch(
-    () => LauncherUiStore.iconZoom,
-    (iconZoom) => {
-      sortable?.option('swapThreshold', iconZoom);
-    },
-  );
+  watchEffect(() => {
+    sortable?.option('swapThreshold', config.value.iconZoom / 100);
+  });
 
   //禁用拖拽
   watch(

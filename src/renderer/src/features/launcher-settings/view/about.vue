@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <div class="flex flex-col gap-8">
+    <div class="pt-4 flex flex-col gap-8">
       <ItemGroup>
         <p class="py-3 px-4">关于</p>
 
@@ -62,19 +62,16 @@ import {
 } from '@/components/ui/item';
 import Container from '@/components/container/index.vue';
 import { Button } from '@/components/ui/button';
-import { appVersion } from '@/services/app-info';
-import { useConfigStore } from '@/stores/config';
-import { repoMap } from '@/map';
-import MessageBox from '@/components/ui/message-box';
+import { appVersion } from '@shared/app-info';
+import { useSettingStore } from '@/stores/setting';
+import { issueUrl } from '@/map';
+import MessageBox from '@/components/message-box';
 
-const { config } = storeToRefs(useConfigStore());
-const { resetConfig } = useConfigStore();
+const { resetConfig } = useSettingStore();
 
 //反馈bug
 const handleIssue = () => {
-  const url = repoMap[config.value.repo].issueUrl;
-
-  api.openUrl(url);
+  api.openUrl(issueUrl);
 };
 
 //重置

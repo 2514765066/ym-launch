@@ -1,15 +1,15 @@
+import { eventBus } from '@/utils/event-bus';
 import { useLauncherStore } from './launcher';
+import { useSettingStore } from './setting';
 
 type Status = 'normal' | 'remove' | 'search';
 
-export const useLauncherUiStore = defineStore('launcher-ui', () => {
+export const useLauncherUiStore = defineStore('ui', () => {
   const launcherStore = useLauncherStore();
+  const { config } = storeToRefs(useSettingStore());
 
   //壁纸
   const wallpaper = ref('');
-
-  //模糊程度
-  const blur = ref(40);
 
   //状态
   const status = ref<Status>('normal');
@@ -23,21 +23,12 @@ export const useLauncherUiStore = defineStore('launcher-ui', () => {
   //是否隐藏桌面
   const hiddenDesktop = ref(false);
 
-  //行数
-  const rowCount = ref(5);
-
-  //列数
-  const colCount = ref(7);
-
   //选中的页
   const selectedPage = ref(0);
 
-  //图标缩放大小
-  const iconZoom = ref(0.4);
-
   //最大节点数量
   const maxNodeCount = computed(() => {
-    return rowCount.value * colCount.value;
+    return config.value.rowCount * config.value.colCount;
   });
 
   //最大页数
@@ -47,7 +38,11 @@ export const useLauncherUiStore = defineStore('launcher-ui', () => {
 
   //节点尺寸
   const nodeSize = computed(() => {
-    return (window.innerWidth / colCount.value) * 0.8 * iconZoom.value;
+    return (
+      (window.innerWidth / config.value.colCount) *
+      0.8 *
+      (config.value.iconZoom / 100)
+    );
   });
 
   // 设置选中的节点
@@ -85,9 +80,12 @@ export const useLauncherUiStore = defineStore('launcher-ui', () => {
 
   //隐藏应用
   const hidden = () => {
-    keyword.value = '';
-
     ipcRenderer.invoke('hidden');
+  };
+
+  //获取壁纸
+  const getWallpaper = async () => {
+    wallpaper.value = await ipcRenderer.invoke('getWallpaper');
   };
 
   //添加删除css
@@ -100,24 +98,25 @@ export const useLauncherUiStore = defineStore('launcher-ui', () => {
     document.body.classList.remove('launcher-remove');
   });
 
-  ipcRenderer.on('updateWallpaper', (_, data: string) => {
-    wallpaper.value = data;
+  //每次打开重新获取壁纸
+  ipcRenderer.on('show', () => {
+    keyword.value = '';
+    eventBus.emit('settingDialog', false);
+    getWallpaper();
   });
+
+  getWallpaper();
 
   return {
     status,
     keyword,
     dragNodeId,
-    rowCount,
-    colCount,
     selectedPage,
-    iconZoom,
     maxNodeCount,
     maxPageCount,
     nodeSize,
     hiddenDesktop,
     wallpaper,
-    blur,
     setSelectedPage,
     prePage,
     nextPage,

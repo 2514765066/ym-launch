@@ -5,6 +5,7 @@ declare global {
   const api: {
     openPath: (path: string) => void;
     openPathInFolder: (path: string) => void;
+    openUrl: (url: string) => void;
   };
 }
 

@@ -19,9 +19,10 @@
 <script setup lang="ts">
 import { useHover } from '@/hooks/hover';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { useSettingStore } from '@/stores/setting';
 
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
-const { colCount, rowCount } = storeToRefs(useLauncherUiStore());
+const { config } = storeToRefs(useSettingStore());
 const { prePage, nextPage } = useLauncherUiStore();
 
 //拖拽前一页
@@ -33,7 +34,7 @@ const [handleNextEnter, handleNextLeave] = useHover(nextPage);
 
 <style scoped lang="scss">
 .launcher-page {
-  grid-template-rows: repeat(v-bind('rowCount'), 1fr);
-  grid-template-columns: repeat(v-bind('colCount'), 1fr);
+  grid-template-rows: repeat(v-bind('config.rowCount'), 1fr);
+  grid-template-columns: repeat(v-bind('config.colCount'), 1fr);
 }
 </style>
