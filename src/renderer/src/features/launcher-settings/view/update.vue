@@ -78,7 +78,6 @@ import { useSettingStore } from '@/stores/setting';
 import { Button } from '@/components/ui/button';
 import { updateMap, updateContentUrl } from '@/map';
 import { useUpdateStore } from '@/stores/update';
-
 const { config } = storeToRefs(useSettingStore());
 const { status, downloadProgress } = storeToRefs(useUpdateStore());
 const { checkUpdate } = useUpdateStore();

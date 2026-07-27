@@ -11,17 +11,23 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
 contextBridge.exposeInMainWorld('api', {
   //打开文件
-  openPath(path: string) {
+  async openPath(path: string) {
+    await ipcRenderer.invoke('hidden');
+
     shell.openPath(path);
   },
 
   //打开文件所在位置
-  openPathInFolder(path: string) {
+  async openPathInFolder(path: string) {
+    await ipcRenderer.invoke('hidden');
+
     shell.showItemInFolder(path);
   },
 
   //打开网址
-  openUrl(url: string) {
+  async openUrl(url: string) {
+    await ipcRenderer.invoke('hidden');
+
     shell.openExternal(url);
   },
 });

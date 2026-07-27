@@ -15,8 +15,6 @@ export const useLauncherNodeStore = defineStore('node', () => {
 
   //打开app
   const openAppNode = async (id: string) => {
-    await ipcRenderer.invoke('hidden');
-
     const node = getNode(id) as AppNode;
 
     api.openPath(node.path);
@@ -24,8 +22,6 @@ export const useLauncherNodeStore = defineStore('node', () => {
 
   //打开文件夹管理器
   const openAppNodeInFolder = async (id: string) => {
-    await ipcRenderer.invoke('hidden');
-
     const node = getNode(id) as AppNode;
 
     api.openPathInFolder(node.path);
