@@ -1,6 +1,7 @@
 {
   "name": "ym-launcher",
   "version": "1.0.0",
+  "license": "GPL-3.0-only",
   "main": "./out/main/index.js",
   "type": "module",
   "scripts": {
