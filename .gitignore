@@ -7,3 +7,5 @@ out
 
 
 auto-imports.d.ts
+dist
+dev-app-update.yml
