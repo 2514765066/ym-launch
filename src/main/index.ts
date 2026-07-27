@@ -1,4 +1,4 @@
-import { app, Tray, nativeImage } from 'electron';
+import { app, Tray, nativeImage, Menu } from 'electron';
 import { optimizer } from '@electron-toolkit/utils';
 import { createMainWindow } from './browser-window/main';
 import '@/ipc/register';
@@ -40,7 +40,17 @@ app.whenReady().then(() => {
 const createTray = () => {
   const tray = new Tray(nativeImage.createFromPath(appIcon));
 
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: `退出 ${productName}`,
+      click() {
+        app.quit();
+      },
+    },
+  ]);
+
   tray.setToolTip(productName);
+  tray.setContextMenu(contextMenu);
 
   return tray;
 };
