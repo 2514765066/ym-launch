@@ -1,5 +1,5 @@
 import { formatApps } from '../utils/app';
-import { BrowserWindow, dialog, IpcMainEvent } from 'electron';
+import { app, BrowserWindow, dialog, IpcMainEvent } from 'electron';
 import getFileIcon from 'extract-file-icon';
 import sharp from 'sharp';
 import { readFile } from 'fs/promises';
@@ -105,4 +105,9 @@ export const setHotCorner = (
 //设置快速启动的快捷键
 export const setStartShortcut = (_, shortcut: string) => {
   _setStartShortcut(shortcut);
+};
+
+//设置开机自启动
+export const setOpenAtLogin = (_, openAtLogin: boolean) => {
+  app.setLoginItemSettings({ openAtLogin });
 };

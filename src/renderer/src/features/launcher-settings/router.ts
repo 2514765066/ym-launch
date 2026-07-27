@@ -4,8 +4,10 @@ import {
   CircleArrowUpIcon,
   KeyboardIcon,
   PaletteIcon,
+  SettingsIcon,
 } from '@lucide/vue';
 import { Component } from 'vue';
+import General from './view/general.vue';
 import HotCorner from './view/hot-corner.vue';
 import Appearance from './view/appearance.vue';
 import Update from './view/update.vue';
@@ -22,6 +24,12 @@ export interface Route {
 }
 
 const router: Route[] = [
+  {
+    id: 'general',
+    name: '常规',
+    icon: SettingsIcon,
+    component: General,
+  },
   {
     id: 'appearance',
     name: '外观',

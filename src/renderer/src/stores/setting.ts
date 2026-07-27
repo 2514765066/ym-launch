@@ -23,6 +23,9 @@ const createConfig = () => {
     //自动更新
     autoUpdate: false,
 
+    //开机自启动
+    openAtLogin: true,
+
     //启动角是否禁用
     hotCornerDisabled: false,
 
@@ -69,6 +72,11 @@ export const useSettingStore = defineStore('setting', () => {
   //设置快捷键
   watchEffect(() => {
     ipcRenderer.invoke('setStartShortcut', config.value.startShortcut);
+  });
+
+  //设置开机自启动
+  watchEffect(() => {
+    ipcRenderer.invoke('setOpenAtLogin', config.value.openAtLogin);
   });
 
   return {
