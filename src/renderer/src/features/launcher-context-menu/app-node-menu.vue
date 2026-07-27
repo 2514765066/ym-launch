@@ -50,6 +50,16 @@
       <span>编辑</span>
     </ContextMenuItem>
   </ContextMenuGroup>
+
+  <ContextMenuSeparator />
+
+  <ContextMenuGroup>
+    <ContextMenuItem variant="destructive" @click="removeAppNode(id)">
+      <Trash2 />
+
+      <span>删除</span>
+    </ContextMenuItem>
+  </ContextMenuGroup>
 </template>
 
 <script setup lang="ts">
@@ -67,14 +77,14 @@ import {
 import { useLauncherStore } from '@/stores/launcher';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { eventBus } from '@/utils/event-bus';
-import { CornerUpRight, FolderOpen, SquarePen } from '@lucide/vue';
+import { CornerUpRight, FolderOpen, SquarePen, Trash2 } from '@lucide/vue';
 
 const props = defineProps<{
   id: string;
 }>();
 
 const { nodes } = storeToRefs(useLauncherStore());
-const { openAppNode, openAppNodeInFolder, moveAppToGroup } =
+const { openAppNode, openAppNodeInFolder, moveAppToGroup, removeAppNode } =
   useLauncherNodeStore();
 
 //所有的文件夹节点

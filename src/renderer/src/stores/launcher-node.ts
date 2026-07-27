@@ -77,6 +77,24 @@ export const useLauncherNodeStore = defineStore('node', () => {
     delete nodes.value[group.id];
   };
 
+  // 删除分组节点及其应用节点
+  const removeGroupNode = (groupId: string) => {
+    // 待删除的分组节点
+    const group = getNode(groupId);
+
+    if (!isGroupNode(group)) {
+      return;
+    }
+
+    removeDesktopId(group.id);
+
+    group.children.forEach((childId) => {
+      delete nodes.value[childId];
+    });
+
+    delete nodes.value[group.id];
+  };
+
   //添加节点
   const addAppNode = async () => {
     const res: AppNode[] = await ipcRenderer.invoke('addAppNode');
@@ -148,5 +166,6 @@ export const useLauncherNodeStore = defineStore('node', () => {
     addAppNode,
     createGroupNode,
     removeAppNode,
+    removeGroupNode,
   };
 });
