@@ -32,7 +32,7 @@ export const addAppNode = async ({ sender }: IpcMainEvent) => {
   const result = await dialog.showOpenDialog(bw!, {
     title: '添加应用程序',
     properties: ['openFile', 'multiSelections'],
-    filters: [{ name: '启动程序', extensions: ['exe', 'lnk'] }],
+    filters: [{ name: '启动程序', extensions: ['*'] }],
   });
 
   if (result.canceled) {
