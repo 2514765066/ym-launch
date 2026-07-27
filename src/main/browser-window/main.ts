@@ -17,8 +17,8 @@ export const createMainWindow = () => {
     autoHideMenuBar: true,
     resizable: false,
     transparent: true,
-    // alwaysOnTop: true,
-    // skipTaskbar: true,
+    alwaysOnTop: true,
+    skipTaskbar: true,
 
     webPreferences: {
       preload: join(__dirname, '../preload/index.mjs'),

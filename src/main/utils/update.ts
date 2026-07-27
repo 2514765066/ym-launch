@@ -1,10 +1,16 @@
 import { browserWindows } from '@/browser-window';
-import { appName } from '@shared/app-info';
+import { appName } from '@/../shared/app-info';
 import { autoUpdater } from 'electron-updater';
+import { is } from '@electron-toolkit/utils';
 
+autoUpdater.autoDownload = false;
 autoUpdater.setFeedURL(
   `https://gitee.com/yxingyus/${appName}/releases/download/latest`,
 );
+
+if (is.dev) {
+  autoUpdater.forceDevUpdateConfig = true;
+}
 
 //发现更新
 autoUpdater.on('update-available', () => {

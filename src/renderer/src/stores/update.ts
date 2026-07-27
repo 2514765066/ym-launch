@@ -71,8 +71,8 @@ export const useUpdateStore = defineStore('update', () => {
     }
 
     //监听下载进度
-    ipcRenderer.on('download-progress', (_, percrent) => {
-      downloadProgress.value = percrent;
+    ipcRenderer.on('download-progress', (_, percrent: number) => {
+      downloadProgress.value = Math.floor(percrent);
 
       if (percrent == 100) {
         status.value = 'downloaded';

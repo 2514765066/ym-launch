@@ -6,6 +6,7 @@ import appIcon from '../../resources/icon.png?asset';
 import { productName } from '@/../shared/app-info';
 import { createHotCorner } from './hooks/hot-corner';
 import { createStartShortcut } from './hooks/start-shortcut';
+import '@/utils/update';
 
 app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
