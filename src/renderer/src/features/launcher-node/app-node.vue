@@ -9,7 +9,7 @@
     <AppNodeIcon
       :id="data.id"
       :class="{
-        'outline-[10%] outline-white/20': notSelf && isHover,
+        'outline-[10%] outline-primary': notSelf && isHover,
       }"
     >
       <button

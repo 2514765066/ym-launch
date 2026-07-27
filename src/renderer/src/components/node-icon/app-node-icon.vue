@@ -1,7 +1,7 @@
 <template>
-  <div class="relative rounded-[24%]">
+  <div class="relative rounded-lg">
     <img
-      class="aspect-square object-contain rounded-[inherit] drop-shadow-lg drop-shadow-black/30"
+      class="aspect-square object-contain drop-shadow-lg drop-shadow-black/30"
       :class="
         cn(viewClass, {
           'opacity-0': dragNodeId == id,
@@ -25,9 +25,10 @@ import { cn } from '@/lib/utils';
 import { useLauncherStore } from '@/stores/launcher';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { AppNode } from '@shared/type';
+import { ClassValue } from 'vue';
 
 const props = defineProps<{
-  viewClass?: string;
+  viewClass?: ClassValue;
   id: string;
   isGroup?: boolean;
 }>();
