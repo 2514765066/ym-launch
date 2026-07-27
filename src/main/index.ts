@@ -8,11 +8,12 @@ import { productName } from '@shared/app-info';
 import '@/ipc/register';
 import '@/utils/update';
 
-app.whenReady().then(() => {
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window);
-  });
+//单一实例锁
+if (!app.requestSingleInstanceLock()) {
+  app.exit();
+}
 
+app.whenReady().then(() => {
   const main = createMainWindow();
 
   const tray = createTray([
@@ -48,4 +49,10 @@ app.whenReady().then(() => {
 
     main.show();
   });
+
+  app.on('browser-window-created', (_, window) => {
+    optimizer.watchWindowShortcuts(window);
+  });
+
+  app.on('second-instance', main.show);
 });

@@ -5,8 +5,8 @@ import {
   MenuItem,
   MenuItemConstructorOptions,
 } from 'electron';
-import appIcon from '../../resources/icon.png?asset';
-import { productName } from '@/../shared/app-info';
+import appIcon from '@resources/icon.png?asset';
+import { productName } from '@shared/app-info';
 
 //创建托盘
 export const createTray = (menu: (MenuItem | MenuItemConstructorOptions)[]) => {

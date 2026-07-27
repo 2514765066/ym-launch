@@ -1,5 +1,5 @@
 import { browserWindows } from '@/browser-window';
-import { appName } from '@/../shared/app-info';
+import { appName } from '@shared/app-info';
 import { autoUpdater } from 'electron-updater';
 import { is } from '@electron-toolkit/utils';
 

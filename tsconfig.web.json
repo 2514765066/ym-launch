@@ -5,8 +5,7 @@
     "composite": true,
     "paths": {
       "@/*": ["./src/renderer/src/*"],
-      "@shared/type": ["./src/shared/type.ts"],
-      "@shared/app-info": ["./src/shared/app-info.ts"]
+      "@shared/*": ["./src/shared/*"]
     }
   }
 }

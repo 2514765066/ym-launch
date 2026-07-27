@@ -15,8 +15,8 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': resolve('src/main'),
-        '@shared/type': resolve('src/shared/type.ts'),
         '@shared': resolve('src/shared'),
+        '@resources': resolve('resources'),
       },
     },
   },
@@ -30,7 +30,6 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': resolve('src/renderer/src'),
-        '@shared/type': resolve('src/shared/type.ts'),
         '@shared': resolve('src/shared'),
       },
     },
