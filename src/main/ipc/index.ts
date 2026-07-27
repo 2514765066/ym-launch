@@ -91,7 +91,7 @@ export const checkUpdate = async () => {
 
 //安装
 export const installUpdate = () => {
-  autoUpdater.quitAndInstall();
+  autoUpdater.quitAndInstall(true, true);
 };
 
 //设置启动角配置
