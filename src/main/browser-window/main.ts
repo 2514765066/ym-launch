@@ -38,16 +38,19 @@ export const createMainWindow = () => {
     bw.webContents.openDevTools({ mode: 'detach' });
   }
 
+  //显示窗口
+  const show = () => {
+    bw.webContents.send('show');
+    bw.setOpacity(0);
+    bw.show();
+
+    setTimeout(() => {
+      bw.setOpacity(1);
+    }, 100);
+  };
+
   return {
     bw,
-    show: () => {
-      bw.webContents.send('show');
-      bw.setOpacity(0);
-      bw.show();
-
-      setTimeout(() => {
-        bw.setOpacity(1);
-      }, 100);
-    },
+    show,
   };
 };

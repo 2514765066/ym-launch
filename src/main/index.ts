@@ -1,11 +1,11 @@
-import { app, Tray, nativeImage, Menu } from 'electron';
+import { app } from 'electron';
 import { optimizer } from '@electron-toolkit/utils';
 import { createMainWindow } from './browser-window/main';
-import '@/ipc/register';
-import appIcon from '../../resources/icon.png?asset';
-import { productName } from '@/../shared/app-info';
 import { createHotCorner } from './hooks/hot-corner';
 import { createStartShortcut } from './hooks/start-shortcut';
+import { createTray } from './hooks/tray';
+import { productName } from '@shared/app-info';
+import '@/ipc/register';
 import '@/utils/update';
 
 app.whenReady().then(() => {
@@ -15,7 +15,20 @@ app.whenReady().then(() => {
 
   const main = createMainWindow();
 
-  const tray = createTray();
+  const tray = createTray([
+    {
+      label: `打开 ${productName}`,
+      click() {
+        main.show();
+      },
+    },
+    {
+      label: `退出 ${productName}`,
+      click() {
+        app.quit();
+      },
+    },
+  ]);
 
   tray.on('click', main.show);
 
@@ -36,22 +49,3 @@ app.whenReady().then(() => {
     main.show();
   });
 });
-
-//创建托盘
-const createTray = () => {
-  const tray = new Tray(nativeImage.createFromPath(appIcon));
-
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: `退出 ${productName}`,
-      click() {
-        app.quit();
-      },
-    },
-  ]);
-
-  tray.setToolTip(productName);
-  tray.setContextMenu(contextMenu);
-
-  return tray;
-};
