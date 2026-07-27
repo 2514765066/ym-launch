@@ -6,7 +6,7 @@ const { name, productName } = require('./package.json');
 module.exports = {
   appId: 'com.2514765066.ym-launcher',
   productName,
-  files: ['out'],
+  files: ['out', 'resources'],
   asar: false,
   electronLanguages: ['zh-CN'],
   directories: {
