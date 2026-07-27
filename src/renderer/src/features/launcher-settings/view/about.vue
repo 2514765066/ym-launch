@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <div class="pt-4 flex flex-col gap-8">
+    <div class="pt-8 flex flex-col gap-8">
       <ItemGroup>
         <p class="py-3 px-4">关于</p>
 

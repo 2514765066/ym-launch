@@ -1,12 +1,48 @@
 <template>
-  <section class="flex flex-col gap-1">
-    <Item v-for="route in router" :data="route" />
-  </section>
+  <Sidebar collapsible="none" class="size-full">
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>设置</SidebarGroupLabel>
+
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem v-for="item in router" :key="item.id">
+              <SidebarMenuButton
+                as-child
+                :is-active="selectedRouteID == item.id"
+              >
+                <a href="#" @click="handleClick(item.id)">
+                  <component :is="item.icon" />
+
+                  <span>{{ item.name }}</span>
+
+                  <span class="ml-auto">{{ item.description }}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </SidebarContent>
+  </Sidebar>
 </template>
 
 <script setup lang="ts">
-import Item from './item.vue';
-import router from '../router.js';
+import router, { selectedRouteID } from '../router.js';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/components/ui/sidebar';
+
+const handleClick = (id: string) => {
+  selectedRouteID.value = id;
+};
 </script>
 
 <style scoped lang="scss"></style>

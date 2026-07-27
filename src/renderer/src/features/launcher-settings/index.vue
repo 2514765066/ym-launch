@@ -2,40 +2,37 @@
   <Dialog v-model:open="open">
     <DialogContent
       :aria-describedby="undefined"
-      class="max-w-none! w-200 h-150 p-0! flex flex-col gap-0 bg-sidebar"
+      class="max-w-none! w-200 h-150 p-0! overflow-hidden"
       @open-auto-focus.prevent
     >
-      <TitleBar />
+      <SidebarProvider>
+        <ResizablePanelGroup
+          class="flex-1"
+          direction="horizontal"
+          autoSaveId="launcher-settings-layout"
+        >
+          <ResizablePanel :min-size="160" :default-size="260" size-unit="px">
+            <SideBar />
+          </ResizablePanel>
 
-      <ResizablePanelGroup
-        class="px-2 pb-2 flex-1 gap-1"
-        direction="horizontal"
-        autoSaveId="launcher-settings-layout"
-      >
-        <ResizablePanel :min-size="160" :default-size="260" size-unit="px">
-          <SideBar />
-        </ResizablePanel>
+          <ResizableHandle />
 
-        <ResizableHandle class="bg-transparent" />
-
-        <ResizablePanel :min-size="50">
-          <component
-            class="h-full border rounded-lg bg-background"
-            :is="selectedRoute?.component"
-          />
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          <ResizablePanel :min-size="50">
+            <component class="h-full" :is="selectedRoute?.component" />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </SidebarProvider>
     </DialogContent>
   </Dialog>
 </template>
 
 <script setup lang="ts">
+import { SidebarProvider } from '@/components/ui/sidebar';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
-import TitleBar from './title-bar/index.vue';
 import SideBar from './side-bar/index.vue';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { selectedRoute } from './router.js';
