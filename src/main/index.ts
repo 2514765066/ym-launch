@@ -24,6 +24,9 @@ app.whenReady().then(() => {
       },
     },
     {
+      type: 'separator',
+    },
+    {
       label: `退出 ${productName}`,
       click() {
         app.quit();
