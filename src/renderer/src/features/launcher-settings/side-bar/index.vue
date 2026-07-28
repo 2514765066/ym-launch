@@ -1,35 +1,38 @@
 <template>
-  <Sidebar collapsible="none" class="size-full">
-    <SidebarContent>
-      <SidebarGroup>
-        <SidebarGroupLabel>设置</SidebarGroupLabel>
+  <SidebarProvider>
+    <Sidebar collapsible="none" class="size-full">
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>设置</SidebarGroupLabel>
 
-        <SidebarGroupContent>
-          <SidebarMenu>
-            <SidebarMenuItem v-for="item in router" :key="item.id">
-              <SidebarMenuButton
-                as-child
-                :is-active="selectedRouteID == item.id"
-              >
-                <a href="#" @click="handleClick(item.id)">
-                  <component :is="item.icon" />
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem v-for="item in router" :key="item.id">
+                <SidebarMenuButton
+                  as-child
+                  :is-active="selectedRouteID == item.id"
+                >
+                  <a href="#" @click="handleClick(item.id)">
+                    <component :is="item.icon" />
 
-                  <span>{{ item.name }}</span>
+                    <span>{{ item.name }}</span>
 
-                  <span class="ml-auto">{{ item.description }}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-    </SidebarContent>
-  </Sidebar>
+                    <span class="ml-auto">{{ item.description }}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  </SidebarProvider>
 </template>
 
 <script setup lang="ts">
 import router, { selectedRouteID } from '../router.js';
 import {
+  SidebarProvider,
   Sidebar,
   SidebarContent,
   SidebarGroup,

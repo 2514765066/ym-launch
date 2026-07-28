@@ -1,118 +1,116 @@
 <template>
-  <Container>
-    <div class="pt-8 flex flex-col gap-8">
-      <ItemGroup>
-        <p class="py-3 px-4">桌面布局</p>
+  <Container view-class="py-8 flex flex-col gap-8">
+    <ItemGroup>
+      <p class="py-3 px-4">桌面布局</p>
 
-        <ItemSeparator />
+      <ItemSeparator />
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>桌面行数</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>桌面行数</ItemTitle>
 
-            <ItemDescription>设置桌面的行数</ItemDescription>
-          </ItemContent>
+          <ItemDescription>设置桌面的行数</ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <NumberField :min="1" :max="10" v-model="config.rowCount">
-              <NumberFieldContent>
-                <NumberFieldDecrement />
+        <ItemActions>
+          <NumberField :min="1" :max="10" v-model="config.rowCount">
+            <NumberFieldContent>
+              <NumberFieldDecrement />
 
-                <NumberFieldInput />
+              <NumberFieldInput />
 
-                <NumberFieldIncrement />
-              </NumberFieldContent>
-            </NumberField>
-          </ItemActions>
-        </Item>
+              <NumberFieldIncrement />
+            </NumberFieldContent>
+          </NumberField>
+        </ItemActions>
+      </Item>
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>桌面列数</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>桌面列数</ItemTitle>
 
-            <ItemDescription>设置桌面的列数</ItemDescription>
-          </ItemContent>
+          <ItemDescription>设置桌面的列数</ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <NumberField :min="1" :max="10" v-model="config.colCount">
-              <NumberFieldContent>
-                <NumberFieldDecrement />
+        <ItemActions>
+          <NumberField :min="1" :max="10" v-model="config.colCount">
+            <NumberFieldContent>
+              <NumberFieldDecrement />
 
-                <NumberFieldInput />
+              <NumberFieldInput />
 
-                <NumberFieldIncrement />
-              </NumberFieldContent>
-            </NumberField>
-          </ItemActions>
-        </Item>
+              <NumberFieldIncrement />
+            </NumberFieldContent>
+          </NumberField>
+        </ItemActions>
+      </Item>
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>桌面图标尺寸</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>桌面图标尺寸</ItemTitle>
 
-            <ItemDescription>设置桌面的图标大小</ItemDescription>
-          </ItemContent>
+          <ItemDescription>设置桌面的图标大小</ItemDescription>
+        </ItemContent>
 
-          <ItemActions class="w-45">
-            <span>{{ config.iconZoom }}</span>
+        <ItemActions class="w-45">
+          <span>{{ config.iconZoom }}</span>
 
-            <Slider
-              class="w-full"
-              :min="10"
-              :max="90"
-              :model-value="[config.iconZoom]"
-              @update:model-value="(res) => (config.iconZoom = res![0])"
-            />
-          </ItemActions>
-        </Item>
-      </ItemGroup>
+          <Slider
+            class="w-full"
+            :min="10"
+            :max="90"
+            :model-value="[config.iconZoom]"
+            @update:model-value="(res) => (config.iconZoom = res![0])"
+          />
+        </ItemActions>
+      </Item>
+    </ItemGroup>
 
-      <ItemGroup>
-        <p class="py-3 px-4">背景</p>
+    <ItemGroup>
+      <p class="py-3 px-4">背景</p>
 
-        <ItemSeparator />
+      <ItemSeparator />
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>高斯模糊</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>高斯模糊</ItemTitle>
 
-            <ItemDescription>桌面背景的高斯模糊程度</ItemDescription>
-          </ItemContent>
+          <ItemDescription>桌面背景的高斯模糊程度</ItemDescription>
+        </ItemContent>
 
-          <ItemActions class="w-45">
-            <span>
-              {{ config.blur }}
-            </span>
+        <ItemActions class="w-45">
+          <span>
+            {{ config.blur }}
+          </span>
 
-            <Slider
-              class="w-full"
-              :model-value="[config.blur]"
-              @update:model-value="(res) => (config.blur = res![0])"
-            />
-          </ItemActions>
-        </Item>
+          <Slider
+            class="w-full"
+            :model-value="[config.blur]"
+            @update:model-value="(res) => (config.blur = res![0])"
+          />
+        </ItemActions>
+      </Item>
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>遮罩</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>遮罩</ItemTitle>
 
-            <ItemDescription>桌面背景的遮罩程度</ItemDescription>
-          </ItemContent>
+          <ItemDescription>桌面背景的遮罩程度</ItemDescription>
+        </ItemContent>
 
-          <ItemActions class="w-45">
-            <span>
-              {{ config.mask }}
-            </span>
+        <ItemActions class="w-45">
+          <span>
+            {{ config.mask }}
+          </span>
 
-            <Slider
-              class="w-full"
-              :model-value="[config.mask]"
-              @update:model-value="(res) => (config.mask = res![0])"
-            />
-          </ItemActions>
-        </Item>
-      </ItemGroup>
-    </div>
+          <Slider
+            class="w-full"
+            :model-value="[config.mask]"
+            @update:model-value="(res) => (config.mask = res![0])"
+          />
+        </ItemActions>
+      </Item>
+    </ItemGroup>
   </Container>
 </template>
 

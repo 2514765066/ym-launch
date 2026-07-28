@@ -5,29 +5,26 @@
       class="max-w-none! w-200 h-150 p-0! overflow-hidden"
       @open-auto-focus.prevent
     >
-      <SidebarProvider>
-        <ResizablePanelGroup
-          class="flex-1"
-          direction="horizontal"
-          autoSaveId="launcher-settings-layout"
-        >
-          <ResizablePanel :min-size="160" :default-size="260" size-unit="px">
-            <SideBar />
-          </ResizablePanel>
+      <ResizablePanelGroup
+        class="flex-1"
+        direction="horizontal"
+        autoSaveId="launcher-settings-layout"
+      >
+        <ResizablePanel :min-size="160" :default-size="260" size-unit="px">
+          <SideBar />
+        </ResizablePanel>
 
-          <ResizableHandle />
+        <ResizableHandle />
 
-          <ResizablePanel :min-size="50">
-            <component class="h-full" :is="selectedRoute?.component" />
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </SidebarProvider>
+        <ResizablePanel :min-size="50">
+          <component class="h-full" :is="selectedRoute?.component" />
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </DialogContent>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import { SidebarProvider } from '@/components/ui/sidebar';
 import {
   ResizableHandle,
   ResizablePanel,

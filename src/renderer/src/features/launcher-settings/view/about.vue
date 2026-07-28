@@ -1,52 +1,50 @@
 <template>
-  <Container>
-    <div class="pt-8 flex flex-col gap-8">
-      <ItemGroup>
-        <p class="py-3 px-4">关于</p>
+  <Container view-class="py-8 flex flex-col gap-8">
+    <ItemGroup>
+      <p class="py-3 px-4">关于</p>
 
-        <ItemSeparator />
+      <ItemSeparator />
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>反馈问题</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>反馈问题</ItemTitle>
 
-            <ItemDescription> 反馈应用存在的bug </ItemDescription>
-          </ItemContent>
+          <ItemDescription> 反馈应用存在的bug </ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <Button variant="outline" @click="handleIssue">反馈</Button>
-          </ItemActions>
-        </Item>
+        <ItemActions>
+          <Button variant="outline" @click="handleIssue">反馈</Button>
+        </ItemActions>
+      </Item>
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>版本</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>版本</ItemTitle>
 
-            <ItemDescription> 当前应用的版本</ItemDescription>
-          </ItemContent>
+          <ItemDescription> 当前应用的版本</ItemDescription>
+        </ItemContent>
 
-          <ItemActions> v{{ appVersion }} </ItemActions>
-        </Item>
-      </ItemGroup>
+        <ItemActions> v{{ appVersion }} </ItemActions>
+      </Item>
+    </ItemGroup>
 
-      <ItemGroup>
-        <p class="py-3 px-4">重置</p>
+    <ItemGroup>
+      <p class="py-3 px-4">重置</p>
 
-        <ItemSeparator />
+      <ItemSeparator />
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>恢复默认设置</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>恢复默认设置</ItemTitle>
 
-            <ItemDescription> 把设置还原成默认配置 </ItemDescription>
-          </ItemContent>
+          <ItemDescription> 把设置还原成默认配置 </ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <Button variant="destructive" @click="handleReset">重置</Button>
-          </ItemActions>
-        </Item>
-      </ItemGroup>
-    </div>
+        <ItemActions>
+          <Button variant="destructive" @click="handleReset">重置</Button>
+        </ItemActions>
+      </Item>
+    </ItemGroup>
   </Container>
 </template>
 

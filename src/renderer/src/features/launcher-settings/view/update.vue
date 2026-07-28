@@ -1,64 +1,62 @@
 <template>
-  <Container>
-    <div class="pt-8 flex flex-col gap-8">
-      <ItemGroup>
-        <p class="py-3 px-4">更新配置</p>
+  <Container view-class="py-8 flex flex-col gap-8">
+    <ItemGroup>
+      <p class="py-3 px-4">更新配置</p>
 
-        <ItemSeparator />
+      <ItemSeparator />
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>自动更新</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>自动更新</ItemTitle>
 
-            <ItemDescription> 开启后自动获取更新 </ItemDescription>
-          </ItemContent>
+          <ItemDescription> 开启后自动获取更新 </ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <Switch v-model="config.autoUpdate" />
-          </ItemActions>
-        </Item>
-      </ItemGroup>
+        <ItemActions>
+          <Switch v-model="config.autoUpdate" />
+        </ItemActions>
+      </Item>
+    </ItemGroup>
 
-      <ItemGroup>
-        <p class="py-3 px-4">更新</p>
+    <ItemGroup>
+      <p class="py-3 px-4">更新</p>
 
-        <ItemSeparator />
+      <ItemSeparator />
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>更新内容</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>更新内容</ItemTitle>
 
-            <ItemDescription> 查看当前版本更新内容</ItemDescription>
-          </ItemContent>
+          <ItemDescription> 查看当前版本更新内容</ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <Button size="sm" variant="outline" @click="handleUpdateContent">
-              查看
-            </Button>
-          </ItemActions>
-        </Item>
+        <ItemActions>
+          <Button size="sm" variant="outline" @click="handleUpdateContent">
+            查看
+          </Button>
+        </ItemActions>
+      </Item>
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>检查更新</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>检查更新</ItemTitle>
 
-            <ItemDescription> 查看当前版本更新内容</ItemDescription>
-          </ItemContent>
+          <ItemDescription> 查看当前版本更新内容</ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <Button
-              size="sm"
-              @click="checkUpdate"
-              v-if="status == 'init' || status == 'downloaded'"
-            >
-              检查更新
-            </Button>
+        <ItemActions>
+          <Button
+            size="sm"
+            @click="checkUpdate"
+            v-if="status == 'init' || status == 'downloaded'"
+          >
+            检查更新
+          </Button>
 
-            <span class="text-sm" v-else>{{ updateLabel }}</span>
-          </ItemActions>
-        </Item>
-      </ItemGroup>
-    </div>
+          <span class="text-sm" v-else>{{ updateLabel }}</span>
+        </ItemActions>
+      </Item>
+    </ItemGroup>
   </Container>
 </template>
 

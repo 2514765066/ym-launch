@@ -1,24 +1,22 @@
 <template>
-  <Container>
-    <div class="pt-8 flex flex-col gap-8">
-      <ItemGroup>
-        <p class="py-3 px-4">常规</p>
+  <Container view-class="py-8 flex flex-col gap-8">
+    <ItemGroup>
+      <p class="py-3 px-4">常规</p>
 
-        <ItemSeparator />
+      <ItemSeparator />
 
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle>开机自启动</ItemTitle>
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>开机自启动</ItemTitle>
 
-            <ItemDescription>开机后自动启动应用</ItemDescription>
-          </ItemContent>
+          <ItemDescription>开机后自动启动应用</ItemDescription>
+        </ItemContent>
 
-          <ItemActions>
-            <Switch v-model="config.openAtLogin" />
-          </ItemActions>
-        </Item>
-      </ItemGroup>
-    </div>
+        <ItemActions>
+          <Switch v-model="config.openAtLogin" />
+        </ItemActions>
+      </Item>
+    </ItemGroup>
   </Container>
 </template>
 
