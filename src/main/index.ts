@@ -5,6 +5,7 @@ import { createHotCorner } from './hooks/hot-corner';
 import { createStartShortcut } from './hooks/start-shortcut';
 import { createTray } from './hooks/tray';
 import { productName } from '@shared/app-info';
+import { isForegroundWindowFullscreen } from 'ym-fullscreen-detector';
 import '@/ipc/register';
 import '@/utils/update';
 
@@ -36,22 +37,22 @@ app.whenReady().then(() => {
 
   tray.on('click', main.show);
 
-  createHotCorner(() => {
+  const toggleMainWindowVisible = () => {
     if (main.bw.isVisible()) {
       main.bw.hide();
       return;
     }
 
-    main.show();
-  });
-
-  createStartShortcut(() => {
-    if (main.bw.isVisible()) {
+    if (isForegroundWindowFullscreen()) {
       return;
     }
 
     main.show();
-  });
+  };
+
+  createHotCorner(toggleMainWindowVisible);
+
+  createStartShortcut(toggleMainWindowVisible);
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window);
