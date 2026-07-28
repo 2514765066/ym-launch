@@ -1,5 +1,7 @@
 <template>
-  <Layout />
+  <TooltipProvider>
+    <Layout />
+  </TooltipProvider>
 
   <LauncherGroupDialog />
   <LauncherEditDialog />
@@ -15,6 +17,7 @@ import LauncherEditDialog from '@/features/launcher-dialog/edit-dialog.vue';
 import LauncherSetting from '@/features/launcher-settings/index.vue';
 import { eventBus } from './utils/event-bus';
 import { Toaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css';
 

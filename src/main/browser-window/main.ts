@@ -28,16 +28,16 @@ export const createMainWindow = () => {
 
   browserWindows.set('main', bw);
 
-  //生产模式
-  if (!is.dev) {
-    bw.loadFile(join(__dirname, '../renderer/index.html'));
+  //开发模式
+  if (is.dev) {
+    bw.loadURL(`${process.env['ELECTRON_RENDERER_URL']}`);
+    bw.webContents.openDevTools({ mode: 'detach' });
     bw.setAlwaysOnTop(false);
     bw.setSkipTaskbar(false);
   }
-  //开发模式
+  //生产模式
   else {
-    bw.loadURL(`${process.env['ELECTRON_RENDERER_URL']}`);
-    bw.webContents.openDevTools({ mode: 'detach' });
+    bw.loadFile(join(__dirname, '../renderer/index.html'));
   }
 
   //显示窗口
