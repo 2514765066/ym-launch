@@ -2,7 +2,18 @@
   "name": "ym-launcher",
   "productName": "Ym Launcher",
   "version": "1.0.0",
-  "license": "GPL-3.0-only",
+  "description": "A modern and customizable Windows application launcher",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "Mingyang Zhang",
+    "email": "2514765066@qq.com",
+    "url": "https://github.com/2514765066"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2514765066/ym-launcher.git"
+  },
   "main": "./out/main/index.js",
   "type": "module",
   "scripts": {
