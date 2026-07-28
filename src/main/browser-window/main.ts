@@ -31,6 +31,8 @@ export const createMainWindow = () => {
   //生产模式
   if (!is.dev) {
     bw.loadFile(join(__dirname, '../renderer/index.html'));
+    bw.setAlwaysOnTop(false);
+    bw.setSkipTaskbar(false);
   }
   //开发模式
   else {
