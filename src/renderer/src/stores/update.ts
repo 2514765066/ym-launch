@@ -22,9 +22,9 @@ export const useUpdateStore = defineStore('update', () => {
 
   //检查更新
   const checkUpdate = async () => {
-    try {
-      status.value = 'checking';
+    status.value = 'checking';
 
+    try {
       const checkRes = await ipcRenderer.invoke('checkUpdate');
 
       //没有更新
@@ -74,19 +74,19 @@ export const useUpdateStore = defineStore('update', () => {
         lastUpdateTime.value = now;
       }
     }
-
-    //监听下载进度
-    ipcRenderer.on('download-progress', (_, percrent: number) => {
-      downloadProgress.value = Math.floor(percrent);
-
-      if (percrent == 100) {
-        status.value = 'downloaded';
-      }
-    });
-
-    //下载完成
-    ipcRenderer.on('update-downloaded', installUpdate);
   };
+
+  //监听下载进度
+  ipcRenderer.on('download-progress', (_, percrent: number) => {
+    downloadProgress.value = Math.floor(percrent);
+
+    if (percrent == 100) {
+      status.value = 'downloaded';
+    }
+  });
+
+  //下载完成
+  ipcRenderer.on('update-downloaded', installUpdate);
 
   init();
 

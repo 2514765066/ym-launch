@@ -20,6 +20,10 @@ import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css';
+import { useUpdateStore } from './stores/update';
+
+//修复不自动更新的bug
+useUpdateStore();
 
 eventBus.on('success', (message) => {
   toast.success(message, {
