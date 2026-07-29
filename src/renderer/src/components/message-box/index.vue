@@ -1,5 +1,5 @@
 <template>
-  <AlertDialog v-model:open="data.visible">
+  <AlertDialog :open="data.visible" @update:open="handleOpenChange">
     <AlertDialogContent class="w-100">
       <AlertDialogHeader>
         <AlertDialogTitle>
@@ -12,11 +12,11 @@
       </AlertDialogHeader>
 
       <AlertDialogFooter>
-        <AlertDialogCancel class="flex-1" @click="handleCancel">
+        <AlertDialogCancel class="flex-1" @click.capture="handleCancel">
           {{ data.cancelButtonText || '取消' }}
         </AlertDialogCancel>
 
-        <AlertDialogAction class="flex-1" @click="handleConfirm">
+        <AlertDialogAction class="flex-1" @click.capture="handleConfirm">
           {{ data.confirmButtonText || '确定' }}
         </AlertDialogAction>
       </AlertDialogFooter>
@@ -35,18 +35,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { data } from './message-box';
+import { data, resolveConfirm } from './message-box';
 
-//处理确定
+// 处理确定
 const handleConfirm = () => {
-  data.onConfirm();
-  data.visible = false;
+  resolveConfirm(true);
 };
 
-//处理取消
+// 处理取消
 const handleCancel = () => {
-  data.onCancel();
-  data.visible = false;
+  resolveConfirm(false);
+};
+
+// 将非按钮关闭行为统一视为取消
+const handleOpenChange = (visible: boolean) => {
+  if (visible) {
+    return;
+  }
+
+  resolveConfirm(false);
 };
 </script>
 
