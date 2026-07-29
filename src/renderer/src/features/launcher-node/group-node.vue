@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { useIsHover } from '@/hooks/hover';
+import { useIsHover } from '@/hooks/use-hover.js';
 import { useLauncherStore } from '@/stores/launcher';
 import { eventBus } from '@/utils/event-bus';
 import { GroupNode } from '@shared/type';
@@ -24,6 +24,7 @@ import { useLauncherUiStore } from '@/stores/launcher-ui';
 import BaseNode from './base-node.vue';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import GroupNodeIcon from '@/components/node-icon/group-node-icon.vue';
+import { useLauncherGridStore } from '@/stores/launcher-grid';
 
 const props = defineProps<{
   data: GroupNode;
@@ -31,7 +32,7 @@ const props = defineProps<{
 
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
 const { getGroupChildren } = useLauncherStore();
-const { maxNodeCount } = storeToRefs(useLauncherUiStore());
+const { pageSize } = storeToRefs(useLauncherGridStore());
 const { moveAppToGroup } = useLauncherNodeStore();
 
 const [isHover, handleEnter, handleLeave] = useIsHover();
@@ -51,7 +52,7 @@ const handleDrop = () => {
   handleLeave();
 
   //超过最大数
-  if (maxNodeCount.value == children.value.length) {
+  if (pageSize.value == children.value.length) {
     return;
   }
 

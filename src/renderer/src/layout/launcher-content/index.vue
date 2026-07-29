@@ -15,10 +15,10 @@
 import LauncherPage from './launcher-page/index.vue';
 import LauncherNode from '@/features/launcher-node/index.vue';
 import { useLauncherStore } from '@/stores/launcher';
-import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { useLauncherGridStore } from '@/stores/launcher-grid';
 
 const { setDesktopIds } = useLauncherStore();
-const { pages, selectedPage } = storeToRefs(useLauncherUiStore());
+const { pages, selectedPage } = storeToRefs(useLauncherGridStore());
 
 const containerRef = useTemplateRef('containerRef');
 

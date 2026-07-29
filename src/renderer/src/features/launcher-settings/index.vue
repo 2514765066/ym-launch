@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:open="open">
+  <Dialog v-model:open="visible">
     <DialogContent
       :aria-describedby="undefined"
       class="max-w-none! w-200 h-150 p-0! overflow-hidden"
@@ -35,10 +35,14 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { selectedRoute } from './router.js';
 import { eventBus } from '@/utils/event-bus.js';
 
-const open = ref(false);
+const visible = ref(false);
 
 eventBus.on('settingDialog', (value = true) => {
-  open.value = value;
+  visible.value = value;
+});
+
+ipc.on('show', () => {
+  visible.value = false;
 });
 </script>
 

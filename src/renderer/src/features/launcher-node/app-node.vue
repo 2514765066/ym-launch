@@ -28,18 +28,20 @@
 
 <script setup lang="ts">
 import { X } from '@lucide/vue';
-import { useIsHover } from '@/hooks/hover';
+import { useIsHover } from '@/hooks/use-hover.js';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { AppNode } from '@shared/type';
 import BaseNode from './base-node.vue';
 import { useLauncherNodeStore } from '@/stores/launcher-node.js';
 import AppNodeIcon from '@/components/node-icon/app-node-icon.vue';
+import { useLauncherGridStore } from '@/stores/launcher-grid';
 
 const props = defineProps<{
   data: AppNode;
 }>();
 
-const { dragNodeId, status, nodeSize } = storeToRefs(useLauncherUiStore());
+const { dragNodeId, status } = storeToRefs(useLauncherUiStore());
+const { nodeSize } = storeToRefs(useLauncherGridStore());
 const { createGroupNode, removeAppNode, openAppNode } = useLauncherNodeStore();
 
 const [isHover, handleEnter, handleLeave] = useIsHover();

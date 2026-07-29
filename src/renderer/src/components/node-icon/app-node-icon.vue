@@ -24,6 +24,7 @@
 import { cn } from '@/lib/utils';
 import { useLauncherStore } from '@/stores/launcher';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { useLauncherGridStore } from '@/stores/launcher-grid';
 import { AppNode } from '@shared/type';
 import { ClassValue } from 'vue';
 
@@ -34,7 +35,8 @@ const props = defineProps<{
 }>();
 
 const { getNode } = useLauncherStore();
-const { dragNodeId, nodeSize } = storeToRefs(useLauncherUiStore());
+const { dragNodeId } = storeToRefs(useLauncherUiStore());
+const { nodeSize } = storeToRefs(useLauncherGridStore());
 
 const node = computed(() => {
   return getNode(props.id) as AppNode;

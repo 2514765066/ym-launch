@@ -40,10 +40,10 @@ import LauncherNode from '@/features/launcher-node/index.vue';
 import LauncherContextMenu from '@/features/launcher-context-menu/index.vue';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useLauncherStore } from '@/stores/launcher';
-import { useHover } from '@/hooks/hover';
+import { useHover } from '@/hooks/use-hover';
 import { eventBus } from '@/utils/event-bus.js';
 import { GroupNode } from '@shared/type';
-import { useSortable } from '@/hooks/sortable';
+import { useSortable } from '@/hooks/use-sortable';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useSettingStore } from '@/stores/setting';
@@ -139,6 +139,10 @@ eventBus.on('openGroupDialog', (id) => {
   groupId.value = id;
   hiddenDesktop.value = true;
   visible.value = true;
+});
+
+ipc.on('show', () => {
+  visible.value = false;
 });
 </script>
 

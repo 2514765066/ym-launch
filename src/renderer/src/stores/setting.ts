@@ -49,15 +49,12 @@ const createConfig = () => {
   };
 };
 
+const settingKey = `${appName}:setting`;
+
 export const useSettingStore = defineStore('setting', () => {
-  const config = useStorage(
-    `${appName}:setting`,
-    createConfig(),
-    localStorage,
-    {
-      mergeDefaults: true,
-    },
-  );
+  const config = useStorage(settingKey, createConfig(), localStorage, {
+    mergeDefaults: true,
+  });
 
   //重置
   const resetConfig = () => {

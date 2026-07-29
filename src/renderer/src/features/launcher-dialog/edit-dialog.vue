@@ -87,6 +87,10 @@ eventBus.on('openEditDialog', async (id) => {
   hiddenDesktop.value = true;
   visible.value = true;
 });
+
+ipc.on('show', () => {
+  visible.value = false;
+});
 </script>
 
 <style scoped lang="scss"></style>

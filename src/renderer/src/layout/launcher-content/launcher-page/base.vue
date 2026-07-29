@@ -17,13 +17,14 @@
 </template>
 
 <script setup lang="ts">
-import { useHover } from '@/hooks/hover';
+import { useHover } from '@/hooks/use-hover';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
+import { useLauncherGridStore } from '@/stores/launcher-grid';
 
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
 const { config } = storeToRefs(useSettingStore());
-const { prePage, nextPage } = useLauncherUiStore();
+const { prePage, nextPage } = useLauncherGridStore();
 
 //拖拽前一页
 const [handlePreEnter, handlePreLeave] = useHover(prePage);

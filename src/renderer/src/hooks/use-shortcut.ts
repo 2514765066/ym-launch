@@ -1,6 +1,6 @@
 import { useEventListener } from '@vueuse/core';
-import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
+import { useLauncherGridStore } from '@/stores/launcher-grid';
 
 const isShortcutPressed = (event: KeyboardEvent, shortcut: string) => {
   const pressedShortcut = [
@@ -17,7 +17,7 @@ const isShortcutPressed = (event: KeyboardEvent, shortcut: string) => {
 
 export const useShortcut = () => {
   const { config } = storeToRefs(useSettingStore());
-  const { prePage, nextPage } = useLauncherUiStore();
+  const { prePage, nextPage } = useLauncherGridStore();
 
   useEventListener('keydown', (event) => {
     if (isShortcutPressed(event, config.value.prePageShortcut)) {

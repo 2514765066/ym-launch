@@ -15,11 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import { useSortable } from '@/hooks/sortable';
+import { useSortable } from '@/hooks/use-sortable.js';
 import Base from './base.vue';
 import { SortableEvent } from 'sortablejs';
-import { useLauncherUiStore } from '@/stores/launcher-ui.js';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
+import { useLauncherGridStore } from '@/stores/launcher-grid';
 
 const props = defineProps<{
   page: number;
@@ -29,7 +30,8 @@ const emit = defineEmits<{
   end: [];
 }>();
 
-const { dragNodeId, maxNodeCount } = storeToRefs(useLauncherUiStore());
+const { dragNodeId } = storeToRefs(useLauncherUiStore());
+const { pageSize } = storeToRefs(useLauncherGridStore());
 const { config } = storeToRefs(useSettingStore());
 const { setDragNodeId } = useLauncherUiStore();
 
@@ -60,7 +62,7 @@ const handelChange = (e: SortableEvent) => {
   //从文件夹弹窗拖拽 -> 当前页是最后一个隐藏最后一个
   const kind = e.from.getAttribute('data-kind');
 
-  if (kind === 'group-dialog' && e.to.children.length >= maxNodeCount.value) {
+  if (kind === 'group-dialog' && e.to.children.length >= pageSize.value) {
     from.value = 'after';
     return;
   }
