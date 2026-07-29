@@ -4,6 +4,12 @@ import vue from '@vitejs/plugin-vue';
 import { version, name, productName } from './package.json';
 import tailwindcss from '@tailwindcss/vite';
 import autoImport from 'unplugin-auto-import/vite';
+import { createIpcChannelsPlugin } from 'plugin-electron-ipc/vite';
+
+const ipcOptions = {
+  input: ['src/main/ipc/index.ts'],
+  dts: 'src/renderer/plugin-electron-ipc.d.ts',
+};
 
 export default defineConfig({
   main: {
@@ -19,8 +25,11 @@ export default defineConfig({
         '@resources': resolve('resources'),
       },
     },
+    plugins: [createIpcChannelsPlugin(ipcOptions)],
   },
-  preload: {},
+  preload: {
+    plugins: [createIpcChannelsPlugin(ipcOptions)],
+  },
   renderer: {
     define: {
       __APP_VERSION__: JSON.stringify(version),

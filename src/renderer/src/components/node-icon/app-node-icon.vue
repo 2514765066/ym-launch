@@ -44,7 +44,7 @@ const node = computed(() => {
 const icon = ref('');
 
 watchEffect(async () => {
-  icon.value = await ipcRenderer.invoke('getIcon', node.value.path);
+  icon.value = await ipc.getIcon(node.value.path);
 });
 </script>
 

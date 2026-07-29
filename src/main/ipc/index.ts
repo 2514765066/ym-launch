@@ -1,5 +1,6 @@
 import { formatApps } from '../utils/app';
-import { app, BrowserWindow, dialog, IpcMainEvent, shell } from 'electron';
+import { app, BrowserWindow, dialog, shell } from 'electron';
+import type { IpcMainInvokeEvent } from 'electron';
 import getFileIcon from 'extract-file-icon';
 import sharp from 'sharp';
 import { readFile } from 'fs/promises';
@@ -21,7 +22,7 @@ export const getWallpaper = async () => {
 };
 
 //添加应用
-export const addAppNode = async ({ sender }: IpcMainEvent) => {
+export const addAppNode = async ({ sender }: IpcMainInvokeEvent) => {
   const bw = BrowserWindow.fromWebContents(sender);
 
   const result = await dialog.showOpenDialog(bw!, {
@@ -72,32 +73,28 @@ export const getIcon = async (_, path: string) => {
 };
 
 //隐藏应用
-export const hidden = ({ sender }: IpcMainEvent) => {
+export const hidden = ({ sender }: IpcMainInvokeEvent) => {
   const bw = BrowserWindow.fromWebContents(sender);
 
   bw?.hide();
 };
 
 // 打开文件
-export const openPath = ({ sender }: IpcMainEvent, path: string) => {
-  const bw = BrowserWindow.fromWebContents(sender);
-  bw?.hide();
+export const openPath = (_, path: string) => {
+  hidden(_);
 
   shell.openPath(path);
 };
 
 // 打开文件所在位置
-export const openPathInFolder = ({ sender }: IpcMainEvent, path: string) => {
-  const bw = BrowserWindow.fromWebContents(sender);
-  bw?.hide();
-
+export const openPathInFolder = (_, path: string) => {
+  hidden(_);
   shell.showItemInFolder(path);
 };
 
 // 打开网址
-export const openUrl = async ({ sender }: IpcMainEvent, url: string) => {
-  const bw = BrowserWindow.fromWebContents(sender);
-  bw?.hide();
+export const openUrl = async (_, url: string) => {
+  hidden(_);
 
   shell.openExternal(url);
 };

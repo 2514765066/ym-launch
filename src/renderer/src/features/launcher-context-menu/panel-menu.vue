@@ -18,7 +18,7 @@
   <ContextMenuSeparator />
 
   <ContextMenuGroup>
-    <ContextMenuItem @click="hidden">
+    <ContextMenuItem @click="handleClose">
       <Power />
 
       <span>关闭</span>
@@ -45,12 +45,16 @@ import { formatShortcut } from '@/utils/format';
 
 const { addAppNode } = useLauncherNodeStore();
 const launcherUiStore = useLauncherUiStore();
-const { hidden, setStatus } = launcherUiStore;
+const { setStatus } = launcherUiStore;
 const { config } = storeToRefs(useSettingStore());
 const { status } = storeToRefs(launcherUiStore);
 
 const toggleRemoveStatus = () => {
   setStatus(status.value === 'remove' ? 'normal' : 'remove');
+};
+
+const handleClose = () => {
+  ipc.hidden();
 };
 </script>
 

@@ -67,8 +67,8 @@ import MessageBox from '@/components/message-box';
 
 const { resetConfig } = useSettingStore();
 //反馈bug
-const handleIssue = async () => {
-  await ipcRenderer.invoke('openUrl', issueUrl);
+const handleIssue = () => {
+  ipc.openUrl(issueUrl);
 };
 
 //重置

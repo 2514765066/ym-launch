@@ -14,17 +14,17 @@ export const useLauncherNodeStore = defineStore('node', () => {
   } = useLauncherStore();
 
   //打开app
-  const openAppNode = async (id: string) => {
+  const openAppNode = (id: string) => {
     const node = getNode(id) as AppNode;
 
-    await ipcRenderer.invoke('openPath', node.path);
+    ipc.openPath(node.path);
   };
 
   //打开文件夹管理器
-  const openAppNodeInFolder = async (id: string) => {
+  const openAppNodeInFolder = (id: string) => {
     const node = getNode(id) as AppNode;
 
-    await ipcRenderer.invoke('openPathInFolder', node.path);
+    ipc.openPathInFolder(node.path);
   };
 
   //创建group节点
@@ -93,7 +93,7 @@ export const useLauncherNodeStore = defineStore('node', () => {
 
   //添加节点
   const addAppNode = async () => {
-    const res: AppNode[] = await ipcRenderer.invoke('addAppNode');
+    const res = await ipc.addAppNode();
 
     for (const item of res) {
       nodes.value[item.id] = item;

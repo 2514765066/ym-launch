@@ -2,10 +2,13 @@
 .codegraph
 .vscode
 build
+dist
 node_modules
 out
 
-
-auto-imports.d.ts
-dist
+## electron-updater开发文件
 dev-app-update.yml
+
+# dts文件
+auto-imports.d.ts
+plugin-electron-ipc.d.ts

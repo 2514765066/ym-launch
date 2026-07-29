@@ -6,7 +6,6 @@ import { createStartShortcut } from './hooks/start-shortcut';
 import { createTray } from './hooks/tray';
 import { productName } from '@shared/app-info';
 import { isForegroundWindowFullscreen } from 'ym-fullscreen-detector';
-import '@/ipc/register';
 import '@/utils/update';
 
 //单一实例锁

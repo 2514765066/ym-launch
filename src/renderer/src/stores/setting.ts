@@ -66,7 +66,7 @@ export const useSettingStore = defineStore('setting', () => {
 
   //设置启动角配置
   watchEffect(() => {
-    ipcRenderer.invoke('setHotCorner', {
+    ipc.setHotCorner({
       disabled: config.value.hotCornerDisabled,
       position: config.value.hotCornerPosition,
     });
@@ -74,12 +74,12 @@ export const useSettingStore = defineStore('setting', () => {
 
   //设置快捷键
   watchEffect(() => {
-    ipcRenderer.invoke('setStartShortcut', config.value.startShortcut);
+    ipc.setStartShortcut(config.value.startShortcut);
   });
 
   //设置开机自启动
   watchEffect(() => {
-    ipcRenderer.invoke('setOpenAtLogin', config.value.openAtLogin);
+    ipc.setOpenAtLogin(config.value.openAtLogin);
   });
 
   return {

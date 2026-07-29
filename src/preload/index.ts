@@ -1,10 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge } from 'electron';
+import { electronIpc } from 'plugin-electron-ipc';
 
-contextBridge.exposeInMainWorld('ipcRenderer', {
-  on(channel: string, handler: () => void) {
-    return ipcRenderer.on(channel, handler);
-  },
-  invoke(channel: string, ...args: any[]) {
-    return ipcRenderer.invoke(channel, ...args);
-  },
-});
+contextBridge.exposeInMainWorld('ipc', electronIpc);

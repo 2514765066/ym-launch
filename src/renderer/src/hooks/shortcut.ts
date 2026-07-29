@@ -17,7 +17,7 @@ const isShortcutPressed = (event: KeyboardEvent, shortcut: string) => {
 
 export const useShortcut = () => {
   const { config } = storeToRefs(useSettingStore());
-  const { prePage, nextPage, hidden } = useLauncherUiStore();
+  const { prePage, nextPage } = useLauncherUiStore();
 
   useEventListener('keydown', (event) => {
     if (isShortcutPressed(event, config.value.prePageShortcut)) {
@@ -31,7 +31,7 @@ export const useShortcut = () => {
     }
 
     if (isShortcutPressed(event, config.value.hiddenShortcut)) {
-      hidden();
+      ipc.hidden();
     }
   });
 };

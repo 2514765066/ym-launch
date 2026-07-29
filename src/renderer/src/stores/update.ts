@@ -25,10 +25,10 @@ export const useUpdateStore = defineStore('update', () => {
     status.value = 'checking';
 
     try {
-      const checkRes = await ipcRenderer.invoke('checkUpdate');
+      const res = await ipc.checkUpdate();
 
       //没有更新
-      if (checkRes == false) {
+      if (res == false) {
         status.value = 'update-not-available';
         return;
       }
@@ -41,27 +41,6 @@ export const useUpdateStore = defineStore('update', () => {
 
       console.error(e);
     }
-  };
-
-  //安装更新
-  const installUpdate = async () => {
-    if (!config.value.installUpdatePrompt) {
-      await ipcRenderer.invoke('installUpdate');
-      return;
-    }
-
-    //安装
-    const res = await MessageBox.confirm({
-      title: '安装新版本',
-      description: '新版本下载完成,是否安装?',
-    });
-
-    //不安装
-    if (!res) {
-      return;
-    }
-
-    await ipcRenderer.invoke('installUpdate');
   };
 
   //初始化
@@ -77,16 +56,34 @@ export const useUpdateStore = defineStore('update', () => {
   };
 
   //监听下载进度
-  ipcRenderer.on('download-progress', (_, percrent: number) => {
-    downloadProgress.value = Math.floor(percrent);
+  ipc.on('download-progress', (percent: number) => {
+    downloadProgress.value = Math.floor(percent);
 
-    if (percrent == 100) {
+    if (percent == 100) {
       status.value = 'downloaded';
     }
   });
 
   //下载完成
-  ipcRenderer.on('update-downloaded', installUpdate);
+  ipc.on('update-downloaded', async () => {
+    if (!config.value.installUpdatePrompt) {
+      await ipc.installUpdate();
+      return;
+    }
+
+    //安装
+    const res = await MessageBox.confirm({
+      title: '安装新版本',
+      description: '新版本下载完成,是否安装?',
+    });
+
+    //不安装
+    if (!res) {
+      return;
+    }
+
+    await ipc.installUpdate();
+  });
 
   init();
 
@@ -94,6 +91,5 @@ export const useUpdateStore = defineStore('update', () => {
     status,
     downloadProgress,
     checkUpdate,
-    installUpdate,
   };
 });

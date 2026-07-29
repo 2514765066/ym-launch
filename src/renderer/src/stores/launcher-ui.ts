@@ -119,14 +119,9 @@ export const useLauncherUiStore = defineStore('ui', () => {
     setSelectedPage(selectedPage.value + 1);
   };
 
-  //隐藏应用
-  const hidden = () => {
-    ipcRenderer.invoke('hidden');
-  };
-
   //获取壁纸
   const getWallpaper = async () => {
-    wallpaper.value = await ipcRenderer.invoke('getWallpaper');
+    wallpaper.value = await ipc.getWallpaper();
   };
 
   //添加删除css
@@ -145,7 +140,7 @@ export const useLauncherUiStore = defineStore('ui', () => {
   });
 
   //每次打开重新获取壁纸
-  ipcRenderer.on('show', () => {
+  ipc.on('show', () => {
     keyword.value = '';
     eventBus.emit('settingDialog', false);
     getWallpaper();
@@ -171,6 +166,5 @@ export const useLauncherUiStore = defineStore('ui', () => {
     nextPage,
     setDragNodeId,
     setStatus,
-    hidden,
   };
 });

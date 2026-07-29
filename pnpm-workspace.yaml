@@ -9,4 +9,6 @@ allowBuilds:
   ym-fullscreen-detector: false
 minimumReleaseAgeExclude:
   - ym-release@2.0.0
-  - ym-fullscreen-detector@0.1.0 || 0.1.1 || 0.1.2
+  - ym-fullscreen-detector@0.1.2
+  - plugin-electron-ipc@0.1.2
+
