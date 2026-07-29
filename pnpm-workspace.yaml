@@ -6,3 +6,7 @@ allowBuilds:
   extract-file-icon: false
   uiohook-napi: false
   vue-demi: true
+  ym-fullscreen-detector: false
+minimumReleaseAgeExclude:
+  - ym-release@2.0.0
+  - ym-fullscreen-detector@0.1.0 || 0.1.1 || 0.1.2

@@ -4,11 +4,6 @@ import getFileIcon from 'extract-file-icon';
 import sharp from 'sharp';
 import { readFile } from 'fs/promises';
 import { getWallpaper as _getWallpaper } from 'wallpaper';
-import {
-  checkUpdate as _checkUpdate,
-  downloadUpdate as _downloadUpdate,
-  installUpdate as _installUpdate,
-} from 'ym-publish';
 import { autoUpdater } from 'electron-updater';
 import { setHotCorner as _setHotCorner } from '../hooks/hot-corner';
 import { setStartShortcut as _setStartShortcut } from '../hooks/start-shortcut';

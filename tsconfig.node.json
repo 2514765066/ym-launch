@@ -1,6 +1,6 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
-  "include": ["vite.config.*", "src/**/*"],
+  "include": ["vite.config.*", "src/**/*", "scripts/**/*"],
   "exclude": ["src/renderer"],
   "compilerOptions": {
     "composite": true,
