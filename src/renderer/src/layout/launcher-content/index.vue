@@ -16,6 +16,7 @@ import LauncherPage from './launcher-page/index.vue';
 import LauncherNode from '@/features/launcher-node/index.vue';
 import { useLauncherStore } from '@/stores/launcher';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { matchKeyword } from '@/utils/search';
 
 const { desktopIds, nodes } = storeToRefs(useLauncherStore());
 const { setDesktopIds } = useLauncherStore();
@@ -29,19 +30,11 @@ const pageIds = computed(() => {
   if (keyword.value) {
     const result: string[][] = [];
 
-    // 把 jy 转成 j.*y
-    const regex = new RegExp(
-      keyword.value
-        .replaceAll("\'", '')
-        .split('')
-        .map((char) => `${char}.*`)
-        .join('')
-        .slice(0, -2),
-      'i',
-    );
-
+    //按搜索词筛选出的节点
     const filterNodes = Object.values(nodes.value).filter(
-      (node) => regex.test(node.keyword) || regex.test(node.label),
+      (node) =>
+        matchKeyword(node.keyword, keyword.value) ||
+        matchKeyword(node.label, keyword.value),
     );
 
     for (let i = 0; i < filterNodes.length / maxNodeCount.value; i++) {
