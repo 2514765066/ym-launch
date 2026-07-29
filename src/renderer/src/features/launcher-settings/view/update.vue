@@ -16,6 +16,18 @@
           <Switch v-model="config.autoUpdate" />
         </ItemActions>
       </Item>
+
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>安装提示弹窗</ItemTitle>
+
+          <ItemDescription>开启后，安装更新前会弹出确认提示</ItemDescription>
+        </ItemContent>
+
+        <ItemActions>
+          <Switch v-model="config.installUpdatePrompt" />
+        </ItemActions>
+      </Item>
     </ItemGroup>
 
     <ItemGroup>

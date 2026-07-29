@@ -45,6 +45,11 @@ export const useUpdateStore = defineStore('update', () => {
 
   //安装更新
   const installUpdate = async () => {
+    if (!config.value.installUpdatePrompt) {
+      await ipcRenderer.invoke('installUpdate');
+      return;
+    }
+
     //安装
     const res = await MessageBox.confirm({
       title: '安装新版本',

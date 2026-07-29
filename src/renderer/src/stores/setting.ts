@@ -23,6 +23,9 @@ const createConfig = () => {
     //自动更新
     autoUpdate: false,
 
+    //安装更新前是否显示确认弹窗
+    installUpdatePrompt: false,
+
     //开机自启动
     openAtLogin: true,
 
