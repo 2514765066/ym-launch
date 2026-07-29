@@ -17,14 +17,14 @@ export const useLauncherNodeStore = defineStore('node', () => {
   const openAppNode = async (id: string) => {
     const node = getNode(id) as AppNode;
 
-    api.openPath(node.path);
+    await ipcRenderer.invoke('openPath', node.path);
   };
 
   //打开文件夹管理器
   const openAppNodeInFolder = async (id: string) => {
     const node = getNode(id) as AppNode;
 
-    api.openPathInFolder(node.path);
+    await ipcRenderer.invoke('openPathInFolder', node.path);
   };
 
   //创建group节点

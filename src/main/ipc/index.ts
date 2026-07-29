@@ -1,5 +1,5 @@
 import { formatApps } from '../utils/app';
-import { app, BrowserWindow, dialog, IpcMainEvent } from 'electron';
+import { app, BrowserWindow, dialog, IpcMainEvent, shell } from 'electron';
 import getFileIcon from 'extract-file-icon';
 import sharp from 'sharp';
 import { readFile } from 'fs/promises';
@@ -76,6 +76,30 @@ export const hidden = ({ sender }: IpcMainEvent) => {
   const bw = BrowserWindow.fromWebContents(sender);
 
   bw?.hide();
+};
+
+// 打开文件
+export const openPath = ({ sender }: IpcMainEvent, path: string) => {
+  const bw = BrowserWindow.fromWebContents(sender);
+  bw?.hide();
+
+  shell.openPath(path);
+};
+
+// 打开文件所在位置
+export const openPathInFolder = ({ sender }: IpcMainEvent, path: string) => {
+  const bw = BrowserWindow.fromWebContents(sender);
+  bw?.hide();
+
+  shell.showItemInFolder(path);
+};
+
+// 打开网址
+export const openUrl = async ({ sender }: IpcMainEvent, url: string) => {
+  const bw = BrowserWindow.fromWebContents(sender);
+  bw?.hide();
+
+  shell.openExternal(url);
 };
 
 //检查更新

@@ -104,8 +104,8 @@ const updateLabel = computed(() => {
 });
 
 //查看更新内容
-const handleUpdateContent = () => {
-  api.openUrl(updateContentUrl);
+const handleUpdateContent = async () => {
+  await ipcRenderer.invoke('openUrl', updateContentUrl);
 };
 </script>
 
