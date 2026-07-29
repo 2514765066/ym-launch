@@ -6,8 +6,7 @@
       <input
         class="size-full outline-none"
         placeholder="搜索应用"
-        :value="keyword"
-        @input="handleChange"
+        v-model.trim="keyword"
         :spellcheck="false"
       />
     </div>
@@ -33,21 +32,6 @@ import Tooltip from '@/components/tooltip.vue';
 
 const { keyword } = storeToRefs(useLauncherUiStore());
 const { addAppNode } = useLauncherNodeStore();
-const { setStatus } = useLauncherUiStore();
-
-const handleChange = (e: Event) => {
-  const el = e.target as HTMLInputElement;
-
-  keyword.value = el.value.trim();
-
-  //如果有内容就是搜索
-  if (keyword.value !== '') {
-    setStatus('search');
-    return;
-  }
-
-  setStatus('normal');
-};
 
 const handleSetting = () => {
   eventBus.emit('settingDialog');

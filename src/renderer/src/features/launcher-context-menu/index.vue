@@ -2,7 +2,7 @@
   <ContextMenu>
     <ContextMenuTrigger
       as-child
-      :disabled="status == 'search'"
+      :disabled="isSearching"
       @contextmenu.capture="handleContextMenu"
     >
       <slot></slot>
@@ -26,7 +26,7 @@ import {
 import { menuMap } from '.';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 
-const { status } = storeToRefs(useLauncherUiStore());
+const { isSearching } = storeToRefs(useLauncherUiStore());
 
 export type MenuKind = 'app' | 'group' | 'panel' | null;
 

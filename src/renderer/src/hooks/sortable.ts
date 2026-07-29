@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, type Ref, watch } from 'vue';
+import type { Ref } from 'vue';
 import Sortable, { type Options } from 'sortablejs';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
@@ -15,12 +15,20 @@ const commonOptions: Options = {
 };
 
 export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
-  // 布局配置仓库
-  const LauncherUiStore = useLauncherUiStore();
+  // 是否处于搜索状态
+  const { isSearching, status } = storeToRefs(useLauncherUiStore());
   const { config } = storeToRefs(useSettingStore());
 
   // Sortable 实例
   let sortable: Sortable | null = null;
+
+  const getDisabled = () => {
+    return status.value !== 'normal' || isSearching.value;
+  };
+
+  const getSwapThreshold = () => {
+    return config.value.iconZoom / 100;
+  };
 
   //销毁实例
   const destroySortable = () => {
@@ -39,21 +47,20 @@ export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
     sortable = Sortable.create(el.value, {
       ...commonOptions,
       ...options,
+      swapThreshold: getSwapThreshold(),
+      disabled: getDisabled(),
     });
   };
 
   // 同步图标缩放对应的交换阈值
   watchEffect(() => {
-    sortable?.option('swapThreshold', config.value.iconZoom / 100);
+    sortable?.option('swapThreshold', getSwapThreshold());
   });
 
-  //禁用拖拽
-  watch(
-    () => LauncherUiStore.status,
-    (status) => {
-      sortable?.option('disabled', status != 'normal');
-    },
-  );
+  //根据编辑和搜索状态禁用拖拽
+  watchEffect(() => {
+    sortable?.option('disabled', getDisabled());
+  });
 
   onMounted(createSortable);
   onUnmounted(destroySortable);

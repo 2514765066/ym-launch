@@ -3,7 +3,7 @@ import { matchKeyword } from '@/utils/search';
 import { useLauncherStore } from './launcher';
 import { useSettingStore } from './setting';
 
-type Status = 'normal' | 'remove' | 'search';
+type Status = 'normal' | 'remove';
 
 export const useLauncherUiStore = defineStore('ui', () => {
   const launcherStore = useLauncherStore();
@@ -18,6 +18,11 @@ export const useLauncherUiStore = defineStore('ui', () => {
 
   //搜索关键字
   const keyword = ref('');
+
+  //是否处于搜索状态
+  const isSearching = computed(() => {
+    return Boolean(keyword.value);
+  });
 
   //选中的节点id
   const dragNodeId = ref<string | null>(null);
@@ -151,6 +156,7 @@ export const useLauncherUiStore = defineStore('ui', () => {
   return {
     status,
     keyword,
+    isSearching,
     dragNodeId,
     selectedPage,
     maxNodeCount,

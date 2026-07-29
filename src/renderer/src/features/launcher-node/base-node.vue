@@ -31,7 +31,7 @@ const emits = defineEmits<{
   click: [];
 }>();
 
-const { status } = storeToRefs(useLauncherUiStore());
+const { isSearching } = storeToRefs(useLauncherUiStore());
 const { setStatus } = useLauncherUiStore();
 
 let time = 0;
@@ -51,7 +51,7 @@ const handleMouseup = () => {
 };
 
 const handleLongPress = () => {
-  if (status.value == 'search') {
+  if (isSearching.value) {
     return;
   }
 
