@@ -4,7 +4,7 @@
       class="w-fit p-2.5 flex gap-3 rounded-full transition-all"
       :class="{
         glass: isHover,
-        'opacity-0': maxPageCount == 1,
+        'opacity-0': pageCount == 1,
       }"
       @mouseenter="handleEnter"
       @mouseleave="handleLeave"
@@ -14,7 +14,7 @@
         :class="{
           'bg-foreground!': selectedPage == index,
         }"
-        v-for="(_, index) in maxPageCount"
+        v-for="(_, index) in pageCount"
         :key="index"
         @click="setSelectedPage(index)"
       ></div>
@@ -26,7 +26,7 @@
 import { useIsHover } from '@/hooks/hover';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 
-const { selectedPage, maxPageCount } = storeToRefs(useLauncherUiStore());
+const { selectedPage, pageCount } = storeToRefs(useLauncherUiStore());
 const { setSelectedPage } = useLauncherUiStore();
 
 const [isHover, handleEnter, handleLeave] = useIsHover(0);
