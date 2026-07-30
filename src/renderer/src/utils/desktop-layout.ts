@@ -135,16 +135,44 @@ export const getResizedPageIndex = (
 
 // 将拖拽产生的溢出节点移动到下一页或新页面
 export const resolveDraggedPageOverflow = <T>(
-  pages: T[][],
-  pageSize: number,
+  pages: readonly (readonly T[])[],
+  maxLength: number,
 ): T[][] => {
-  return pages.flatMap((page) => {
-    if (page.length <= pageSize) {
-      return [page];
+  if (!Number.isInteger(maxLength) || maxLength <= 0) {
+    throw new RangeError('maxLength 必须是正整数');
+  }
+
+  const workingPages = pages.map((page) => [...page]);
+  const result: T[][] = [];
+
+  workingPages.forEach((page, index) => {
+    if (page.length <= maxLength) {
+      result.push(page);
+      return;
     }
 
-    return chunkDesktopItems(page, pageSize);
+    //溢出的部分
+    const overflow = page.splice(maxLength);
+
+    //添加没有溢出的部分
+    result.push(page);
+
+    //下一页
+    const nextPage = workingPages[index + 1];
+
+    //下一页可以放下溢出的部分
+    if (nextPage && nextPage.length + overflow.length <= maxLength) {
+      workingPages[index + 1] = [...nextPage, ...overflow];
+      return;
+    }
+
+    //放不下溢出的部分
+    for (let start = 0; start < overflow.length; start += maxLength) {
+      result.push(overflow.slice(start, start + maxLength));
+    }
   });
+
+  return result;
 };
 
 // 查找节点在一维空槽布局中的页面位置
