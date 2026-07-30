@@ -4,7 +4,11 @@
       <slot></slot>
     </TooltipTrigger>
 
-    <TooltipContent class="dark">
+    <TooltipContent
+      :class="{
+        dark: isDark,
+      }"
+    >
       {{ content }}
 
       <Kbd class="ml-2" v-if="shortcut">{{ shortcut }}</Kbd>
@@ -20,10 +24,16 @@ import {
 } from '@/components/ui/tooltip';
 import Kbd from '@/components/ui/kbd/Kbd.vue';
 
-defineProps<{
-  content?: string;
-  shortcut?: string;
-}>();
+withDefaults(
+  defineProps<{
+    content?: string;
+    shortcut?: string;
+    isDark?: boolean;
+  }>(),
+  {
+    isDark: true,
+  },
+);
 </script>
 
 <style scoped lang="scss"></style>

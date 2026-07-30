@@ -1,11 +1,11 @@
 <template>
   <TooltipProvider>
     <Layout />
-  </TooltipProvider>
 
-  <LauncherGroupDialog />
-  <LauncherEditDialog />
-  <LauncherSetting />
+    <LauncherGroupDialog />
+    <LauncherEditDialog />
+    <LauncherSetting />
+  </TooltipProvider>
 
   <Toaster />
 </template>

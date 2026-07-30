@@ -3,7 +3,8 @@
     :class="{
       'px-2': !isRecording,
     }"
-    :variant="isRecording ? 'outline' : 'ghost'"
+    variant="outline"
+    size="sm"
     @click="handleClick"
     @keydown.stop.prevent="handleShortcutKeydown"
     @blur="handleBlur"
@@ -12,26 +13,29 @@
 
     <span class="text-muted-foreground" v-else-if="!model">暂无快捷键</span>
 
-    <KbdGroup v-else>
-      <template v-for="(key, index) in shortcutParts" :key="key">
-        <Kbd>
-          <span v-if="typeof key === 'string'">
-            {{ key }}
-          </span>
+    <template v-for="(key, index) in shortcutParts" :key="key" v-else>
+      <span v-if="typeof key === 'string'">
+        {{ key }}
+      </span>
 
-          <component :is="key" v-else />
-        </Kbd>
+      <component :is="key" v-else />
 
-        <span v-if="index < shortcutParts.length - 1">+</span>
-      </template>
-    </KbdGroup>
+      <span v-if="index < shortcutParts.length - 1">+</span>
+    </template>
   </Button>
+
+  <Tooltip :is-dark="false" content="清空快捷键">
+    <Button variant="outline" size="icon-sm" @click="clearShortcut">
+      <CircleX class="text-destructive-foreground" />
+    </Button>
+  </Tooltip>
 </template>
 
 <script setup lang="ts">
-import { Kbd, KbdGroup } from '@/components/ui/kbd';
 import { Button } from '@/components/ui/button';
 import { formatShortcut } from '@/utils/format';
+import { CircleX } from '@lucide/vue';
+import Tooltip from './tooltip.vue';
 
 const model = defineModel<string>({
   required: true,
@@ -85,6 +89,11 @@ const handleShortcutKeydown = async (event: KeyboardEvent) => {
   model.value = result.join('+');
 
   isRecording.value = false;
+};
+
+//清空快捷键
+const clearShortcut = () => {
+  model.value = '';
 };
 </script>
 
