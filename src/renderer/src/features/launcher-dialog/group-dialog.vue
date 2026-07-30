@@ -23,7 +23,7 @@
           @pointerenter="dragNodeId && handleEnter()"
           @pointerleave="dragNodeId && handleLeave()"
         >
-          <template v-for="id in groupNode.children" :key="id">
+          <template v-for="id in groupNode?.children" :key="id">
             <div class="w-full flex-center aspect-square" :data-id="id">
               <LauncherNode :id="id" />
             </div>
@@ -43,7 +43,6 @@ import { useNodeStore } from '@/stores/node';
 import { useCoreStore } from '@/stores/core';
 import { useHover } from '@/hooks/use-hover';
 import { eventBus } from '@/utils/event-bus.js';
-import { GroupNode } from '@shared/type';
 import { useSortable } from '@/hooks/use-sortable';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
@@ -64,7 +63,10 @@ const visible = ref(false);
 
 // 当前弹窗对应的有效分组
 const groupNode = computed(() => {
-  return getNode(groupId.value) as GroupNode;
+  // 当前弹窗关联的节点
+  const node = getNode(groupId.value);
+
+  return node?.kind === 'group' ? node : undefined;
 });
 
 const [handleLeave, handleEnter] = useHover(() => {
@@ -97,7 +99,10 @@ const handleRemove = (e: SortableEvent) => {
 
   removeAppFromGroup(groupId.value, appId);
 
-  if (groupNode.value?.children.length > 1) {
+  // 移除应用后的有效分组
+  const group = groupNode.value;
+
+  if (!group || group.children.length > 1) {
     return;
   }
 
@@ -122,14 +127,20 @@ watch(visible, async (value) => {
   createSortable();
 });
 
-// 分组被拆散后关闭弹窗
-watch(groupNode, (node) => {
-  if (node || !visible.value) {
-    return;
-  }
+// 分组被拆散后同步关闭弹窗
+watch(
+  groupNode,
+  (node) => {
+    if (node || !visible.value) {
+      return;
+    }
 
-  visible.value = false;
-});
+    visible.value = false;
+  },
+  {
+    flush: 'sync',
+  },
+);
 
 eventBus.on('openGroupDialog', (id) => {
   groupId.value = id;
