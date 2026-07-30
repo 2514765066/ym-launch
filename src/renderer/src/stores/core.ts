@@ -85,17 +85,31 @@ export const useCoreStore = defineStore('core', () => {
     delete nodes.value[group.id];
   };
 
-  // 添加应用节点并跳转到最后一个新增节点所在页
+  // 保存导入节点并跳转到最后一个新增节点所在页
+  const appendImportedNodes = (importedNodes: AppNode[]) => {
+    if (importedNodes.length === 0) {
+      return;
+    }
+
+    appendNodes(importedNodes);
+    appendDesktopIds(importedNodes.map((node) => node.id));
+    setSelectedPage((_, max) => max - 1);
+  };
+
+  // 添加应用节点
   const addAppNode = async () => {
     // 用户选择后新增的应用节点
-    const nodes = await ipc.addAppNode();
+    const importedNodes = await ipc.addAppNode();
 
-    //添加节点和桌面id
-    appendNodes(nodes);
-    appendDesktopIds(nodes.map((node) => node.id));
+    appendImportedNodes(importedNodes);
+  };
 
-    //跳转到最后一页
-    setSelectedPage((_, max) => max - 1);
+  // 添加文件夹应用节点
+  const addFolderNode = async () => {
+    // 用户选择后新增的文件夹节点
+    const importedNodes = await ipc.addFolderNode();
+
+    appendImportedNodes(importedNodes);
   };
 
   // 添加应用到已有分组
@@ -157,6 +171,7 @@ export const useCoreStore = defineStore('core', () => {
     breakGroupNode,
     removeGroupNode,
     addAppNode,
+    addFolderNode,
     moveAppToGroup,
     removeAppNode,
     renameNode,

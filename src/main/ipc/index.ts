@@ -1,4 +1,4 @@
-import { formatApps } from '../utils/app';
+import { formatApps, formatFolders } from '../utils/app';
 import { app, BrowserWindow, dialog, shell } from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
 import getFileIcon from 'extract-file-icon';
@@ -41,6 +41,24 @@ export const addAppNode = async ({ sender }: IpcMainInvokeEvent) => {
   }
 
   return formatApps(result.filePaths);
+};
+
+// 添加文件夹
+export const addFolderNode = async ({ sender }: IpcMainInvokeEvent) => {
+  // 发起文件夹选择的窗口
+  const bw = BrowserWindow.fromWebContents(sender);
+
+  // 用户选择的文件夹
+  const result = await dialog.showOpenDialog(bw!, {
+    title: '添加文件夹',
+    properties: ['openDirectory', 'multiSelections'],
+  });
+
+  if (result.canceled) {
+    return [];
+  }
+
+  return formatFolders(result.filePaths);
 };
 
 // 已处理图标的内存缓存

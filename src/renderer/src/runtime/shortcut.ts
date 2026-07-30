@@ -1,5 +1,4 @@
 import { useEventListener } from '@vueuse/core';
-import { useCoreStore } from '@/stores/core';
 import { useSettingStore } from '@/stores/setting';
 import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 import { eventBus } from '@/utils/event-bus';
@@ -26,8 +25,6 @@ export const useShortcut = () => {
   const { config } = storeToRefs(useSettingStore());
   // 启动台页面切换操作
   const { setSelectedPage } = useLauncherLayoutStore();
-  // 启动台应用导入操作
-  const { addAppNode } = useCoreStore();
 
   // 处理启动台快捷键
   const handleShortcutKeydown = (event: KeyboardEvent) => {
@@ -35,28 +32,26 @@ export const useShortcut = () => {
       return;
     }
 
-    if (event.ctrlKey && event.key.toLowerCase() === 'o') {
-      event.preventDefault();
-      addAppNode();
-      return;
-    }
-
+    //设置
     if (event.ctrlKey && event.key === ',') {
       event.preventDefault();
       eventBus.emit('settingDialog');
       return;
     }
 
+    //上一页
     if (isShortcutPressed(event, config.value.prePageShortcut)) {
       setSelectedPage((currentPage) => currentPage - 1);
       return;
     }
 
+    //下一页
     if (isShortcutPressed(event, config.value.nextPageShortcut)) {
       setSelectedPage((currentPage) => currentPage + 1);
       return;
     }
 
+    //隐藏
     if (isShortcutPressed(event, config.value.hiddenShortcut)) {
       ipc.hidden();
     }
