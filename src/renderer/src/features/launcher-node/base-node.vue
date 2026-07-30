@@ -3,7 +3,7 @@
     <div
       class="flex-center flex-col"
       :data-id="data.id"
-      :data-kind="data.kind"
+      :data-menu-kind="data.kind"
       v-on-long-press="handleLongPress"
       @mousedown.left="handleMousedown"
       @mouseup.left="handleMouseup"

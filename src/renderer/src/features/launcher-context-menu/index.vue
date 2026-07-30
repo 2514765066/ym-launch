@@ -37,14 +37,14 @@ const nodeId = ref<string | null>(null);
 const handleContextMenu = (event: MouseEvent) => {
   const element = event.target as HTMLElement;
 
-  const target = element.closest('[data-kind]') as HTMLElement;
+  const target = element.closest('[data-menu-kind]') as HTMLElement;
 
   if (!target) {
     event.preventDefault();
     return;
   }
 
-  const kind = target.dataset.kind as MenuKind;
+  const kind = target.dataset.menuKind as MenuKind;
   const id = target.dataset.id as string;
 
   nodeId.value = id;

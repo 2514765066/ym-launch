@@ -6,7 +6,7 @@
         :class="{
           'opacity-0': hiddenDesktop,
         }"
-        data-kind="panel"
+        data-menu-kind="panel"
         @click="handleClick"
       >
         <LauncherHeader />
