@@ -41,15 +41,15 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { eventBus } from '@/utils/event-bus';
-import { useLauncherStore } from '@/stores/launcher';
-import { useLauncherNodeStore } from '@/stores/launcher-node';
+import { useNodeStore } from '@/stores/node';
+import { useCoreStore } from '@/stores/core';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import GroupNodeIcon from '@/components/node-icon/group-node-icon.vue';
 import AppNodeIcon from '@/components/node-icon/app-node-icon.vue';
 
 const { hiddenDesktop } = storeToRefs(useLauncherUiStore());
-const { getNode, isAppNode, isGroupNode } = useLauncherStore();
-const { renameNode } = useLauncherNodeStore();
+const { getNode, isAppNode, isGroupNode } = useNodeStore();
+const { renameNode } = useCoreStore();
 
 //组id
 const nodeId = ref('');

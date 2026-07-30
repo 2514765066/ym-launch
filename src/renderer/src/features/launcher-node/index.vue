@@ -7,13 +7,13 @@
 <script setup lang="ts">
 import GroupNode from './group-node.vue';
 import AppNode from './app-node.vue';
-import { useLauncherStore } from '@/stores/launcher';
+import { useNodeStore } from '@/stores/node';
 
 const props = defineProps<{
   id: string;
 }>();
 
-const { getNode } = useLauncherStore();
+const { getNode } = useNodeStore();
 
 const node = computed(() => {
   return getNode(props.id);

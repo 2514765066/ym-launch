@@ -9,7 +9,7 @@
       <DialogTitle
         class="w-full absolute top-0 translate-y-[calc(-100%-32px)] text-center text-2xl font-normal"
       >
-        {{ groupNode.label }}
+        {{ groupNode?.label }}
       </DialogTitle>
 
       <LauncherContextMenu>
@@ -39,20 +39,20 @@ import { SortableEvent } from 'sortablejs';
 import LauncherNode from '@/features/launcher-node/index.vue';
 import LauncherContextMenu from '@/features/launcher-context-menu/index.vue';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { useLauncherStore } from '@/stores/launcher';
+import { useNodeStore } from '@/stores/node';
+import { useCoreStore } from '@/stores/core';
 import { useHover } from '@/hooks/use-hover';
 import { eventBus } from '@/utils/event-bus.js';
 import { GroupNode } from '@shared/type';
 import { useSortable } from '@/hooks/use-sortable';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
-import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useSettingStore } from '@/stores/setting';
 
 const { config } = storeToRefs(useSettingStore());
-const { getNode, removeAppFromGroup, setGroupChildren } = useLauncherStore();
+const { getNode, removeAppFromGroup, setGroupChildren } = useNodeStore();
+const { breakGroupNode } = useCoreStore();
 const { dragNodeId, hiddenDesktop } = storeToRefs(useLauncherUiStore());
 const { setDragNodeId } = useLauncherUiStore();
-const { breakGroupNode } = useLauncherNodeStore();
 
 const contentRef = useTemplateRef('contentRef');
 
@@ -74,10 +74,6 @@ const [handleLeave, handleEnter] = useHover(() => {
 //拖拽开始
 const handleStart = (e: SortableEvent) => {
   setDragNodeId(e.item.dataset.id);
-
-  if (groupNode.value.children.length !== 1) {
-    return;
-  }
 };
 
 //拖拽结束
@@ -101,7 +97,7 @@ const handleRemove = (e: SortableEvent) => {
 
   removeAppFromGroup(groupId.value, appId);
 
-  if (groupNode.value.children.length > 1) {
+  if (groupNode.value?.children.length > 1) {
     return;
   }
 

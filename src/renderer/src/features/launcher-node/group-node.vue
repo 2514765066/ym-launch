@@ -17,23 +17,23 @@
 
 <script setup lang="ts">
 import { useIsHover } from '@/hooks/use-hover.js';
-import { useLauncherStore } from '@/stores/launcher';
+import { useNodeStore } from '@/stores/node';
+import { useCoreStore } from '@/stores/core';
 import { eventBus } from '@/utils/event-bus';
 import { GroupNode } from '@shared/type';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import BaseNode from './base-node.vue';
-import { useLauncherNodeStore } from '@/stores/launcher-node';
+import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 import GroupNodeIcon from '@/components/node-icon/group-node-icon.vue';
-import { useLauncherGridStore } from '@/stores/launcher-grid';
 
 const props = defineProps<{
   data: GroupNode;
 }>();
 
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
-const { getGroupChildren } = useLauncherStore();
-const { pageSize } = storeToRefs(useLauncherGridStore());
-const { moveAppToGroup } = useLauncherNodeStore();
+const { getGroupChildren } = useNodeStore();
+const { moveAppToGroup } = useCoreStore();
+const { pageSize } = storeToRefs(useLauncherLayoutStore());
 
 const [isHover, handleEnter, handleLeave] = useIsHover();
 

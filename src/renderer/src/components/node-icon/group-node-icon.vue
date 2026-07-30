@@ -19,13 +19,13 @@
 <script setup lang="ts">
 import { GroupNode } from '@shared/type';
 import AppNodeIcon from './app-node-icon.vue';
-import { useLauncherGridStore } from '@/stores/launcher-grid';
+import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 
 const props = defineProps<{
   data: GroupNode;
 }>();
 
-const { nodeSize } = storeToRefs(useLauncherGridStore());
+const { nodeSize } = storeToRefs(useLauncherLayoutStore());
 </script>
 
 <style scoped lang="scss">

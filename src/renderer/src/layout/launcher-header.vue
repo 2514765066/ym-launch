@@ -23,34 +23,16 @@
 </template>
 
 <script setup lang="ts">
-import { useLauncherNodeStore } from '@/stores/launcher-node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { eventBus } from '@/utils/event-bus';
-import { useEventListener } from '@vueuse/core';
 import { Search, Settings } from '@lucide/vue';
 import Tooltip from '@/components/tooltip.vue';
 
 const { keyword } = storeToRefs(useLauncherUiStore());
-const { addAppNode } = useLauncherNodeStore();
 
 const handleSetting = () => {
   eventBus.emit('settingDialog');
 };
-
-useEventListener('keydown', (e) => {
-  if (!e.ctrlKey) return;
-
-  switch (e.key.toLowerCase()) {
-    case 'o':
-      e.preventDefault();
-      addAppNode();
-      return;
-    case ',':
-      e.preventDefault();
-      handleSetting();
-      return;
-  }
-});
 </script>
 
 <style scoped lang="scss"></style>

@@ -24,11 +24,11 @@
 
 <script setup lang="ts">
 import { useIsHover } from '@/hooks/use-hover';
-import { useLauncherGridStore } from '@/stores/launcher-grid';
+import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 
-const launcherGridStore = useLauncherGridStore();
-const { selectedPage, pageCount } = storeToRefs(launcherGridStore);
-const { setSelectedPage } = launcherGridStore;
+const launcherLayoutStore = useLauncherLayoutStore();
+const { selectedPage, pageCount } = storeToRefs(launcherLayoutStore);
+const { setSelectedPage } = launcherLayoutStore;
 
 const [isHover, handleEnter, handleLeave] = useIsHover(0);
 </script>

@@ -37,13 +37,13 @@ import {
   ContextMenuSeparator,
   ContextMenuShortcut,
 } from '@/components/ui/context-menu';
-import { useLauncherNodeStore } from '@/stores/launcher-node';
+import { useCoreStore } from '@/stores/core';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
 import { ArrowDownToLine, Power, SquarePen } from '@lucide/vue';
 import { formatShortcut } from '@/utils/format';
 
-const { addAppNode } = useLauncherNodeStore();
+const { addAppNode } = useCoreStore();
 const launcherUiStore = useLauncherUiStore();
 const { setStatus } = launcherUiStore;
 const { config } = storeToRefs(useSettingStore());

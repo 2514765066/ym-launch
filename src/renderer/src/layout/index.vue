@@ -27,15 +27,13 @@ import { useLauncherUiStore } from '@/stores/launcher-ui.js';
 import LauncherFooter from './launcher-footer.vue';
 import { useEventListener } from '@vueuse/core';
 import LauncherHeader from './launcher-header.vue';
-import { useShortcut } from '@/hooks/use-shortcut.js';
-import { useRuntimeStore } from '@/stores/runtime';
-import { useLauncherGridStore } from '@/stores/launcher-grid';
+import { useRuntimeStore } from '@/runtime';
+import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 
-useShortcut();
 useRuntimeStore();
 const { hiddenDesktop } = storeToRefs(useLauncherUiStore());
 const { setStatus } = useLauncherUiStore();
-const { prePage, nextPage } = useLauncherGridStore();
+const { setSelectedPage } = useLauncherLayoutStore();
 
 const handleClick = () => {
   setStatus('normal');
@@ -43,12 +41,12 @@ const handleClick = () => {
 
 useEventListener('wheel', (e) => {
   if (e.deltaY < 0) {
-    prePage();
+    setSelectedPage((c) => c - 1);
     return;
   }
 
   if (e.deltaY > 0) {
-    nextPage();
+    setSelectedPage((c) => c + 1);
     return;
   }
 });

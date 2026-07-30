@@ -1,6 +1,9 @@
-import { useLauncherUiStore } from './launcher-ui';
+import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { useClass } from './class';
+import { useShortcut } from './shortcut';
 
 export const useRuntimeStore = defineStore('runtime', () => {
+  // 启动台界面操作
   const { setWallpaper } = useLauncherUiStore();
 
   //获取壁纸
@@ -12,4 +15,6 @@ export const useRuntimeStore = defineStore('runtime', () => {
   ipc.on('show', refreshWallpaper);
 
   refreshWallpaper();
+  useClass();
+  useShortcut();
 });

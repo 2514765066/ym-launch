@@ -14,25 +14,40 @@
 <script setup lang="ts">
 import LauncherPage from './launcher-page/index.vue';
 import LauncherNode from '@/features/launcher-node/index.vue';
-import { useLauncherStore } from '@/stores/launcher';
-import { useLauncherGridStore } from '@/stores/launcher-grid';
+import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 
-const { setDesktopIds } = useLauncherStore();
-const { pages, selectedPage } = storeToRefs(useLauncherGridStore());
+// 启动台布局状态
+const launcherLayoutStore = useLauncherLayoutStore();
 
+// 当前页面列表与选中页
+const { pages, selectedPage } = storeToRefs(launcherLayoutStore);
+
+// 拖拽写回和节点页面选择能力
+const { setDraggedDesktopPages } = launcherLayoutStore;
+
+// 启动台所有页面的容器
 const containerRef = useTemplateRef('containerRef');
 
-//处理结束
-const handleEnd = async () => {
+// 处理拖拽结束后的逐页布局写回
+const handleEnd = () => {
   if (!containerRef.value) {
     return;
   }
 
-  const ids = Array.from(
-    containerRef.value.querySelectorAll<HTMLElement>('[data-id]'),
-  ).map((item) => item.dataset.id!);
+  //所有页面元素
+  const pageElements =
+    containerRef.value.querySelectorAll<HTMLElement>('[data-page]');
 
-  setDesktopIds(ids);
+  //页面中的子元素
+  const desktopPages = Array.from(pageElements).map((pageElement) => {
+    const children = Array.from(pageElement.children);
+
+    return children
+      .map((child) => (child as HTMLElement).dataset.id)
+      .filter((id): id is string => Boolean(id));
+  });
+
+  setDraggedDesktopPages(desktopPages);
 };
 </script>
 

@@ -21,12 +21,9 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css';
 import { useUpdateStore } from './stores/update';
-import { useClass } from './hooks/use-class';
 
 //修复不自动更新的bug
 useUpdateStore();
-//全局的类样式
-useClass();
 
 eventBus.on('success', (message) => {
   toast.success(message, {

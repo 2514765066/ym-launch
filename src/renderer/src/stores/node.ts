@@ -1,13 +1,10 @@
 import { useStorage } from '@vueuse/core';
-import { AppNode, Node } from '@shared/type';
 import { appName } from '@shared/app-info';
+import { AppNode, Node } from '@shared/type';
 
-export const useLauncherStore = defineStore('launcher', () => {
-  //桌面节点
+export const useNodeStore = defineStore('node', () => {
+  // 应用和分组节点
   const nodes = useStorage<Record<string, Node>>(`${appName}:nodes`, {});
-
-  //节点顺序
-  const desktopIds = useStorage<string[]>(`${appName}:desktopIds`, []);
 
   // 获取节点
   const getNode = (id: string) => {
@@ -24,24 +21,46 @@ export const useLauncherStore = defineStore('launcher', () => {
     return node?.kind === 'group';
   };
 
-  //删除桌面节点
-  const removeDesktopId = (nodeId: string) => {
-    desktopIds.value = desktopIds.value.filter((id) => id != nodeId);
+  //新增节点
+  const appendNodes = (data: Node[]) => {
+    for (const item of data) {
+      nodes.value[item.id] = item;
+    }
+  };
+
+  // 打开应用
+  const openAppNode = (id: string) => {
+    // 需要打开的应用节点
+    const node = getNode(id) as AppNode;
+
+    ipc.openPath(node.path);
+  };
+
+  // 在文件管理器中打开应用
+  const openAppNodeInFolder = (id: string) => {
+    // 需要定位的应用节点
+    const node = getNode(id) as AppNode;
+
+    ipc.openPathInFolder(node.path);
   };
 
   // 移除分组内应用
   const removeAppFromGroup = (groupId: string, appId: string) => {
+    // 需要移除应用的分组节点
     const group = getNode(groupId);
 
     if (!isGroupNode(group)) {
       return;
     }
 
-    group.children = group.children.filter((id) => id !== appId);
+    group.children = group.children.filter((id) => {
+      return id !== appId;
+    });
   };
 
-  //获取组内子元素
+  // 获取组内子元素
   const getGroupChildren = (nodeId: string) => {
+    // 需要读取子元素的分组节点
     const node = getNode(nodeId);
 
     if (!isGroupNode(node)) {
@@ -51,13 +70,9 @@ export const useLauncherStore = defineStore('launcher', () => {
     return node.children.map(getNode) as AppNode[];
   };
 
-  //设置桌面元素
-  const setDesktopIds = (ids: string[]) => {
-    desktopIds.value = Array.from(new Set(ids));
-  };
-
   // 设置组内子元素
   const setGroupChildren = (groupId: string, ids: string[]) => {
+    // 需要更新子元素的分组节点
     const group = getNode(groupId);
 
     if (!isGroupNode(group)) {
@@ -69,14 +84,14 @@ export const useLauncherStore = defineStore('launcher', () => {
 
   return {
     nodes,
-    desktopIds,
     getNode,
+    appendNodes,
     isAppNode,
     isGroupNode,
-    removeDesktopId,
+    openAppNode,
+    openAppNodeInFolder,
     removeAppFromGroup,
     getGroupChildren,
     setGroupChildren,
-    setDesktopIds,
   };
 });

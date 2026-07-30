@@ -4,8 +4,7 @@
       ref="contentRef"
       class="launcher-page flex-1 grid place-items-center"
       :class="{
-        '*:first:hidden!': dragNodeId && from === 'before',
-        '*:last:hidden!': dragNodeId && from === 'after',
+        '*:last:hidden!': dragNodeId && hasOverflow,
       }"
       :data-page="page"
     >
@@ -20,7 +19,7 @@ import Base from './base.vue';
 import { SortableEvent } from 'sortablejs';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
-import { useLauncherGridStore } from '@/stores/launcher-grid';
+import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 
 const props = defineProps<{
   page: number;
@@ -30,69 +29,56 @@ const emit = defineEmits<{
   end: [];
 }>();
 
+// 当前正在拖拽的节点 ID
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
-const { pageSize } = storeToRefs(useLauncherGridStore());
+
+// 当前页面最大节点数量
+const { pageSize } = storeToRefs(useLauncherLayoutStore());
+
+// 启动台行列设置
 const { config } = storeToRefs(useSettingStore());
+
+// 设置当前拖拽节点
 const { setDragNodeId } = useLauncherUiStore();
 
+// 当前页的可排序容器
 const contentRef = useTemplateRef('contentRef');
 
-//从哪里来的元素
-const from = ref<'before' | 'after' | null>(null);
+// 当前页面是否存在拖拽溢出节点
+const hasOverflow = ref(false);
 
-//开始拖拽
+// 开始拖拽
 const handleStart = (e: SortableEvent) => {
   setDragNodeId(e.item.dataset.id);
-  from.value = null;
+  hasOverflow.value = false;
 };
 
-//拖拽结束
+// 拖拽结束
 const handleEnd = () => {
   setDragNodeId();
-  from.value = null;
+
+  hasOverflow.value = false;
+
   emit('end');
 };
 
-//顺序改变
+// 根据目标页容量更新溢出节点占位
 const handelChange = (e: SortableEvent) => {
-  const fromPage = Number(e.from.getAttribute('data-page'));
-
-  const diff = props.page - fromPage;
-
-  //从文件夹弹窗拖拽 -> 当前页是最后一个隐藏最后一个
-  const kind = e.from.getAttribute('data-kind');
-
-  if (kind === 'group-dialog' && e.to.children.length >= pageSize.value) {
-    from.value = 'after';
-    return;
-  }
-
-  //从前往后推拽 -> 隐藏当页第一个
-  if (diff > 0) {
-    from.value = 'before';
-    return;
-  }
-
-  //从后往前拖拽 -> 隐藏当页最后一个
-  if (diff < 0) {
-    from.value = 'after';
-    return;
-  }
+  hasOverflow.value = e.to.children.length > pageSize.value;
 };
 
-//从组中拖拽进来
+// 从组中拖拽进来
 const handleAdd = (e: SortableEvent) => {
   handleEnd();
-
   const kind = e.from.getAttribute('data-kind');
 
   //解决拖拽进来出现两个元素的bug
-  if (kind === 'group') {
+  if (kind === 'group-dialog') {
     e.item.remove();
   }
 };
 
-//创建sortable
+// 创建页面排序实例
 useSortable(contentRef, {
   onStart: handleStart,
   onEnd: handleEnd,

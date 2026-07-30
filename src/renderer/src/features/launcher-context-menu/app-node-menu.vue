@@ -74,8 +74,8 @@ import {
   ContextMenuRadioGroup,
   ContextMenuRadioItem,
 } from '@/components/ui/context-menu';
-import { useLauncherStore } from '@/stores/launcher';
-import { useLauncherNodeStore } from '@/stores/launcher-node';
+import { useNodeStore } from '@/stores/node';
+import { useCoreStore } from '@/stores/core';
 import { eventBus } from '@/utils/event-bus';
 import { CornerUpRight, FolderOpen, SquarePen, Trash2 } from '@lucide/vue';
 
@@ -83,9 +83,10 @@ const props = defineProps<{
   id: string;
 }>();
 
-const { nodes } = storeToRefs(useLauncherStore());
-const { openAppNode, openAppNodeInFolder, moveAppToGroup, removeAppNode } =
-  useLauncherNodeStore();
+const nodeStore = useNodeStore();
+const { nodes } = storeToRefs(nodeStore);
+const { openAppNode, openAppNodeInFolder } = nodeStore;
+const { moveAppToGroup, removeAppNode } = useCoreStore();
 
 //所有的文件夹节点
 const groupNodes = computed(() => {

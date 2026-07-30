@@ -22,9 +22,9 @@
 
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import { useLauncherStore } from '@/stores/launcher';
+import { useNodeStore } from '@/stores/node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
-import { useLauncherGridStore } from '@/stores/launcher-grid';
+import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 import { AppNode } from '@shared/type';
 import { ClassValue } from 'vue';
 
@@ -34,9 +34,9 @@ const props = defineProps<{
   isGroup?: boolean;
 }>();
 
-const { getNode } = useLauncherStore();
+const { getNode } = useNodeStore();
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
-const { nodeSize } = storeToRefs(useLauncherGridStore());
+const { nodeSize } = storeToRefs(useLauncherLayoutStore());
 
 const node = computed(() => {
   return getNode(props.id) as AppNode;

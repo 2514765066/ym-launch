@@ -1,6 +1,6 @@
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 
-//全局的类样式
+// 同步全局运行时类名
 export const useClass = () => {
   const { status } = storeToRefs(useLauncherUiStore());
 

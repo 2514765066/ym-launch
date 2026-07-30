@@ -1,41 +1,41 @@
-import { AppNode } from '@shared/type';
-import { useLauncherStore } from './launcher';
 import { nanoid } from 'nanoid';
 import pinyin from 'pinyin';
+import type { AppNode } from '@shared/type';
+import { useDesktopStore } from './desktop';
+import { useLauncherLayoutStore } from './launcher-layout';
+import { useNodeStore } from './node';
 
-export const useLauncherNodeStore = defineStore('node', () => {
-  const { nodes, desktopIds } = storeToRefs(useLauncherStore());
-  const {
-    getNode,
-    isGroupNode,
-    isAppNode,
-    removeDesktopId,
-    removeAppFromGroup,
-  } = useLauncherStore();
+export const useCoreStore = defineStore('core', () => {
+  // 桌面节点数据仓库
+  const nodeStore = useNodeStore();
 
-  //打开app
-  const openAppNode = (id: string) => {
-    const node = getNode(id) as AppNode;
+  // 应用和分组节点
+  const { nodes } = storeToRefs(nodeStore);
 
-    ipc.openPath(node.path);
-  };
+  // 节点数据操作
+  const { getNode, appendNodes, isAppNode, isGroupNode, removeAppFromGroup } =
+    nodeStore;
 
-  //打开文件夹管理器
-  const openAppNodeInFolder = (id: string) => {
-    const node = getNode(id) as AppNode;
+  // 桌面布局操作
+  const { removeDesktopId, replaceDesktopId, appendDesktopIds } =
+    useDesktopStore();
 
-    ipc.openPathInFolder(node.path);
-  };
+  // 启动台布局操作
+  const { setSelectedPage } = useLauncherLayoutStore();
 
-  //创建group节点
+  // 创建应用分组
   const createGroupNode = (targetId: string, dragId: string) => {
+    // 作为新分组位置的应用节点
     const targetNode = getNode(targetId);
+
+    // 拖入新分组的应用节点
     const dragNode = getNode(dragId);
 
     if (!isAppNode(targetNode) || !isAppNode(dragNode)) {
       return;
     }
 
+    // 分组内保留的目标应用副本
     const newTargetNode: AppNode = {
       ...targetNode,
       id: nanoid(),
@@ -54,22 +54,16 @@ export const useLauncherNodeStore = defineStore('node', () => {
     removeDesktopId(dragNode.id);
   };
 
-  // 拆散group节点
+  // 拆散应用分组
   const breakGroupNode = (groupId: string) => {
+    // 需要拆散的应用分组
     const group = getNode(groupId);
 
     if (!isGroupNode(group)) {
       return;
     }
 
-    const desktopIndex = desktopIds.value.indexOf(groupId);
-
-    if (desktopIndex < 0) {
-      return;
-    }
-
-    desktopIds.value.splice(desktopIndex, 1, ...group.children);
-
+    replaceDesktopId(groupId, group.children);
     delete nodes.value[group.id];
   };
 
@@ -91,20 +85,25 @@ export const useLauncherNodeStore = defineStore('node', () => {
     delete nodes.value[group.id];
   };
 
-  //添加节点
+  // 添加应用节点并跳转到最后一个新增节点所在页
   const addAppNode = async () => {
-    const res = await ipc.addAppNode();
+    // 用户选择后新增的应用节点
+    const nodes = await ipc.addAppNode();
 
-    for (const item of res) {
-      nodes.value[item.id] = item;
+    //添加节点和桌面id
+    appendNodes(nodes);
+    appendDesktopIds(nodes.map((node) => node.id));
 
-      desktopIds.value.push(item.id);
-    }
+    //跳转到最后一页
+    setSelectedPage((_, max) => max - 1);
   };
 
-  // 添加app节点到group节点
+  // 添加应用到已有分组
   const moveAppToGroup = (groupId: string, appId: string) => {
+    // 接收应用的分组节点
     const groupNode = getNode(groupId);
+
+    // 需要移动的应用节点
     const appNode = getNode(appId);
 
     if (!isGroupNode(groupNode) || !isAppNode(appNode)) {
@@ -113,14 +112,6 @@ export const useLauncherNodeStore = defineStore('node', () => {
 
     removeDesktopId(appNode.id);
     groupNode.children.push(appNode.id);
-  };
-
-  // 重命名节点
-  const renameNode = (id: string, label: string) => {
-    const node = getNode(id);
-
-    node.label = label;
-    node.keyword = pinyin(label).join('');
   };
 
   // 移除应用节点并清理所属分组
@@ -149,19 +140,25 @@ export const useLauncherNodeStore = defineStore('node', () => {
     }
 
     removeDesktopId(nodeId);
-
     delete nodes.value[nodeId];
   };
 
+  // 重命名节点
+  const renameNode = (id: string, label: string) => {
+    // 需要重命名的节点
+    const node = getNode(id);
+
+    node.label = label;
+    node.keyword = pinyin(label).join('');
+  };
+
   return {
-    openAppNode,
-    openAppNodeInFolder,
-    moveAppToGroup,
-    breakGroupNode,
-    renameNode,
-    addAppNode,
     createGroupNode,
-    removeAppNode,
+    breakGroupNode,
     removeGroupNode,
+    addAppNode,
+    moveAppToGroup,
+    removeAppNode,
+    renameNode,
   };
 });
