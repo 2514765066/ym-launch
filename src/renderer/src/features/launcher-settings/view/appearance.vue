@@ -44,10 +44,42 @@
           </NumberField>
         </ItemActions>
       </Item>
+    </ItemGroup>
+
+    <ItemGroup>
+      <p class="py-3 px-4">图标</p>
+
+      <ItemSeparator />
 
       <Item size="sm">
         <ItemContent>
-          <ItemTitle>桌面图标尺寸</ItemTitle>
+          <ItemTitle>图标名称</ItemTitle>
+
+          <ItemDescription>设置图标名称的文字大小</ItemDescription>
+        </ItemContent>
+
+        <ItemActions>
+          <Select v-model="config.iconTitleSize">
+            <SelectTrigger class="w-28">
+              <SelectValue />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem
+                v-for="(label, value) in iconTitleSizeMap"
+                :key="value"
+                :value="value"
+              >
+                {{ label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </ItemActions>
+      </Item>
+
+      <Item size="sm">
+        <ItemContent>
+          <ItemTitle>图标尺寸</ItemTitle>
 
           <ItemDescription>设置桌面的图标大小</ItemDescription>
         </ItemContent>
@@ -124,6 +156,13 @@ import {
   NumberFieldInput,
 } from '@/components/ui/number-field';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Item,
   ItemContent,
   ItemDescription,
@@ -133,6 +172,7 @@ import {
   ItemActions,
 } from '@/components/ui/item';
 import Container from '@/components/container/index.vue';
+import { iconTitleSizeMap } from '@/map';
 import { useSettingStore } from '@/stores/setting';
 
 const { config } = storeToRefs(useSettingStore());

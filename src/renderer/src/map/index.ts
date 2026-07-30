@@ -25,6 +25,17 @@ export const hotCornerMap: Record<HotCornerPosition, string> = {
   'bottom-right': '右下角',
 };
 
+// 图标标题文字大小类名对应的缩放比例
+export const iconTitleSizeMap = {
+  'text-xs': '特小',
+  'text-sm': '小',
+  'text-base': '标准',
+  'text-lg': '大',
+  'text-xl': '较大',
+  'text-2xl': '特大',
+  'text-3xl': '超大',
+};
+
 export const shortcutMap: Record<string, string | LucideIcon> = {
   control: 'Ctrl',
   meta: 'Win',

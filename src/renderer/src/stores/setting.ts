@@ -20,6 +20,9 @@ const createConfig = () => {
     //图标缩放大小
     iconZoom: 40,
 
+    // 图标标题文字大小档位
+    iconTitleSize: 'text-base',
+
     //自动更新
     autoUpdate: false,
 

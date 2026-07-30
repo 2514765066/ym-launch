@@ -12,7 +12,7 @@
       <slot></slot>
     </div>
 
-    <span class="w-full truncate text-center">
+    <span class="w-full truncate text-center" :class="config.iconTitleSize">
       {{ data.label }}
     </span>
   </section>
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { vOnLongPress } from '@vueuse/components';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
+import { useSettingStore } from '@/stores/setting';
 import { Node } from '@shared/type';
 
 const props = defineProps<{
@@ -33,6 +34,7 @@ const emits = defineEmits<{
 
 const { isSearching } = storeToRefs(useLauncherUiStore());
 const { setStatus } = useLauncherUiStore();
+const { config } = storeToRefs(useSettingStore());
 
 let time = 0;
 
