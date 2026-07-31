@@ -8,9 +8,17 @@
       @submit.prevent="handleSubmit"
     >
       <main class="pt-8 flex flex-col items-center gap-6">
-        <AppNodeIcon :id="node.id" v-if="isAppNode(node)" />
+        <AppNodeIcon
+          view-class="size-20!"
+          :id="node.id"
+          v-if="isAppNode(node)"
+        />
 
-        <GroupNodeIcon :data="node" v-else-if="isGroupNode(node)" />
+        <GroupNodeIcon
+          view-class="size-20!"
+          :data="node"
+          v-else-if="isGroupNode(node)"
+        />
 
         <Field>
           <FieldLabel>应用名称</FieldLabel>
