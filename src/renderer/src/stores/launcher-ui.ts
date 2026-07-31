@@ -32,13 +32,20 @@ export const useLauncherUiStore = defineStore('ui', () => {
   };
 
   //设置状态
-  const setStatus = (s: Status) => {
+  const setStatus = (s?: Status) => {
+    if (!s) {
+      status.value = 'normal';
+      return;
+    }
+
     status.value = s;
   };
 
   //每次打开重新获取壁纸
   ipc.on('show', () => {
     keyword.value = '';
+
+    setStatus();
   });
 
   return {
