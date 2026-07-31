@@ -14,10 +14,10 @@
 <script setup lang="ts">
 import LauncherPage from './launcher-page/index.vue';
 import LauncherNode from '@/features/launcher-node/index.vue';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 
 // 启动台布局状态
-const launcherLayoutStore = useLauncherLayoutStore();
+const launcherLayoutStore = useLayoutStore();
 
 // 当前页面列表与选中页
 const { pages, selectedPage } = storeToRefs(launcherLayoutStore);

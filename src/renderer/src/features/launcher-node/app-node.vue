@@ -7,10 +7,10 @@
     @click="handleClick"
   >
     <AppNodeIcon
-      :id="data.id"
       :class="{
         'outline-[10%] outline-primary': notSelf && isHover,
       }"
+      :id="data.id"
     >
       <button
         class="aspect-square p-1 absolute top-0 left-0 -translate-1/4 rounded-full bg-white shadow-lg shadow-black/30"
@@ -35,14 +35,14 @@ import BaseNode from './base-node.vue';
 import { useNodeStore } from '@/stores/node.js';
 import { useCoreStore } from '@/stores/core';
 import AppNodeIcon from '@/components/node-icon/app-node-icon.vue';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 
 const props = defineProps<{
   data: AppNode;
 }>();
 
 const { dragNodeId, status } = storeToRefs(useLauncherUiStore());
-const { nodeSize } = storeToRefs(useLauncherLayoutStore());
+const { nodeSize } = storeToRefs(useLayoutStore());
 const { openAppNode } = useNodeStore();
 const { createGroupNode, removeAppNode } = useCoreStore();
 

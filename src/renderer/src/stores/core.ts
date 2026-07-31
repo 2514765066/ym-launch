@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import pinyin from 'pinyin';
 import type { AppNode } from '@shared/type';
 import { useDesktopStore } from './desktop';
-import { useLauncherLayoutStore } from './launcher-layout';
+import { useLayoutStore } from './layout';
 import { useNodeStore } from './node';
 
 export const useCoreStore = defineStore('core', () => {
@@ -13,15 +13,23 @@ export const useCoreStore = defineStore('core', () => {
   const { nodes } = storeToRefs(nodeStore);
 
   // 节点数据操作
-  const { getNode, appendNodes, isAppNode, isGroupNode, removeAppFromGroup } =
-    nodeStore;
+  const { getNode, appendNodes, isAppNode, isGroupNode } = nodeStore;
 
   // 桌面布局操作
-  const { removeDesktopId, replaceDesktopId, appendDesktopIds } =
-    useDesktopStore();
+  const {
+    removeDesktopId,
+    replaceDesktopId,
+    appendDesktopIds,
+    getGroupIds,
+    setGroupIds,
+    appendGroupId,
+    removeGroupId,
+    findGroupId,
+    removeGroupIds,
+  } = useDesktopStore();
 
   // 启动台布局操作
-  const { setSelectedPage } = useLauncherLayoutStore();
+  const { setSelectedPage } = useLayoutStore();
 
   // 创建应用分组
   const createGroupNode = (targetId: string, dragId: string) => {
@@ -48,9 +56,9 @@ export const useCoreStore = defineStore('core', () => {
       label: '未命名',
       keyword: '',
       kind: 'group',
-      children: [newTargetNode.id, dragNode.id],
     };
 
+    setGroupIds(targetNode.id, [newTargetNode.id, dragNode.id]);
     removeDesktopId(dragNode.id);
   };
 
@@ -63,7 +71,8 @@ export const useCoreStore = defineStore('core', () => {
       return;
     }
 
-    replaceDesktopId(groupId, group.children);
+    replaceDesktopId(groupId, getGroupIds(groupId));
+    removeGroupIds(groupId);
     delete nodes.value[group.id];
   };
 
@@ -106,8 +115,24 @@ export const useCoreStore = defineStore('core', () => {
       return;
     }
 
+    // 应用移动前所属的分组 ID
+    const sourceGroupId = findGroupId(appNode.id);
+
+    if (sourceGroupId === groupNode.id) {
+      return;
+    }
+
     removeDesktopId(appNode.id);
-    groupNode.children.push(appNode.id);
+
+    if (sourceGroupId) {
+      removeGroupId(sourceGroupId, appNode.id);
+
+      if (getGroupIds(sourceGroupId).length <= 1) {
+        breakGroupNode(sourceGroupId);
+      }
+    }
+
+    appendGroupId(groupNode.id, appNode.id);
   };
 
   // 移除应用节点并清理所属分组
@@ -119,19 +144,14 @@ export const useCoreStore = defineStore('core', () => {
       return;
     }
 
-    // 包含待删除应用的分组
-    const parentGroup = Object.values(nodes.value).find((item) => {
-      return isGroupNode(item) && item.children.includes(nodeId);
-    });
+    // 包含待删除应用的分组 ID
+    const parentGroupId = findGroupId(nodeId);
 
-    if (isGroupNode(parentGroup)) {
-      removeAppFromGroup(parentGroup.id, nodeId);
+    if (parentGroupId) {
+      removeGroupId(parentGroupId, nodeId);
 
-      // 删除后仍存在的分组数据
-      const updatedGroup = getNode(parentGroup.id);
-
-      if (isGroupNode(updatedGroup) && updatedGroup.children.length <= 1) {
-        breakGroupNode(updatedGroup.id);
+      if (getGroupIds(parentGroupId).length <= 1) {
+        breakGroupNode(parentGroupId);
       }
     }
 

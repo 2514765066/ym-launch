@@ -1,10 +1,10 @@
 import { useStorage } from '@vueuse/core';
-import { appName } from '@shared/app-info';
+import { storagePre } from '@shared/app-info';
 import type { AppNode, Node } from '@shared/type';
 
 export const useNodeStore = defineStore('node', () => {
   // 应用和分组节点
-  const nodes = useStorage<Record<string, Node>>(`${appName}:nodes`, {});
+  const nodes = useStorage<Record<string, Node>>(`${storagePre}:nodes`, {});
 
   // 获取节点
   const getNode = (id: string) => {
@@ -44,44 +44,6 @@ export const useNodeStore = defineStore('node', () => {
     ipc.openPathInFolder(node.path);
   };
 
-  // 移除分组内应用
-  const removeAppFromGroup = (groupId: string, appId: string) => {
-    // 需要移除应用的分组节点
-    const group = getNode(groupId);
-
-    if (!isGroupNode(group)) {
-      return;
-    }
-
-    group.children = group.children.filter((id) => {
-      return id !== appId;
-    });
-  };
-
-  // 获取组内子元素
-  const getGroupChildren = (nodeId: string) => {
-    // 需要读取子元素的分组节点
-    const node = getNode(nodeId);
-
-    if (!isGroupNode(node)) {
-      return [];
-    }
-
-    return node.children.map(getNode) as AppNode[];
-  };
-
-  // 设置组内子元素
-  const setGroupChildren = (groupId: string, ids: string[]) => {
-    // 需要更新子元素的分组节点
-    const group = getNode(groupId);
-
-    if (!isGroupNode(group)) {
-      return;
-    }
-
-    group.children = Array.from(new Set(ids));
-  };
-
   return {
     nodes,
     getNode,
@@ -90,8 +52,5 @@ export const useNodeStore = defineStore('node', () => {
     isGroupNode,
     openAppNode,
     openAppNodeInFolder,
-    removeAppFromGroup,
-    getGroupChildren,
-    setGroupChildren,
   };
 });

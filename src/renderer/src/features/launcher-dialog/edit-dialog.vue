@@ -12,7 +12,7 @@
 
         <GroupNodeIcon
           view-class="size-20!"
-          :data="node"
+          :id="node.id"
           v-else-if="isGroupNode(node)"
         />
 

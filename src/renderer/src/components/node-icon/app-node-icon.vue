@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { useNodeStore } from '@/stores/node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 import { AppNode } from '@shared/type';
 import { ClassValue } from 'vue';
 import { Spinner } from '@/components/ui/spinner';
@@ -38,7 +38,7 @@ const props = defineProps<{
 
 const { getNode } = useNodeStore();
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
-const { nodeSize } = storeToRefs(useLauncherLayoutStore());
+const { nodeSize } = storeToRefs(useLayoutStore());
 
 const node = computed(() => {
   return getNode(props.id) as AppNode;

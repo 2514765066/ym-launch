@@ -3,7 +3,7 @@ import { eventBus } from '@/utils/event-bus';
 import MessageBox from '@/components/message-box';
 import { useStorage } from '@vueuse/core';
 import { isOverOneDay } from '@/utils/date';
-import { appName } from '@shared/app-info';
+import { storagePre } from '@shared/app-info';
 
 type Status =
   'init' | 'checking' | 'update-not-available' | 'downloading' | 'downloaded';
@@ -15,7 +15,7 @@ export const useUpdateStore = defineStore('update', () => {
   const status = ref<Status>('init');
 
   //上次更新时间
-  const lastUpdateTime = useStorage(`${appName}:lastUpdateTime`, 0);
+  const lastUpdateTime = useStorage(`${storagePre}:lastUpdateTime`, 0);
 
   //下载进度
   const downloadProgress = ref(0);

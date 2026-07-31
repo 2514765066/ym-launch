@@ -10,7 +10,6 @@ export type AppNode = BaseNode & {
 };
 
 export type GroupNode = BaseNode & {
-  children: string[];
   kind: 'group';
 };
 

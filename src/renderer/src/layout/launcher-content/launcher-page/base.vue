@@ -20,11 +20,11 @@
 import { useHover } from '@/hooks/use-hover';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
 const { config } = storeToRefs(useSettingStore());
-const { setSelectedPage } = useLauncherLayoutStore();
+const { setSelectedPage } = useLayoutStore();
 
 //拖拽前一页
 const [handlePreEnter, handlePreLeave] = useHover(() => {

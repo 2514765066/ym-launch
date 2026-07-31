@@ -76,17 +76,29 @@ import {
 } from '@/components/ui/context-menu';
 import { useNodeStore } from '@/stores/node';
 import { useCoreStore } from '@/stores/core';
+import { useDesktopStore } from '@/stores/desktop';
 import { eventBus } from '@/utils/event-bus';
 import { CornerUpRight, FolderOpen, SquarePen, Trash2 } from '@lucide/vue';
 
+// 应用节点 ID
 const props = defineProps<{
   id: string;
 }>();
 
+// 节点数据仓库
 const nodeStore = useNodeStore();
+
+// 所有应用和分组节点
 const { nodes } = storeToRefs(nodeStore);
+
+// 应用节点操作
 const { openAppNode, openAppNodeInFolder } = nodeStore;
+
+// 应用移动和删除能力
 const { moveAppToGroup, removeAppNode } = useCoreStore();
+
+// 分组 ID 查询能力
+const { findGroupId } = useDesktopStore();
 
 //所有的文件夹节点
 const groupNodes = computed(() => {
@@ -95,9 +107,7 @@ const groupNodes = computed(() => {
 
 //所在的group id
 const currentGroupId = computed(() => {
-  const group = groupNodes.value.find((g) => g.children.includes(props.id));
-
-  return group?.id;
+  return findGroupId(props.id);
 });
 
 //重命名

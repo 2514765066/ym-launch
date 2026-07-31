@@ -23,7 +23,7 @@
           @pointerenter="dragNodeId && handleEnter()"
           @pointerleave="dragNodeId && handleLeave()"
         >
-          <template v-for="id in groupNode?.children" :key="id">
+          <template v-for="id in currentGroupIds" :key="id">
             <div class="w-full flex-center aspect-square" :data-id="id">
               <LauncherNode :id="id" />
             </div>
@@ -46,13 +46,27 @@ import { eventBus } from '@/utils/event-bus.js';
 import { useSortable } from '@/hooks/use-sortable';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
+import { useDesktopStore } from '@/stores/desktop';
 
+// 启动台外观设置
 const { config } = storeToRefs(useSettingStore());
-const { getNode, removeAppFromGroup, setGroupChildren } = useNodeStore();
+
+// 节点查询能力
+const { getNode } = useNodeStore();
+
+// 分组拆分能力
 const { breakGroupNode } = useCoreStore();
+
+// 启动台拖拽和桌面隐藏状态
 const { dragNodeId, hiddenDesktop } = storeToRefs(useLauncherUiStore());
+
+// 启动台拖拽状态操作
 const { setDragNodeId } = useLauncherUiStore();
 
+// 分组 ID 数据操作
+const { getGroupIds, setGroupIds, removeGroupId } = useDesktopStore();
+
+// 分组内容容器
 const contentRef = useTemplateRef('contentRef');
 
 //组id
@@ -69,6 +83,12 @@ const groupNode = computed(() => {
   return node?.kind === 'group' ? node : undefined;
 });
 
+// 当前分组内的应用 ID
+const currentGroupIds = computed(() => {
+  return getGroupIds(groupId.value);
+});
+
+// 分组弹窗悬停关闭操作
 const [handleLeave, handleEnter] = useHover(() => {
   visible.value = false;
 }, 500);
@@ -82,27 +102,25 @@ const handleStart = (e: SortableEvent) => {
 const handleEnd = () => {
   setDragNodeId();
 
-  if (!contentRef.value) {
+  if (!contentRef.value || !groupNode.value) {
     return;
   }
 
+  // 排序后的分组应用 ID
   const ids = Array.from(
     contentRef.value.querySelectorAll<HTMLElement>('[data-id]'),
   ).map((item) => item.dataset.id!);
 
-  setGroupChildren(groupId.value, ids);
+  setGroupIds(groupId.value, ids);
 };
 
 //拖拽离开组
 const handleRemove = (e: SortableEvent) => {
   const appId = e.item.dataset.id!;
 
-  removeAppFromGroup(groupId.value, appId);
+  removeGroupId(groupId.value, appId);
 
-  // 移除应用后的有效分组
-  const group = groupNode.value;
-
-  if (!group || group.children.length > 1) {
+  if (!groupNode.value || currentGroupIds.value.length > 1) {
     return;
   }
 

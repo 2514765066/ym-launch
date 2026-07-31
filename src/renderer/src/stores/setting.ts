@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core';
-import { appName } from '@shared/app-info';
+import { storagePre } from '@shared/app-info';
 import type { HotCornerPosition } from '@shared/type';
 
 //创建配置
@@ -52,12 +52,15 @@ const createConfig = () => {
   };
 };
 
-const settingKey = `${appName}:setting`;
-
 export const useSettingStore = defineStore('setting', () => {
-  const config = useStorage(settingKey, createConfig(), localStorage, {
-    mergeDefaults: true,
-  });
+  const config = useStorage(
+    `${storagePre}:setting`,
+    createConfig(),
+    localStorage,
+    {
+      mergeDefaults: true,
+    },
+  );
 
   //重置
   const resetConfig = () => {

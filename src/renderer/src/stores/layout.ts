@@ -15,12 +15,12 @@ import {
 } from '@/utils/desktop-layout';
 import { getValue } from '@/utils/value';
 
-export const useLauncherLayoutStore = defineStore('launcher-layout', () => {
+export const useLayoutStore = defineStore('layout', () => {
   // 启动台节点数据
   const { nodes } = storeToRefs(useNodeStore());
 
   // 一维桌面数据
-  const { desktop } = storeToRefs(useDesktopStore());
+  const { desktopIds } = storeToRefs(useDesktopStore());
 
   // 覆盖一维桌面数据
   const { setDesktop } = useDesktopStore();
@@ -51,7 +51,7 @@ export const useLauncherLayoutStore = defineStore('launcher-layout', () => {
   // 当前状态下可见的节点 ID
   const visibleIds = computed(() => {
     if (!keyword.value) {
-      return desktop.value.filter(isDesktopNodeId);
+      return desktopIds.value.filter(isDesktopNodeId);
     }
 
     return Object.values(nodes.value)
@@ -69,7 +69,7 @@ export const useLauncherLayoutStore = defineStore('launcher-layout', () => {
   // 根据空槽边界或搜索结果拆分出的页面节点 ID
   const pages = computed(() => {
     if (!keyword.value) {
-      return getDesktopPages(desktop.value, pageSize.value);
+      return getDesktopPages(desktopIds.value, pageSize.value);
     }
 
     return chunkDesktopItems(visibleIds.value, pageSize.value);
@@ -98,7 +98,7 @@ export const useLauncherLayoutStore = defineStore('launcher-layout', () => {
   const selectDesktopNode = (nodeId: string) => {
     // 节点在当前页面布局中的位置
     const nodeLocation = findDesktopNodeLocation(
-      desktop.value,
+      desktopIds.value,
       pageSize.value,
       nodeId,
     );
@@ -132,13 +132,15 @@ export const useLauncherLayoutStore = defineStore('launcher-layout', () => {
     (newPageSize, oldPageSize) => {
       // 选中旧页面调整容量后对应的首个页面
       const resizedPageIndex = getResizedPageIndex(
-        desktop.value,
+        desktopIds.value,
         oldPageSize,
         newPageSize,
         selectedPage.value,
       );
 
-      setDesktop(resizeDesktopLayout(desktop.value, oldPageSize, newPageSize));
+      setDesktop(
+        resizeDesktopLayout(desktopIds.value, oldPageSize, newPageSize),
+      );
       selectedPage.value = resizedPageIndex;
     },
     {

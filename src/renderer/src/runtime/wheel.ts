@@ -1,11 +1,11 @@
 import { useEventListener } from '@vueuse/core';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 import { hasOpenDialog } from '@/utils/dialog';
 
 // 注册启动台滚轮翻页
 export const useWheel = () => {
   // 启动台页面切换操作
-  const { setSelectedPage } = useLauncherLayoutStore();
+  const { setSelectedPage } = useLayoutStore();
 
   // 处理启动台翻页滚轮
   const handleWheel = (event: WheelEvent) => {

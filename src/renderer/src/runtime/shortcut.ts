@@ -1,6 +1,6 @@
 import { useEventListener } from '@vueuse/core';
 import { useSettingStore } from '@/stores/setting';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 import { eventBus } from '@/utils/event-bus';
 import { hasOpenDialog } from '@/utils/dialog';
 
@@ -24,7 +24,7 @@ export const useShortcut = () => {
   // 启动台快捷键设置
   const { config } = storeToRefs(useSettingStore());
   // 启动台页面切换操作
-  const { setSelectedPage } = useLauncherLayoutStore();
+  const { setSelectedPage } = useLayoutStore();
 
   // 处理启动台快捷键
   const handleShortcutKeydown = (event: KeyboardEvent) => {

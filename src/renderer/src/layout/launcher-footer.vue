@@ -24,9 +24,9 @@
 
 <script setup lang="ts">
 import { useIsHover } from '@/hooks/use-hover';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 
-const launcherLayoutStore = useLauncherLayoutStore();
+const launcherLayoutStore = useLayoutStore();
 const { selectedPage, pageCount } = storeToRefs(launcherLayoutStore);
 const { setSelectedPage } = launcherLayoutStore;
 

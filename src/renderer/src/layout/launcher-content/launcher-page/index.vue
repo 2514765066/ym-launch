@@ -19,7 +19,7 @@ import Base from './base.vue';
 import { SortableEvent } from 'sortablejs';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
-import { useLauncherLayoutStore } from '@/stores/launcher-layout';
+import { useLayoutStore } from '@/stores/layout';
 
 const props = defineProps<{
   page: number;
@@ -33,7 +33,7 @@ const emit = defineEmits<{
 const { dragNodeId } = storeToRefs(useLauncherUiStore());
 
 // 当前页面最大节点数量
-const { pageSize } = storeToRefs(useLauncherLayoutStore());
+const { pageSize } = storeToRefs(useLayoutStore());
 
 // 启动台行列设置
 const { config } = storeToRefs(useSettingStore());
