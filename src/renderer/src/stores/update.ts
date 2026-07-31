@@ -56,7 +56,7 @@ export const useUpdateStore = defineStore('update', () => {
   };
 
   //监听下载进度
-  ipc.on('download-progress', (percent: number) => {
+  ipc.on('download-progress', (_, percent: number) => {
     downloadProgress.value = Math.floor(percent);
 
     if (percent == 100) {
