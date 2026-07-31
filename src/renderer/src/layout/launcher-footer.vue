@@ -4,7 +4,6 @@
       class="w-fit p-2.5 flex gap-3 rounded-full transition-all"
       :class="{
         glass: isHover,
-        'opacity-0': pageCount == 1,
       }"
       @mouseenter="handleEnter"
       @mouseleave="handleLeave"
