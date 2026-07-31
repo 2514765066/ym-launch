@@ -22,9 +22,7 @@ import { eventBus } from '@/utils/event-bus';
 import { GroupNode } from '@shared/type';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import BaseNode from './base-node.vue';
-import { useLayoutStore } from '@/stores/layout';
 import GroupNodeIcon from '@/components/node-icon/group-node-icon.vue';
-import { useDesktopStore } from '@/stores/desktop';
 
 // 分组节点数据
 const props = defineProps<{
@@ -37,12 +35,6 @@ const { dragNodeId } = storeToRefs(useLauncherUiStore());
 // 分组移动能力
 const { moveAppToGroup } = useCoreStore();
 
-// 启动台页面容量
-const { pageSize } = storeToRefs(useLayoutStore());
-
-// 分组 ID 查询能力
-const { getGroupIds } = useDesktopStore();
-
 // 分组节点悬停状态
 const [isHover, handleEnter, handleLeave] = useIsHover();
 
@@ -51,19 +43,9 @@ const notSelf = computed(() => {
   return dragNodeId.value && props.data.id != dragNodeId.value;
 });
 
-// 分组内的应用 ID
-const groupIds = computed(() => {
-  return getGroupIds(props.data.id);
-});
-
 // 处理放入分组
 const handleDrop = () => {
   handleLeave();
-
-  //超过最大数
-  if (pageSize.value == groupIds.value.length) {
-    return;
-  }
 
   moveAppToGroup(props.data.id, dragNodeId.value!);
 };

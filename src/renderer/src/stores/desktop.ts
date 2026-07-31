@@ -33,6 +33,10 @@ export const useDesktopStore = defineStore('desktop', () => {
   const replaceDesktopId = (nodeId: string, ids: string[]) => {
     const index = desktopIds.value.indexOf(nodeId);
 
+    if (index == -1) {
+      return;
+    }
+
     desktopIds.value.splice(index, 1, ...ids);
   };
 

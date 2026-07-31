@@ -4,16 +4,20 @@ import type { AppNode } from '@shared/type';
 import { useDesktopStore } from './desktop';
 import { useLayoutStore } from './layout';
 import { useNodeStore } from './node';
+import { eventBus } from '@/utils/event-bus';
 
 export const useCoreStore = defineStore('core', () => {
-  // 桌面节点数据仓库
   const nodeStore = useNodeStore();
+  const desktopStore = useDesktopStore();
+  const layoutStore = useLayoutStore();
 
   // 应用和分组节点
   const { nodes } = storeToRefs(nodeStore);
 
   // 节点数据操作
   const { getNode, appendNodes, isAppNode, isGroupNode } = nodeStore;
+
+  const { groupIds } = storeToRefs(desktopStore);
 
   // 桌面布局操作
   const {
@@ -26,10 +30,11 @@ export const useCoreStore = defineStore('core', () => {
     removeGroupId,
     findGroupId,
     removeGroupIds,
-  } = useDesktopStore();
+  } = desktopStore;
 
   // 启动台布局操作
-  const { setSelectedPage } = useLayoutStore();
+  const { pageSize } = storeToRefs(layoutStore);
+  const { setSelectedPage } = layoutStore;
 
   // 创建应用分组
   const createGroupNode = (targetId: string, dragId: string) => {
@@ -107,6 +112,12 @@ export const useCoreStore = defineStore('core', () => {
   const moveAppToGroup = (groupId: string, appId: string) => {
     // 接收应用的分组节点
     const groupNode = getNode(groupId);
+
+    //超出最大内容
+    if (groupIds.value[groupId].length == pageSize.value) {
+      eventBus.emit('error', `文件夹最多只能添加${pageSize.value}个应用`);
+      return;
+    }
 
     // 需要移动的应用节点
     const appNode = getNode(appId);
