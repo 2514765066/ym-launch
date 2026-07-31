@@ -1,6 +1,6 @@
 import { useStorage } from '@vueuse/core';
 import { appName } from '@shared/app-info';
-import { AppNode, Node } from '@shared/type';
+import type { AppNode, Node } from '@shared/type';
 
 export const useNodeStore = defineStore('node', () => {
   // 应用和分组节点

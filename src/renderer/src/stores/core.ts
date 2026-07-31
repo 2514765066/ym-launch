@@ -67,24 +67,6 @@ export const useCoreStore = defineStore('core', () => {
     delete nodes.value[group.id];
   };
 
-  // 删除分组节点及其应用节点
-  const removeGroupNode = (groupId: string) => {
-    // 待删除的分组节点
-    const group = getNode(groupId);
-
-    if (!isGroupNode(group)) {
-      return;
-    }
-
-    removeDesktopId(group.id);
-
-    group.children.forEach((childId) => {
-      delete nodes.value[childId];
-    });
-
-    delete nodes.value[group.id];
-  };
-
   // 保存导入节点并跳转到最后一个新增节点所在页
   const appendImportedNodes = (importedNodes: AppNode[]) => {
     if (importedNodes.length === 0) {
@@ -169,7 +151,6 @@ export const useCoreStore = defineStore('core', () => {
   return {
     createGroupNode,
     breakGroupNode,
-    removeGroupNode,
     addAppNode,
     addFolderNode,
     moveAppToGroup,
