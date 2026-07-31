@@ -1,1 +1,1 @@
-export const protocolMap = ['https:', 'http'];
+export const protocolMap = ['https:', 'http:'];

@@ -47,7 +47,10 @@ const showNextConfirm = () => {
   activeRequest = request;
 
   Object.assign(data, {
-    ...request.option,
+    title: request.option.title,
+    description: request.option.description,
+    confirmButtonText: request.option.confirmButtonText ?? '',
+    cancelButtonText: request.option.cancelButtonText ?? '',
     visible: true,
   });
 };

@@ -15,7 +15,7 @@
     Github
     </a>
     &middot;
-    <a href="https://github.com/2514765066/ym-printer/blob/main/docs/release-note.md">
+    <a href="https://github.com/2514765066/ym-launcher/blob/main/docs/release-note.md">
     更新内容
     </a>
   </p>
@@ -48,5 +48,5 @@
 
 ## 许可证
 
-本项目采用 [GPL-3.0-only](./LICENSE) 许可证。
+本项目采用 [GPL-3.0-or-later](./LICENSE) 许可证。
 

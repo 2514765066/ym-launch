@@ -1,6 +1,6 @@
 <template>
   <section class="size-screen relative overflow-hidden">
-    <img class="absolute inset-0 object-cover" :src="wallpaper" />
+    <img class="size-full absolute inset-0 object-cover" :src="wallpaper" />
 
     <div
       class="size-full"
