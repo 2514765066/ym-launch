@@ -11,4 +11,4 @@ minimumReleaseAgeExclude:
   - ym-release@2.0.0
   - ym-fullscreen-detector@0.1.2
   - plugin-electron-ipc@0.1.2
-
+  - vite@8.2.0
