@@ -54,12 +54,18 @@ export const useSortable = (el: Ref<HTMLElement | null>, options?: Options) => {
 
   // 同步图标缩放对应的交换阈值
   watchEffect(() => {
-    sortable?.option('swapThreshold', getSwapThreshold());
+    // 当前图标缩放对应的交换阈值
+    const swapThreshold = getSwapThreshold();
+
+    sortable?.option('swapThreshold', swapThreshold);
   });
 
   //根据编辑和搜索状态禁用拖拽
   watchEffect(() => {
-    sortable?.option('disabled', getDisabled());
+    // 当前交互状态是否需要禁用拖拽
+    const disabled = getDisabled();
+
+    sortable?.option('disabled', disabled);
   });
 
   onMounted(createSortable);
