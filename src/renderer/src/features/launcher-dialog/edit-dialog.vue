@@ -32,7 +32,9 @@
           <Button class="flex-1" variant="outline"> 取消 </Button>
         </DialogClose>
 
-        <Button class="flex-1" type="submit"> 确定 </Button>
+        <Button class="flex-1" type="submit" :disabled="label.length == 0">
+          确定
+        </Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
