@@ -1,6 +1,6 @@
 <template>
   <SidebarProvider class="size-full">
-    <Sidebar collapsible="none">
+    <Sidebar class="w-full" collapsible="none">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>设置</SidebarGroupLabel>
