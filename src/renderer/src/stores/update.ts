@@ -43,29 +43,10 @@ export const useUpdateStore = defineStore('update', () => {
     }
   };
 
-  //初始化
-  const init = () => {
-    if (config.value.autoUpdate) {
-      const now = Date.now();
+  //安装更新
+  const installUpdate = async () => {
+    status.value = 'downloaded';
 
-      if (isOverOneDay(lastUpdateTime.value, now)) {
-        checkUpdate();
-        lastUpdateTime.value = now;
-      }
-    }
-  };
-
-  //监听下载进度
-  ipc.on('download-progress', (_, percent: number) => {
-    downloadProgress.value = Math.floor(percent);
-
-    if (percent == 100) {
-      status.value = 'downloaded';
-    }
-  });
-
-  //下载完成
-  ipc.on('update-downloaded', async () => {
     if (!config.value.installUpdatePrompt) {
       await ipc.installUpdate();
       return;
@@ -83,7 +64,27 @@ export const useUpdateStore = defineStore('update', () => {
     }
 
     await ipc.installUpdate();
+  };
+
+  //初始化
+  const init = () => {
+    if (config.value.autoUpdate) {
+      const now = Date.now();
+
+      if (isOverOneDay(lastUpdateTime.value, now)) {
+        checkUpdate();
+        lastUpdateTime.value = now;
+      }
+    }
+  };
+
+  //监听下载进度
+  ipc.on('download-progress', (_, percent: number) => {
+    downloadProgress.value = Math.floor(percent);
   });
+
+  //下载完成
+  ipc.on('update-downloaded', installUpdate);
 
   init();
 
@@ -91,5 +92,6 @@ export const useUpdateStore = defineStore('update', () => {
     status,
     downloadProgress,
     checkUpdate,
+    installUpdate,
   };
 });

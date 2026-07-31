@@ -57,12 +57,16 @@
         </ItemContent>
 
         <ItemActions>
+          <Button size="sm" @click="checkUpdate" v-if="status == 'init'">
+            检查更新
+          </Button>
+
           <Button
             size="sm"
-            @click="checkUpdate"
-            v-if="status == 'init' || status == 'downloaded'"
+            @click="installUpdate"
+            v-else-if="status == 'downloaded'"
           >
-            检查更新
+            安装更新
           </Button>
 
           <span class="text-sm" v-else>{{ updateLabel }}</span>
@@ -90,7 +94,7 @@ import { updateMap, updateContentUrl } from '@/map';
 import { useUpdateStore } from '@/stores/update';
 const { config } = storeToRefs(useSettingStore());
 const { status, downloadProgress } = storeToRefs(useUpdateStore());
-const { checkUpdate } = useUpdateStore();
+const { checkUpdate, installUpdate } = useUpdateStore();
 
 //更新文字
 const updateLabel = computed(() => {
