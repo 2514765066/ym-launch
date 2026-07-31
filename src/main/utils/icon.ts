@@ -41,7 +41,7 @@ export const getPathIcon = async (path: string) => {
     })
     .toBuffer();
 
-  const res = BASE64_PRE + iconBuffer.toBase64();
+  const res = BASE64_PRE + iconBuffer.toString('base64');
 
   iconCache.set(path, res);
 

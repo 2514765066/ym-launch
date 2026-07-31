@@ -7,7 +7,7 @@ import { autoUpdater } from 'electron-updater';
 import { setHotCorner as _setHotCorner } from '../hooks/hot-corner';
 import { setStartShortcut as _setStartShortcut } from '../hooks/start-shortcut';
 import type { HotCornerPosition } from '@shared/type';
-import { getPathIcon } from '@/utils/icon';
+import { getPathIcon } from '../utils/icon';
 
 //获取壁纸
 export const getWallpaper = async () => {
