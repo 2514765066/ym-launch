@@ -67,15 +67,13 @@ const handelChange = (e: SortableEvent) => {
   hasOverflow.value = e.to.children.length > pageSize.value;
 };
 
-// 从组中拖拽进来
-const handleAdd = (e: SortableEvent) => {
+// 处理其他容器拖入并清理 Sortable 遗留节点
+const handleAdd = async (e: SortableEvent) => {
   handleEnd();
-  const kind = e.from.getAttribute('data-kind');
 
-  //解决拖拽进来出现两个元素的bug
-  if (kind === 'group-dialog') {
-    e.item.remove();
-  }
+  await nextTick();
+
+  e.item.remove();
 };
 
 // 创建页面排序实例
