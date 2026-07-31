@@ -1,7 +1,7 @@
 <template>
-  <AppNode v-if="node.kind == 'app'" :data="node" />
+  <AppNode v-if="isAppNode(node)" :data="node" />
 
-  <GroupNode v-else-if="node.kind == 'group'" :data="node" />
+  <GroupNode v-else-if="isGroupNode(node)" :data="node" />
 </template>
 
 <script setup lang="ts">
@@ -13,7 +13,7 @@ const props = defineProps<{
   id: string;
 }>();
 
-const { getNode } = useNodeStore();
+const { getNode, isGroupNode, isAppNode } = useNodeStore();
 
 const node = computed(() => {
   return getNode(props.id);

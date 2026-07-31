@@ -1,15 +1,15 @@
-export type AppNode = {
+type BaseNode = {
   id: string;
   label: string;
   keyword: string;
+};
+
+export type AppNode = BaseNode & {
   path: string;
   kind: 'app';
 };
 
-export type GroupNode = {
-  id: string;
-  label: string;
-  keyword: string;
+export type GroupNode = BaseNode & {
   children: string[];
   kind: 'group';
 };

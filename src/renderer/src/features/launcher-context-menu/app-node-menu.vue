@@ -1,7 +1,7 @@
 <template>
   <ContextMenuGroup>
     <ContextMenuItem @click="openAppNode(id)">
-      <AppNodeIcon class="size-4" view-class="drop-shadow-none!" :id="id" />
+      <AppNodeIcon class="size-4! drop-shadow-none!" :id="id" />
 
       <span>打开</span>
     </ContextMenuItem>

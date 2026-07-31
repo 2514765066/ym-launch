@@ -1,32 +1,34 @@
 <template>
-  <div class="relative rounded-lg">
+  <div
+    class="aspect-square relative flex-center rounded-lg"
+    :class="{
+      'opacity-0': dragNodeId == id,
+    }"
+    :style="
+      !isGroup && {
+        width: `${nodeSize}px`,
+      }
+    "
+  >
     <img
-      class="aspect-square object-contain drop-shadow-lg drop-shadow-black/30"
-      :class="
-        cn(viewClass, {
-          'opacity-0': dragNodeId == id,
-        })
-      "
-      :style="
-        !isGroup && {
-          width: `${nodeSize}px`,
-        }
-      "
+      class="size-full object-contain drop-shadow-lg drop-shadow-black/30"
       :src="icon"
       v-if="icon"
     />
+
+    <spinner class="size-1/2 text-muted-foreground" v-else />
 
     <slot></slot>
   </div>
 </template>
 
 <script setup lang="ts">
-import { cn } from '@/lib/utils';
 import { useNodeStore } from '@/stores/node';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useLauncherLayoutStore } from '@/stores/launcher-layout';
 import { AppNode } from '@shared/type';
 import { ClassValue } from 'vue';
+import { Spinner } from '@/components/ui/spinner';
 
 const props = defineProps<{
   viewClass?: ClassValue;
