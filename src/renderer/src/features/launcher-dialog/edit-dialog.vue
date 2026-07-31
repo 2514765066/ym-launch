@@ -2,7 +2,6 @@
   <Dialog v-model:open="visible">
     <DialogContent
       class="w-80"
-      overlay-class="bg-transparent"
       :aria-describedby="undefined"
       as="form"
       @submit.prevent="handleSubmit"
@@ -49,12 +48,13 @@ import { Input } from '@/components/ui/input';
 import { eventBus } from '@/utils/event-bus';
 import { useNodeStore } from '@/stores/node';
 import { useCoreStore } from '@/stores/core';
-import { useLauncherUiStore } from '@/stores/launcher-ui';
 import GroupNodeIcon from '@/components/node-icon/group-node-icon.vue';
 import AppNodeIcon from '@/components/node-icon/app-node-icon.vue';
 
-const { hiddenDesktop } = storeToRefs(useLauncherUiStore());
+// 节点查询能力
 const { getNode, isAppNode, isGroupNode } = useNodeStore();
+
+// 节点重命名能力
 const { renameNode } = useCoreStore();
 
 //组id
@@ -71,13 +71,6 @@ const node = computed(() => {
   return getNode(nodeId.value);
 });
 
-watch(visible, (value) => {
-  if (value === false) {
-    hiddenDesktop.value = false;
-    return;
-  }
-});
-
 // 提交重命名
 const handleSubmit = () => {
   renameNode(nodeId.value, label.value);
@@ -90,7 +83,6 @@ eventBus.on('openEditDialog', async (id) => {
 
   label.value = node.value.label;
 
-  hiddenDesktop.value = true;
   visible.value = true;
 });
 
