@@ -41,6 +41,11 @@ export const useCoreStore = defineStore('core', () => {
 
   // 创建应用分组
   const createGroupNode = (targetId: string, dragId: string) => {
+    // 组内应用不能再次合成分组
+    if (findAppGroupId(targetId) || findAppGroupId(dragId)) {
+      return;
+    }
+
     // 作为新分组位置的应用节点
     const targetNode = getNode(targetId);
 

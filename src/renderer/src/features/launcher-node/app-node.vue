@@ -1,14 +1,14 @@
 <template>
   <BaseNode
     :data="data"
-    @pointerenter="notSelf && handleEnter()"
-    @pointerleave="notSelf && handleLeave()"
-    @pointerup="notSelf && handleDrop()"
+    @pointerenter="canCreateGroup && handleEnter()"
+    @pointerleave="canCreateGroup && handleLeave()"
+    @pointerup="canCreateGroup && handleDrop()"
     @click="handleClick"
   >
     <AppNodeIcon
       :class="{
-        'outline-[10%] outline-primary': notSelf && isHover,
+        'outline-[10%] outline-primary': canCreateGroup && isHover,
       }"
       :id="data.id"
     >
@@ -36,6 +36,7 @@ import { useNodeStore } from '@/stores/node.js';
 import { useCoreStore } from '@/stores/core';
 import AppNodeIcon from '@/components/node-icon/app-node-icon.vue';
 import { useLayoutStore } from '@/stores/layout';
+import { useGroupStore } from '@/stores/group';
 
 const props = defineProps<{
   data: AppNode;
@@ -45,12 +46,20 @@ const { dragNodeId, status } = storeToRefs(useLauncherUiStore());
 const { nodeSize } = storeToRefs(useLayoutStore());
 const { openAppNode } = useNodeStore();
 const { createGroupNode, removeAppNode } = useCoreStore();
+const { findAppGroupId } = useGroupStore();
 
 const [isHover, handleEnter, handleLeave] = useIsHover();
 
-//当前元素是不是自己
-const notSelf = computed(() => {
-  return dragNodeId.value && props.data.id != dragNodeId.value;
+// 只有不属于已有分组的两个应用节点可以创建分组
+const canCreateGroup = computed(() => {
+  const sourceId = dragNodeId.value;
+
+  return Boolean(
+    sourceId &&
+    props.data.id != sourceId &&
+    !findAppGroupId(props.data.id) &&
+    !findAppGroupId(sourceId),
+  );
 });
 
 // 处理放入分组
