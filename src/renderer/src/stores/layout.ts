@@ -162,6 +162,8 @@ export const useLayoutStore = defineStore('layout', () => {
     const index = selectedPage.value * pageSize.value;
 
     desktopIds.value.splice(index, pageSize.value);
+
+    setSelectedPage((c) => c - 1);
   };
 
   // 可见节点或布局变化后保持当前页有效
