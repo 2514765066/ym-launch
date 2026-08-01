@@ -28,7 +28,7 @@ const getDesktopIds = (pages: string[][], pageSize: number) => {
 
     const isLastPage = pageIndex === pages.length - 1;
 
-    if (!isLastPage) {
+    if (!isLastPage || nodeCount === 0) {
       for (let index = nodeCount; index < pageSize; index++) {
         desktopIds.push(null);
       }
@@ -82,12 +82,17 @@ export const useLayoutStore = defineStore('layout', () => {
     return chunk(
       isSearching.value ? searchIds.value : desktopIds.value,
       pageSize.value,
-    ).filter((page) => page.length > 0);
+    );
   });
 
   // 当前可见节点对应的页数
   const pageCount = computed(() => {
     return pages.value.length;
+  });
+
+  // 当前页面是否为空白页
+  const isCurrentPageEmpty = computed(() => {
+    return pageCount.value > 0 && pages.value[selectedPage.value]?.length === 0;
   });
 
   // 校正页码至当前有效范围
@@ -131,6 +136,34 @@ export const useLayoutStore = defineStore('layout', () => {
     desktopIds.value = getDesktopIds(draggedPages, pageSize.value);
   };
 
+  // 在当前页后插入空白页
+  const insertBlankPage = () => {
+    const index = pageCount.value
+      ? (selectedPage.value + 1) * pageSize.value
+      : 0;
+
+    const emptyPage = Array<null>(pageSize.value).fill(null);
+
+    while (desktopIds.value.length < index) {
+      desktopIds.value.push(null);
+    }
+
+    desktopIds.value.splice(index, 0, ...emptyPage);
+
+    setSelectedPage(selectedPage.value + 1);
+  };
+
+  // 删除当前空白页
+  const removeBlankPage = () => {
+    if (!isCurrentPageEmpty.value) {
+      return;
+    }
+
+    const index = selectedPage.value * pageSize.value;
+
+    desktopIds.value.splice(index, pageSize.value);
+  };
+
   // 可见节点或布局变化后保持当前页有效
   watch(pageCount, () => {
     selectedPage.value = clampPage(selectedPage.value);
@@ -144,9 +177,7 @@ export const useLayoutStore = defineStore('layout', () => {
         return;
       }
 
-      const oldPages = chunk(desktopIds.value, oldPageSize).filter(
-        (page) => page.length > 0,
-      );
+      const oldPages = chunk(desktopIds.value, oldPageSize);
       const resizedPages: string[][] = [];
       let resizedPageIndex = 0;
 
@@ -178,8 +209,11 @@ export const useLayoutStore = defineStore('layout', () => {
     pageSize,
     pages,
     pageCount,
+    isCurrentPageEmpty,
     nodeSize,
     setSelectedPage,
     setDraggedDesktopPages,
+    insertBlankPage,
+    removeBlankPage,
   };
 });
