@@ -23,7 +23,7 @@
           @pointerenter="dragNodeId && handleEnter()"
           @pointerleave="dragNodeId && handleLeave()"
         >
-          <template v-for="id in currentGroupIds" :key="id">
+          <template v-for="id in groupAppIds" :key="id">
             <div class="w-full flex-center aspect-square" :data-id="id">
               <LauncherNode :id="id" />
             </div>
@@ -46,7 +46,7 @@ import { eventBus } from '@/utils/event-bus.js';
 import { useSortable } from '@/hooks/use-sortable';
 import { useLauncherUiStore } from '@/stores/launcher-ui';
 import { useSettingStore } from '@/stores/setting';
-import { useDesktopStore } from '@/stores/desktop';
+import { useGroupStore } from '@/stores/group';
 
 // 启动台外观设置
 const { config } = storeToRefs(useSettingStore());
@@ -63,8 +63,8 @@ const { dragNodeId, hiddenDesktop } = storeToRefs(useLauncherUiStore());
 // 启动台拖拽状态操作
 const { setDragNodeId } = useLauncherUiStore();
 
-// 分组 ID 数据操作
-const { getGroupIds, setGroupIds, removeGroupId } = useDesktopStore();
+// 分组应用数据操作
+const { getGroupAppIds, setGroupAppIds, removeGroupApp } = useGroupStore();
 
 // 分组内容容器
 const contentRef = useTemplateRef('contentRef');
@@ -84,8 +84,8 @@ const groupNode = computed(() => {
 });
 
 // 当前分组内的应用 ID
-const currentGroupIds = computed(() => {
-  return getGroupIds(groupId.value);
+const groupAppIds = computed(() => {
+  return getGroupAppIds(groupId.value);
 });
 
 // 分组弹窗悬停关闭操作
@@ -111,16 +111,16 @@ const handleEnd = () => {
     contentRef.value.querySelectorAll<HTMLElement>('[data-id]'),
   ).map((item) => item.dataset.id!);
 
-  setGroupIds(groupId.value, ids);
+  setGroupAppIds(groupId.value, ids);
 };
 
 //拖拽离开组
 const handleRemove = (e: SortableEvent) => {
   const appId = e.item.dataset.id!;
 
-  removeGroupId(groupId.value, appId);
+  removeGroupApp(groupId.value, appId);
 
-  if (!groupNode.value || currentGroupIds.value.length > 1) {
+  if (!groupNode.value || groupAppIds.value.length > 1) {
     return;
   }
 

@@ -8,7 +8,7 @@
   >
     <AppNodeIcon
       class="rounded-[30%]"
-      v-for="id in groupIds.slice(0, 7)"
+      v-for="id in appIds.slice(0, 7)"
       :key="id"
       :id="id"
       is-group
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import AppNodeIcon from './app-node-icon.vue';
 import { useLayoutStore } from '@/stores/layout';
-import { useDesktopStore } from '@/stores/desktop';
+import { useGroupStore } from '@/stores/group';
 
 // 分组节点数据
 const props = defineProps<{
@@ -29,12 +29,12 @@ const props = defineProps<{
 // 启动台节点尺寸
 const { nodeSize } = storeToRefs(useLayoutStore());
 
-// 分组 ID 查询能力
-const { getGroupIds } = useDesktopStore();
+// 分组应用查询能力
+const { getGroupAppIds } = useGroupStore();
 
 // 分组内的应用 ID
-const groupIds = computed(() => {
-  return getGroupIds(props.id);
+const appIds = computed(() => {
+  return getGroupAppIds(props.id);
 });
 </script>
 

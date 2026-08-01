@@ -3,17 +3,40 @@ import { useSettingStore } from './setting';
 import { useLauncherUiStore } from './launcher-ui';
 import { useDesktopStore } from './desktop';
 import { useNodeStore } from './node';
-import {
-  chunkDesktopItems,
-  createDesktopLayout,
-  findDesktopNodeLocation,
-  getDesktopPages,
-  getResizedPageIndex,
-  isDesktopNodeId,
-  resizeDesktopLayout,
-  resolveDraggedPageOverflow,
-} from '@/utils/desktop-layout';
 import { getValue } from '@/utils/value';
+import { chunk } from '@/utils/page';
+
+type DesktopId = string | null;
+
+// 将页面写回包含空槽的一维桌面数据
+const getDesktopIds = (pages: string[][], pageSize: number) => {
+  const desktopIds: DesktopId[] = [];
+  const addedIds = new Set<string>();
+
+  pages.forEach((page, pageIndex) => {
+    let nodeCount = 0;
+
+    page.forEach((id) => {
+      if (addedIds.has(id)) {
+        return;
+      }
+
+      addedIds.add(id);
+      desktopIds.push(id);
+      nodeCount++;
+    });
+
+    const isLastPage = pageIndex === pages.length - 1;
+
+    if (!isLastPage) {
+      for (let index = nodeCount; index < pageSize; index++) {
+        desktopIds.push(null);
+      }
+    }
+  });
+
+  return desktopIds;
+};
 
 export const useLayoutStore = defineStore('layout', () => {
   // 启动台节点数据
@@ -22,14 +45,11 @@ export const useLayoutStore = defineStore('layout', () => {
   // 一维桌面数据
   const { desktopIds } = storeToRefs(useDesktopStore());
 
-  // 覆盖一维桌面数据
-  const { setDesktop } = useDesktopStore();
-
   // 启动台外观设置
   const { config } = storeToRefs(useSettingStore());
 
   // 启动台搜索关键词
-  const { keyword } = storeToRefs(useLauncherUiStore());
+  const { keyword, isSearching } = storeToRefs(useLauncherUiStore());
 
   // 选中的页
   const selectedPage = ref(0);
@@ -48,31 +68,21 @@ export const useLayoutStore = defineStore('layout', () => {
     return config.value.rowCount * config.value.colCount;
   });
 
-  // 当前状态下可见的节点 ID
-  const visibleIds = computed(() => {
-    if (!keyword.value) {
-      return desktopIds.value.filter(isDesktopNodeId);
-    }
-
+  // 搜索结果中的节点 ID
+  const searchIds = computed(() => {
     return Object.values(nodes.value)
       .filter((node) => {
-        return (
-          matchKeyword(node.keyword, keyword.value) ||
-          matchKeyword(node.label, keyword.value)
-        );
+        return matchKeyword([node.keyword, node.label], keyword.value);
       })
-      .map((node) => {
-        return node.id;
-      });
+      .map((node) => node.id);
   });
 
   // 根据空槽边界或搜索结果拆分出的页面节点 ID
   const pages = computed(() => {
-    if (!keyword.value) {
-      return getDesktopPages(desktopIds.value, pageSize.value);
-    }
-
-    return chunkDesktopItems(visibleIds.value, pageSize.value);
+    return chunk(
+      isSearching.value ? searchIds.value : desktopIds.value,
+      pageSize.value,
+    ).filter((page) => page.length > 0);
   });
 
   // 当前可见节点对应的页数
@@ -94,31 +104,31 @@ export const useLayoutStore = defineStore('layout', () => {
     selectedPage.value = clampPage(value);
   };
 
-  // 选中桌面节点所在页面
-  const selectDesktopNode = (nodeId: string) => {
-    // 节点在当前页面布局中的位置
-    const nodeLocation = findDesktopNodeLocation(
-      desktopIds.value,
-      pageSize.value,
-      nodeId,
-    );
-
-    if (!nodeLocation) {
+  // 写入拖拽后的页面并处理满页溢出
+  const setDraggedDesktopPages = (draggedPages: string[][]) => {
+    if (pageSize.value <= 0) {
       return;
     }
 
-    setSelectedPage(nodeLocation.pageIndex);
-  };
+    for (let i = 0; i < draggedPages.length; i++) {
+      const page = draggedPages[i];
 
-  // 写入拖拽后的页面并处理满页溢出
-  const setDraggedDesktopPages = (draggedPages: string[][]) => {
-    // 将拖拽溢出节点拆到独立页面后的布局
-    const resolvedPages = resolveDraggedPageOverflow(
-      draggedPages,
-      pageSize.value,
-    );
+      if (page.length <= pageSize.value) {
+        continue;
+      }
 
-    setDesktop(createDesktopLayout(resolvedPages, pageSize.value));
+      const overflow = page.splice(pageSize.value);
+      const nextPage = draggedPages[i + 1];
+
+      if (nextPage && nextPage.length + overflow.length <= pageSize.value) {
+        nextPage.push(...overflow);
+        continue;
+      }
+
+      draggedPages.splice(i + 1, 0, overflow);
+    }
+
+    desktopIds.value = getDesktopIds(draggedPages, pageSize.value);
   };
 
   // 可见节点或布局变化后保持当前页有效
@@ -130,17 +140,32 @@ export const useLayoutStore = defineStore('layout', () => {
   watch(
     pageSize,
     (newPageSize, oldPageSize) => {
-      // 选中旧页面调整容量后对应的首个页面
-      const resizedPageIndex = getResizedPageIndex(
-        desktopIds.value,
-        oldPageSize,
-        newPageSize,
-        selectedPage.value,
-      );
+      if (newPageSize <= 0 || oldPageSize <= 0) {
+        return;
+      }
 
-      setDesktop(
-        resizeDesktopLayout(desktopIds.value, oldPageSize, newPageSize),
+      const oldPages = chunk(desktopIds.value, oldPageSize).filter(
+        (page) => page.length > 0,
       );
+      const resizedPages: string[][] = [];
+      let resizedPageIndex = 0;
+
+      oldPages.forEach((page, pageIndex) => {
+        if (pageIndex < selectedPage.value) {
+          resizedPageIndex += Math.max(Math.ceil(page.length / newPageSize), 1);
+        }
+
+        if (page.length === 0) {
+          resizedPages.push(page);
+          return;
+        }
+
+        while (page.length > 0) {
+          resizedPages.push(page.splice(0, newPageSize));
+        }
+      });
+
+      desktopIds.value = getDesktopIds(resizedPages, newPageSize);
       selectedPage.value = resizedPageIndex;
     },
     {
@@ -151,12 +176,10 @@ export const useLayoutStore = defineStore('layout', () => {
   return {
     selectedPage,
     pageSize,
-    visibleIds,
     pages,
     pageCount,
     nodeSize,
     setSelectedPage,
-    selectDesktopNode,
     setDraggedDesktopPages,
   };
 });

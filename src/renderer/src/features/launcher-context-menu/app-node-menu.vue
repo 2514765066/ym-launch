@@ -77,8 +77,8 @@ import {
 import { useNodeStore } from '@/stores/node';
 import { useCoreStore } from '@/stores/core';
 import { useDesktopStore } from '@/stores/desktop';
+import { useGroupStore } from '@/stores/group';
 import { eventBus } from '@/utils/event-bus';
-import { isDesktopNodeId } from '@/utils/desktop-layout';
 import { CornerUpRight, FolderOpen, SquarePen, Trash2 } from '@lucide/vue';
 
 // 应用节点 ID
@@ -101,16 +101,15 @@ const { moveAppToGroup, removeAppNode } = useCoreStore();
 // 桌面数据仓库
 const desktopStore = useDesktopStore();
 
-// 包含空槽的一维桌面数据
-const { desktopIds } = storeToRefs(desktopStore);
+// 桌面节点 ID
+const { desktopNodeIds } = storeToRefs(desktopStore);
 
-// 分组 ID 查询能力
-const { findGroupId } = desktopStore;
+// 应用所属分组查询能力
+const { findAppGroupId } = useGroupStore();
 
 // 按桌面展示顺序排列的文件夹节点
 const groupNodes = computed(() => {
-  return desktopIds.value
-    .filter((id) => isDesktopNodeId(id))
+  return desktopNodeIds.value
     .map((nodeId) => {
       return nodes.value[nodeId];
     })
@@ -119,7 +118,7 @@ const groupNodes = computed(() => {
 
 //所在的group id
 const currentGroupId = computed(() => {
-  return findGroupId(props.id);
+  return findAppGroupId(props.id);
 });
 
 //重命名
